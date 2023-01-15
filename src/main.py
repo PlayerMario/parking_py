@@ -1,4 +1,5 @@
 from data.data import Data
+from models.ocupada import Ocupada
 
 # VARIABLES APLICACIÓN:
 opZona = -1
@@ -9,6 +10,10 @@ usuario = "user"
 pswd = "1234"
 
 print("Bienvenido al Parking Triana.")
+
+for i in Data.parking.plazas:
+    if isinstance(i.ocupada, Ocupada):
+        print(i)
 
 # MENÚ ZONA:
 while opZona != 0:

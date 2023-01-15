@@ -48,9 +48,16 @@ class Data:
 
     listaOcupada = [o1, o2, o3, o4, o5, o6]
 
-    parking.plazas[0].ocupada = o1
-    parking.plazas[34].ocupada = o2
-    parking.plazas[1].ocupada = o3
-    parking.plazas[27].ocupada = o4
-    parking.plazas[35].ocupada = o5
-    parking.plazas[28].ocupada = o6
+    # parking.plazas[0].ocupada = o1
+    # parking.plazas[34].ocupada = o2
+    # parking.plazas[1].ocupada = o3
+    # parking.plazas[28].ocupada = o4
+    # parking.plazas[35].ocupada = o5
+    # parking.plazas[29].ocupada = o6
+
+    for oc in listaOcupada:
+        for plaza in parking.plazas:
+            if not isinstance(plaza.ocupada, Ocupada):
+                if plaza.tipo_vehiculo == oc.cliente.vehiculo.tipo:
+                    plaza.ocupada = oc
+                    break
