@@ -1,0 +1,73 @@
+from models.abono import Abono
+from models.cliente import Cliente
+
+
+class ClienteAbono(Cliente):
+    # ATRIBUTOS
+    __nombre = ""
+    __apellidos = ""
+    __dni = ""
+    __num_tarjeta = ""
+    __email = ""
+    __abono = Abono
+
+    # GETTERS % SETTERS
+    @property
+    def nombre(self):
+        return self.__nombre
+
+    @nombre.setter
+    def nombre(self, nombre):
+        self.__nombre = nombre
+
+    @property
+    def apellidos(self):
+        return self.__apellidos
+
+    @apellidos.setter
+    def apellidos(self, apellidos):
+        self.__apellidos = apellidos
+
+    @property
+    def dni(self):
+        return self.__dni
+
+    @dni.setter
+    def dni(self, dni):
+        self.__dni = dni
+
+    @property
+    def num_tarjeta(self):
+        return self.__num_tarjeta
+
+    @num_tarjeta.setter
+    def num_tarjeta(self, num_tarjeta):
+        self.__num_tarjeta = num_tarjeta
+
+    @property
+    def email(self):
+        return self.__email
+
+    @email.setter
+    def email(self, email):
+        self.__email = email
+
+    @property
+    def abono(self):
+        return self.__abono
+
+    @abono.setter
+    def abono(self, abono):
+        self.__abono = abono
+
+    # TOSTRING
+    def __str__(self):
+        return f"""
+                \t-NOMBRE: {self.__nombre}
+                \t-APELLIDOS: {self.__apellidos}
+                \t-DNI: {self.__dni}                
+                \t-TARJETA: {self.__num_tarjeta}
+                \t-EMAIL: {self.__email}
+                \t-ABONO: {self.__abono}        
+                \t-VEHÍCULO: {self.vehiculo}        
+                      """
