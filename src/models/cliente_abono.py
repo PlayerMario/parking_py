@@ -1,17 +1,19 @@
-from models.abono import Abono
 from models.cliente import Cliente
 
 
 class ClienteAbono(Cliente):
-    # ATRIBUTOS
-    __nombre = ""
-    __apellidos = ""
-    __dni = ""
-    __num_tarjeta = ""
-    __email = ""
-    __abono = Abono
 
-    # GETTERS % SETTERS
+    # CONSTRUCTOR
+    def __init__(self, vehiculo, nombre, apellidos, dni, num_tarjeta, email, abono):
+        super().__init__(vehiculo)
+        self.__nombre = nombre
+        self.__apellidos = apellidos
+        self.__dni = dni
+        self.__num_tarjeta = num_tarjeta
+        self.__email = email
+        self.__abono = abono
+
+    # GETTERS & SETTERS
     @property
     def nombre(self):
         return self.__nombre

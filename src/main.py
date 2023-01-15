@@ -1,9 +1,4 @@
-from models.abono import Abono
-from models.cliente import Cliente
-from models.cliente_abono import ClienteAbono
-from models.parking import Parking
-from models.plaza_ocupada import PlazaOcupada
-from models.vehiculo import Vehiculo
+from data.data import Data
 
 # VARIABLES APLICACIÓN:
 opZona = -1
@@ -12,18 +7,6 @@ opAdmin = -1
 opDepo = -1
 usuario = "user"
 pswd = "1234"
-
-# DATOS DE PRUEBA
-parking = Parking(num_plazas=40)
-c1 = Cliente(vehiculo=Vehiculo(matricula="1111AAA", tipo="Turismo"))
-c2 = ClienteAbono(vehiculo=Vehiculo(matricula="1234AWE", tipo="Motocicleta"))
-c2.nombre = "Mario"
-c2.apellidos = "Ruiz López"
-c2.dni = "12345678A"
-c2.num_tarjeta = "123-456"
-c2.email = "mario@mario.com"
-c2.abono = Abono("Trimestral")
-parking.plazas[1].ocupado(PlazaOcupada(cliente=c1, abonado=False))
 
 print("Bienvenido al Parking Triana.")
 

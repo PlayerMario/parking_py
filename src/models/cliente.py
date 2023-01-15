@@ -12,11 +12,11 @@ class Cliente:
         return self.__vehiculo
 
     @vehiculo.setter
-    def vehiculo(self, vehiculo=Vehiculo):
+    def vehiculo(self, vehiculo):
         self.__vehiculo = vehiculo
 
     # TOSTRING
     def __str__(self):
         return f"""
-                -VEHÍCULO: {self.__vehiculo}
+                \t-VEHÍCULO: {self.__vehiculo}
                       """

@@ -1,3 +1,4 @@
+from models.ocupada import Ocupada
 from models.plaza import Plaza
 
 
@@ -30,7 +31,6 @@ class Parking:
     def __str__(self):
         return f"""
                 -PLAZAS: {self.__num_plazas}
-                -ENTRADA: {self.__plazas}
                       """
 
     # MÉTODOS DE CLASE
@@ -38,9 +38,9 @@ class Parking:
         plazas = []
         for i in range(1, self.__num_plazas + 1):
             if i <= round(self.__num_plazas * 0.7):
-                plazas.append(Plaza(id_plaza=f"{i}", tipo_vehiculo="Turismo"))
+                plazas.append(Plaza(id_plaza=f"{i}", tipo_vehiculo="Turismo", ocupada=Ocupada))
             elif i <= round(self.__num_plazas * 0.85):
-                plazas.append(Plaza(id_plaza=f"{i}", tipo_vehiculo="Motocicleta"))
+                plazas.append(Plaza(id_plaza=f"{i}", tipo_vehiculo="Motocicleta", ocupada=Ocupada))
             else:
-                plazas.append(Plaza(id_plaza=f"{i}", tipo_vehiculo="Movilidad Reducida"))
+                plazas.append(Plaza(id_plaza=f"{i}", tipo_vehiculo="Movilidad Reducida", ocupada=Ocupada))
         return plazas
