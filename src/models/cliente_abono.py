@@ -64,10 +64,16 @@ class ClienteAbono(Cliente):
 
     # TOSTRING
     def __str__(self):
-        return f"""\t-NOMBRE: {self.__nombre}
-                \t-APELLIDOS: {self.__apellidos}
-                \t-DNI: {self.__dni}                
-                \t-TARJETA: {self.__num_tarjeta}
-                \t-EMAIL: {self.__email}
-                \t-ABONO: {self.__abono}        
-                \t-VEHÍCULO: {self.vehiculo}"""
+        return f"-{self.__nombre} {self.__apellidos}\n-DNI: {self.__dni}\n{self.vehiculo}"
+
+    # MÉTODOS DE CLASE
+    def buscar_cliente(self, matricula, dni, lista_clientes):
+        salir = False
+        cont = 0
+        while not salir and cont != len(lista_clientes):
+            cliente = lista_clientes[cont]
+            if isinstance(cliente, ClienteAbono):
+                if cliente.vehiculo.matricula == matricula and cliente.__dni == dni:
+                    salir = True
+                    return cliente
+            cont += 1

@@ -1,3 +1,4 @@
+from models.cliente_abono import ClienteAbono
 from models.ocupada import Ocupada
 from models.plaza import Plaza
 
@@ -43,12 +44,12 @@ class Parking:
                 plazas.append(Plaza(id_plaza=f"{i}", tipo_vehiculo="Movilidad Reducida", ocupada=Ocupada))
         return plazas
 
-    def mostrar_libres(self):
+    def mostrar_libres(self, lista_reservadas):
         num_turismo = 0
         num_moto = 0
         num_mov_red = 0
         for plaza in self.__plazas:
-            if not isinstance(plaza.ocupada, Ocupada):
+            if not isinstance(plaza.ocupada, Ocupada) and plaza not in lista_reservadas:
                 if plaza.tipo_vehiculo == "Turismo":
                     num_turismo += 1
                 elif plaza.tipo_vehiculo == "Motocicleta":
@@ -57,26 +58,59 @@ class Parking:
                     num_mov_red += 1
         return num_turismo, num_moto, num_mov_red
 
-    def mostrar_info_plazas(self):
+    def mostrar_info_plazas(self, lista_reservadas):
         print(f"""\t\t\t\tPLAZAS DISPONIBLES:
                 ==========================
-                -TURISMOS: {self.mostrar_libres()[0]}
-                -MOTOCICLETAS: {self.mostrar_libres()[1]}
-                -MOVILIDAD REDUCIDA: {self.mostrar_libres()[2]}""")
+                -TURISMOS: {self.mostrar_libres(lista_reservadas)[0]}
+                -MOTOCICLETAS: {self.mostrar_libres(lista_reservadas)[1]}
+                -MOVILIDAD REDUCIDA: {self.mostrar_libres(lista_reservadas)[2]}""")
 
     def depositar_ocasional(self, cliente, tipo_vehiculo):
-        for plaza in self.__plazas:
+        salir = False
+        cont = 0
+        while not salir and cont != len(self.__plazas):
+            plaza = self.__plazas[cont]
             if not isinstance(plaza.ocupada, Ocupada):
                 if plaza.tipo_vehiculo == tipo_vehiculo:
                     plaza.ocupada = Ocupada(cliente)
-                    print(plaza)
+                    salir = True
+                    return plaza
+            cont += 1
 
+    def mostrar_ticket(self, plaza):
+        if isinstance(plaza.ocupada, Ocupada):
+            print(f"""
+                    ==================================
+                    | ·PLAZA: {plaza.id_plaza}\t\t\t\t\t\t |
+                    | ·MATRÍCULA: {plaza.ocupada.cliente.vehiculo.matricula}\t\t\t |
+                    | ·ENTRADA: {plaza.ocupada.fecha_deposito.strftime('%d/%m/%Y, %H:%M')}\t |
+                    | ·PIN: {plaza.ocupada.pin}\t\t\t\t\t |
+                    ==================================
+                    """)
+        else:
+            print(f"La operación no ha podido completarse.")
+
+    def buscar_plaza(self, matricula, id_plaza, pin):
         salir = False
         cont = 0
 
-        while not salir:
+        while not salir and cont != len(self.__plazas):
             plaza = self.__plazas[cont]
-            if not isinstance(plaza.ocupada, Ocupada):
-                plaza.ocupada = Ocupada(cliente)
-                # MOSTRAR TICKET, LLAMAR A MÉTODO TICKET
+            if isinstance(plaza.ocupada, Ocupada):
+                if plaza.id_plaza == id_plaza and plaza.ocupada.pin == pin and \
+                        plaza.ocupada.cliente.vehiculo.matricula == matricula:
+                    return plaza
+            cont += 1
 
+    def depositar_abonado(self, cliente):
+        if isinstance(cliente, ClienteAbono):
+            salir = False
+            cont = 0
+            while not salir and cont != len(self.__plazas):
+                plaza = self.__plazas[cont]
+                if not isinstance(plaza.ocupada, Ocupada):
+                    if plaza.id_plaza == cliente.abono.plaza.id_plaza:
+                        plaza.ocupada = Ocupada(cliente)
+                        salir = True
+                        return plaza
+                cont += 1

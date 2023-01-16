@@ -2,6 +2,7 @@ from models.vehiculo import Vehiculo
 
 
 class Cliente:
+
     # CONSTRUCTOR
     def __init__(self, vehiculo=Vehiculo):
         self.__vehiculo = vehiculo
@@ -17,4 +18,4 @@ class Cliente:
 
     # TOSTRING
     def __str__(self):
-        return f"""\t-VEHÍCULO: {self.__vehiculo}"""
+        return f"{self.__vehiculo}"

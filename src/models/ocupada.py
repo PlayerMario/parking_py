@@ -1,23 +1,25 @@
 from datetime import datetime, timedelta
 from models.cliente_abono import ClienteAbono
 import random
+from models.cobros import Cobro
 
 
 class Ocupada:
+    __fecha_salida = ""
+    __coste_final = 0
 
     # CONSTRUCTOR
     def __init__(self, cliente):
         self.__cliente = cliente
         if isinstance(self.__cliente, ClienteAbono):
-            self.__pin = f"{self.__cliente.vehiculo.matricula}-" + f"{self.generar_pin(1)}"
+            self.__pin = self.__cliente.abono.pin
         else:
-            self.__pin = f"{self.generar_pin(2)}"
+            self.__pin = f"{self.generar_pin()}"
         self.__fecha_deposito = datetime.now()
-        self.__fecha_salida = datetime.now() + timedelta(days=1)
-        if isinstance(self.__cliente, ClienteAbono):
-            self.__coste_final = 0
-        else:
-            self.__coste_final = self.calcular_precio()
+
+    # DESTRUCTOR
+    def __del__(self):
+        pass
 
     # GETTERS & SETTERS
     @property
@@ -51,6 +53,10 @@ class Ocupada:
     @fecha_salida.setter
     def fecha_salida(self, fecha_salida):
         self.__fecha_salida = fecha_salida
+        if isinstance(self.__cliente, ClienteAbono):
+            self.__coste_final = 0
+        else:
+            self.__coste_final = self.calcular_precio()
 
     @property
     def coste_final(self):
@@ -62,22 +68,13 @@ class Ocupada:
 
     # TOSTRING
     def __str__(self):
-        return f"""-CLIENTE: {self.__cliente}
-                -PIN: {self.__pin}
-                -ENTRADA: {self.__fecha_deposito.strftime('%d/%m/%Y, %H:%M')}
-                -SALIDA: {self.__fecha_salida.strftime('%d/%m/%Y, %H:%M')}
-                -COSTE: {self.__coste_final}€"""
+        return f"{self.__cliente}\n-Pin: {self.__pin}\n-Entrada: {self.__fecha_deposito.strftime('%d/%m/%Y, %H:%M')}"
 
     # MÉTODOS DE CLASE
-    def generar_pin(self, opcion):
+    def generar_pin(self):
         pin = ""
-        if opcion == 1:
-            for i in range(1, 3):
-                pin += str(random.randint(0, 9))
-        else:
-            for i in range(1, 7):
-                pin += str(random.randint(0, 9))
-
+        for i in range(1, 7):
+            pin += str(random.randint(0, 9))
         return pin
 
     def calcular_precio(self):
@@ -89,3 +86,16 @@ class Ocupada:
             precio_mins = 0.1
 
         return round(((self.__fecha_salida - self.__fecha_deposito).total_seconds() / 60) * precio_mins, 2)
+
+    def salida_vehiculo(self):
+        if isinstance(self, Ocupada):
+            self.fecha_salida = datetime.now()
+            cobro = Cobro(matricula=self.cliente.vehiculo.matricula, fecha_entrada=self.__fecha_deposito,
+                          fecha_salida=self.__fecha_salida, cobro=self.__coste_final)
+            if isinstance(self.__cliente, ClienteAbono):
+                return cobro
+            else:
+                self.__del__()
+                return cobro
+        else:
+            return "\nError en la operación."

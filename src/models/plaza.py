@@ -53,15 +53,9 @@ class Plaza:
     # TOSTRING
     def __str__(self):
         if isinstance(self.__ocupada, Ocupada):
-            return f"""\t\t\t\tPLAZA {self.__id_plaza}:
-            ==========================
-            -TIPO: {self.__tipo_vehiculo}
-            -PRECIO/MIN: {self.__precio_mins}€/min
-            ==========================
-            -OCUPADA: {self.__ocupada}"""
+            return f"\t\t Plaza {self.__id_plaza}\n=============================\n-{self.__tipo_vehiculo}\n" \
+                   f"-{self.__precio_mins}€/min\n=============================\n{self.__ocupada}\n" \
+                   f"=============================\n"
         else:
-            return f"""\t\t\t\tPLAZA {self.__id_plaza}:
-            ==========================
-            -TIPO: {self.__tipo_vehiculo}
-            -PRECIO/MIN: {self.__precio_mins}€/min
-            ==========================\n"""
+            return f"\t\t\tPlaza {self.__id_plaza}\n=============================\n-{self.__tipo_vehiculo}\n" \
+                   f"-{self.__precio_mins}€/min\n=============================\n"
