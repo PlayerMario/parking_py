@@ -1,5 +1,7 @@
 import random
 
+from models.ocupada import Ocupada
+
 
 class Plaza:
 
@@ -50,10 +52,16 @@ class Plaza:
 
     # TOSTRING
     def __str__(self):
-        return f"""\t\t\t\tPLAZA {self.__id_plaza}:
-        ==========================
-        -TIPO: {self.__tipo_vehiculo}
-        -PRECIO/MIN: {self.__precio_mins}€/min
-        ==========================
-        -OCUPADA: {self.__ocupada}
-              """
+        if isinstance(self.__ocupada, Ocupada):
+            return f"""\t\t\t\tPLAZA {self.__id_plaza}:
+            ==========================
+            -TIPO: {self.__tipo_vehiculo}
+            -PRECIO/MIN: {self.__precio_mins}€/min
+            ==========================
+            -OCUPADA: {self.__ocupada}"""
+        else:
+            return f"""\t\t\t\tPLAZA {self.__id_plaza}:
+            ==========================
+            -TIPO: {self.__tipo_vehiculo}
+            -PRECIO/MIN: {self.__precio_mins}€/min
+            ==========================\n"""

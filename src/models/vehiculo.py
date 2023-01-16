@@ -24,7 +24,5 @@ class Vehiculo:
 
     # TOSTRING
     def __str__(self):
-        return f"""
-                \t\t-MATRÍCULA: {self.__matricula}
-                \t\t-TIPO: {self.__tipo}
-                      """
+        return f"""\t\t-MATRÍCULA: {self.__matricula}
+                \t\t-TIPO: {self.__tipo}"""

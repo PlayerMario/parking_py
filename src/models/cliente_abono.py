@@ -64,12 +64,10 @@ class ClienteAbono(Cliente):
 
     # TOSTRING
     def __str__(self):
-        return f"""
-                \t-NOMBRE: {self.__nombre}
+        return f"""\t-NOMBRE: {self.__nombre}
                 \t-APELLIDOS: {self.__apellidos}
                 \t-DNI: {self.__dni}                
                 \t-TARJETA: {self.__num_tarjeta}
                 \t-EMAIL: {self.__email}
                 \t-ABONO: {self.__abono}        
-                \t-VEHÍCULO: {self.vehiculo}        
-                      """
+                \t-VEHÍCULO: {self.vehiculo}"""

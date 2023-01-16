@@ -29,9 +29,7 @@ class Parking:
 
     # TOSTRING
     def __str__(self):
-        return f"""
-                -PLAZAS: {self.__num_plazas}
-                      """
+        return f"""-PLAZAS: {self.__num_plazas}"""
 
     # MÉTODOS DE CLASE
     def inicializar_parking(self):
@@ -44,3 +42,41 @@ class Parking:
             else:
                 plazas.append(Plaza(id_plaza=f"{i}", tipo_vehiculo="Movilidad Reducida", ocupada=Ocupada))
         return plazas
+
+    def mostrar_libres(self):
+        num_turismo = 0
+        num_moto = 0
+        num_mov_red = 0
+        for plaza in self.__plazas:
+            if not isinstance(plaza.ocupada, Ocupada):
+                if plaza.tipo_vehiculo == "Turismo":
+                    num_turismo += 1
+                elif plaza.tipo_vehiculo == "Motocicleta":
+                    num_moto += 1
+                else:
+                    num_mov_red += 1
+        return num_turismo, num_moto, num_mov_red
+
+    def mostrar_info_plazas(self):
+        print(f"""\t\t\t\tPLAZAS DISPONIBLES:
+                ==========================
+                -TURISMOS: {self.mostrar_libres()[0]}
+                -MOTOCICLETAS: {self.mostrar_libres()[1]}
+                -MOVILIDAD REDUCIDA: {self.mostrar_libres()[2]}""")
+
+    def depositar_ocasional(self, cliente, tipo_vehiculo):
+        for plaza in self.__plazas:
+            if not isinstance(plaza.ocupada, Ocupada):
+                if plaza.tipo_vehiculo == tipo_vehiculo:
+                    plaza.ocupada = Ocupada(cliente)
+                    print(plaza)
+
+        salir = False
+        cont = 0
+
+        while not salir:
+            plaza = self.__plazas[cont]
+            if not isinstance(plaza.ocupada, Ocupada):
+                plaza.ocupada = Ocupada(cliente)
+                # MOSTRAR TICKET, LLAMAR A MÉTODO TICKET
+

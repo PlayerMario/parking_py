@@ -3,13 +3,13 @@ from models.cliente_abono import ClienteAbono
 import random
 
 
-class Ocupada():
+class Ocupada:
 
     # CONSTRUCTOR
     def __init__(self, cliente):
         self.__cliente = cliente
         if isinstance(self.__cliente, ClienteAbono):
-            self.__pin = f"{self.__cliente.vehiculo.matricula}" + f"{self.generar_pin(1)}"
+            self.__pin = f"{self.__cliente.vehiculo.matricula}-" + f"{self.generar_pin(1)}"
         else:
             self.__pin = f"{self.generar_pin(2)}"
         self.__fecha_deposito = datetime.now()
@@ -62,13 +62,11 @@ class Ocupada():
 
     # TOSTRING
     def __str__(self):
-        return f"""
-                -CLIENTE: {self.__cliente}
+        return f"""-CLIENTE: {self.__cliente}
                 -PIN: {self.__pin}
                 -ENTRADA: {self.__fecha_deposito.strftime('%d/%m/%Y, %H:%M')}
                 -SALIDA: {self.__fecha_salida.strftime('%d/%m/%Y, %H:%M')}
-                -COSTE: {self.__coste_final}€
-                      """
+                -COSTE: {self.__coste_final}€"""
 
     # MÉTODOS DE CLASE
     def generar_pin(self, opcion):

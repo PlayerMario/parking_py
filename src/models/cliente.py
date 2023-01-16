@@ -17,6 +17,4 @@ class Cliente:
 
     # TOSTRING
     def __str__(self):
-        return f"""
-                \t-VEHÍCULO: {self.__vehiculo}
-                      """
+        return f"""\t-VEHÍCULO: {self.__vehiculo}"""

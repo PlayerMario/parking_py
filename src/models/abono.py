@@ -55,9 +55,7 @@ class Abono:
 
     # TOSTRING
     def __str__(self):
-        return f"""
-                \t\t-TIPO: {self.__tipo}
+        return f"""\t\t-TIPO: {self.__tipo}
                 \t\t-PRECIO: {self.__precio}€
                 \t\t-FECHA ALTA: {self.__fecha_alta.strftime('%d/%m/%Y, %H:%M')}                
-                \t\t-FECHA FIN: {self.__fecha_cancelacion.strftime('%d/%m/%Y, %H:%M')} 
-                      """
+                \t\t-FECHA FIN: {self.__fecha_cancelacion.strftime('%d/%m/%Y, %H:%M')}"""

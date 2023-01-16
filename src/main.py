@@ -1,19 +1,22 @@
 from data.data import Data
+from models.cliente import Cliente
 from models.ocupada import Ocupada
+from models.vehiculo import Vehiculo
 
 # VARIABLES APLICACIÓN:
 opZona = -1
 opCliente = -1
 opAdmin = -1
-opDepo = -1
+opTipo = -1
 usuario = "user"
 pswd = "1234"
+parking = Data.parking
 
 print("Bienvenido al Parking Triana.")
 
-for i in Data.parking.plazas:
-    if isinstance(i.ocupada, Ocupada):
-        print(i)
+# for i in Data.parking.plazas:
+#     if isinstance(i.ocupada, Ocupada):
+#         print(i)
 
 # MENÚ ZONA:
 while opZona != 0:
@@ -35,22 +38,31 @@ while opZona != 0:
                 > """))
 
             if opCliente == 1:
-                # DEPOSITAR VEHÍCULO
-                while opDepo != 0:
-                    opDepo = int(input("""\nSeleccione una opción:
-                        [1] Cliente abonado.
-                        [2] Cliente sin abono.
-                        [0] Salir.
-                        > """))
+                parking.mostrar_info_plazas()
+                opTipo = int(input("""\nSeleccione el tipo:
+                                [1] Turismo.
+                                [2] Motocicleta.
+                                [3] Movilidad Reducida.
+                                > """))
+                if (opTipo == 1 and parking.mostrar_libres()[0] != 0) \
+                        or (opTipo == 2 and parking.mostrar_libres()[1] != 0) \
+                        or (opTipo == 3 and parking.mostrar_libres()[2] != 0):
 
-                    if opDepo == 1:
-                        pass
+                    matricula = input("Indique su matrícula: ")
 
-                    elif opDepo == 2:
-                        pass
+                    if opTipo == 1:
+                        tipo_vehiculo = "Turismo"
+
+                    elif opTipo == 2:
+                        tipo_vehiculo = "Motocicleta"
 
                     else:
-                        print("Opción incorrecta.")
+                        tipo_vehiculo = "Movilidad Reducida"
+
+                    parking.depositar_ocasional(Cliente(Vehiculo(matricula, tipo_vehiculo)), tipo_vehiculo)
+
+                else:
+                    print("Opción incorrecta / No hay plazas de ese tipo disponibles")
 
             elif opCliente == 2:
                 print("Opción 2")
@@ -74,8 +86,8 @@ while opZona != 0:
 
         # MENÚ ADMINISTRADOR
         if user == usuario and psw == pswd:
-            while opCliente != 0:
-                opCliente = int(input("""\nSeleccione una opción:
+            while opAdmin != 0:
+                opAdmin = int(input("""\nSeleccione una opción:
                     [1] Estado del parking.
                     [2] Facturación.
                     [3] Consulta de abonados.
@@ -84,22 +96,22 @@ while opZona != 0:
                     [0] Salir.
                     > """))
 
-                if opCliente == 1:
+                if opAdmin == 1:
                     print("Opción 1")
 
-                elif opCliente == 2:
+                elif opAdmin == 2:
                     print("Opción 2")
 
-                elif opCliente == 3:
+                elif opAdmin == 3:
                     print("Opción 3")
 
-                elif opCliente == 4:
+                elif opAdmin == 4:
                     print("Opción 4")
 
-                elif opCliente == 5:
+                elif opAdmin == 5:
                     print("Opción 5")
 
-                elif opCliente == 0:
+                elif opAdmin == 0:
                     print("Saliendo...")
 
                 else:
