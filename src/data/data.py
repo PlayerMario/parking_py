@@ -1,6 +1,9 @@
+from datetime import datetime
+
 from models.abono import Abono
 from models.cliente import Cliente
 from models.cliente_abono import ClienteAbono
+from models.cobros import Cobro
 from models.ocupada import Ocupada
 from models.parking import Parking
 from models.vehiculo import Vehiculo
@@ -80,4 +83,35 @@ class Data:
                     salir = True
             cont += 1
 
-    listaCobros = []
+    co1 = Cobro(matricula="8521CFD", fecha_entrada=datetime(2022, 9, 23, 19, 12),
+                fecha_salida=datetime(2022, 9, 23, 21, 5), cobro=13.56)  # Turismo
+    co2 = Cobro(matricula="3214GVD", fecha_entrada=datetime(2022, 9, 25, 10, 20),
+                fecha_salida=datetime(2022, 9, 25, 17, 30), cobro=34.4)  # Motocicleta
+    co3 = Cobro(matricula="2147HBF", fecha_entrada=datetime(2022, 9, 11, 16, 25),
+                fecha_salida=datetime(2022, 9, 11, 18, 54), cobro=14.9)  # MovRed
+    co4 = Cobro(matricula="5201TGB", fecha_entrada=datetime(2022, 10, 6, 13, 3),
+                fecha_salida=datetime(2022, 10, 6, 22, 10), cobro=65.64)  # Turismo
+    co5 = Cobro(matricula="6324QSX", fecha_entrada=datetime(2022, 10, 30, 11, 41),
+                fecha_salida=datetime(2022, 10, 30, 12, 50), cobro=5.52)  # Motocicleta
+    co6 = Cobro(matricula="0142HNM", fecha_entrada=datetime(2022, 10, 23, 20, 36),
+                fecha_salida=datetime(2022, 10, 23, 22, 30), cobro=11.4)  # MovRed
+    co7 = Cobro(matricula="3014ERE", fecha_entrada=datetime(2022, 11, 23, 11, 29),
+                fecha_salida=datetime(2022, 11, 23, 14, 24), cobro=21)  # Turismo
+    co8 = Cobro(matricula="9879BNH", fecha_entrada=datetime(2022, 11, 8, 15, 1),
+                fecha_salida=datetime(2022, 11, 8, 18, 28), cobro=16.56)  # Motocicleta
+    co9 = Cobro(matricula="2214LMN", fecha_entrada=datetime(2022, 11, 16, 16, 12),
+                fecha_salida=datetime(2022, 11, 16, 19, 5), cobro=17.3)  # MovRed
+    co10 = Cobro(matricula="4152CXS", fecha_entrada=datetime(2022, 12, 23, 10, 32),
+                 fecha_salida=datetime(2022, 12, 23, 13, 45), cobro=23.16)  # Turismo
+    co11 = Cobro(matricula="6632BNV", fecha_entrada=datetime(2022, 12, 10, 14, 32),
+                 fecha_salida=datetime(2022, 12, 10, 19, 15), cobro=22.64)  # Motocicleta
+    co12 = Cobro(matricula="7456AZX", fecha_entrada=datetime(2022, 12, 20, 13, 36),
+                 fecha_salida=datetime(2022, 12, 20, 15, 30), cobro=11.4)  # MovRed
+    co13 = Cobro(matricula="6399NMJ", fecha_entrada=datetime(2023, 1, 3, 12, 10),
+                 fecha_salida=datetime(2023, 1, 3, 17, 26), cobro=37.92)  # Turismo
+    co14 = Cobro(matricula="1002EWQ", fecha_entrada=datetime(2023, 1, 14, 19, 20),
+                 fecha_salida=datetime(2023, 1, 14, 21, 53), cobro=12.24)  # Motocicleta
+    co15 = Cobro(matricula="3652HMK", fecha_entrada=datetime(2023, 1, 16, 17, 29),
+                 fecha_salida=datetime(2023, 1, 16, 19, 35), cobro=12.6)  # MovRed
+
+    listaCobros = [co1, co2, co3, co4, co5, co6, co7, co8, co9, co10, co11, co12, co13, co14, co15]

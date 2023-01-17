@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from data.data import Data
 from models.cliente import Cliente
 from models.cliente_abono import ClienteAbono
@@ -10,19 +12,23 @@ from models.vehiculo import Vehiculo
 opZona = -1
 opCliente = -1
 opAdmin = -1
+opAbono = -1
+opCad = -1
 usuario = "user"
 pswd = "1234"
 parking = Data.parking
 lista_clientes = Data.listaClientes
+lista_reservadas = Data.lista_reservadas
+lista_cobros = Data.listaCobros
 
 print("Bienvenido al Parking Triana.\n")
 
 # MENÚ ZONA:
 while opZona != 0:
 
-    for i in parking.plazas:
-        if isinstance(i.ocupada, Ocupada):
-            print(i)
+    # for i in parking.plazas:
+    #     if isinstance(i.ocupada, Ocupada):
+    #         print(i)
 
     opZona = int(input("\nSeleccione una opción:\n[1] Acceso clientes.\n[2] Adminstración.\n[0] Salir.\n> "))
 
@@ -34,13 +40,13 @@ while opZona != 0:
                                   "\n[3] Depositar abonados.\n[4] Retirar abonados.\n[0] Salir.\n> "))
 
             if opCliente == 1:
-                parking.mostrar_info_plazas(Data.lista_reservadas)
+                parking.mostrar_info_plazas(lista_reservadas)
                 opTipo = int(input("\nSeleccione el tipo:\n[1] Turismo.\n[2] Motocicleta."
                                    "\n[3] Movilidad Reducida.\n> "))
 
-                if (opTipo == 1 and parking.mostrar_libres(Data.lista_reservadas)[0] != 0) \
-                        or (opTipo == 2 and parking.mostrar_libres(Data.lista_reservadas)[1] != 0) \
-                        or (opTipo == 3 and parking.mostrar_libres(Data.lista_reservadas)[2] != 0):
+                if (opTipo == 1 and parking.mostrar_libres(lista_reservadas)[0] != 0) \
+                        or (opTipo == 2 and parking.mostrar_libres(lista_reservadas)[1] != 0) \
+                        or (opTipo == 3 and parking.mostrar_libres(lista_reservadas)[2] != 0):
 
                     matricula = input("Indique su matrícula: ")
 
@@ -114,19 +120,53 @@ while opZona != 0:
                                     "\n[0] Salir.\n> "))
 
                 if opAdmin == 1:
-                    print("Opción 1")
+                    parking.estado_parking(lista_reservadas)
 
                 elif opAdmin == 2:
-                    print("Opción 2")
+                    print("Indique la primera fecha: ")
+                    fecha1 = datetime(int(input("Indique el año: ")), int(input("Indique el mes: ")),
+                                      int(input("Indique el día: ")), int(input("Indique la hora: ")))
+
+                    print("Indique la segunda fecha: ")
+                    fecha2 = datetime(int(input("Indique el año: ")), int(input("Indique el mes: ")),
+                                      int(input("Indique el día: ")), int(input("Indique la hora: ")))
+
+                    print(f"{fecha1.strftime('%d/%m/%Y, %H:%M')} - {fecha2.strftime('%d/%m/%Y, %H:%M')}\n")
+
+                    Cobro.mostrar_facturacion(None, Cobro.obtener_facturacion(None, fecha1, fecha2, lista_cobros))
 
                 elif opAdmin == 3:
-                    print("Opción 3")
+                    ClienteAbono.buscar_abonados(None, lista_clientes)
 
                 elif opAdmin == 4:
-                    print("Opción 4")
+                    opAbono = -1
+                    while opAbono != 0:
+                        opAbono = int(input("\nSeleccione una opción:\n[1] Nuevo abonado.\n[2] Modificación abonado."
+                                            "\n[3] Baja de abonado.\n[0] Salir.\n> "))
+                        if opAbono == 1:
+                            pass
+                        elif opAbono == 2:
+                            pass
+                        elif opAbono == 3:
+                            pass
+                        elif opAbono == 0:
+                            print("Saliendo...")
+                        else:
+                            print("Opción incorrecta.")
 
                 elif opAdmin == 5:
-                    print("Opción 5")
+                    opCad = -1
+                    while opCad != 0:
+                        opCad = int(input("\nSeleccione una opción:\n[1] Caducidad en un mes.\n[2] Caducidad "
+                                          "en próximos 10 días.\n[0] Salir.\n> "))
+                        if opCad == 1:
+                            pass
+                        elif opCad == 2:
+                            pass
+                        elif opCad == 0:
+                            print("Saliendo...")
+                        else:
+                            print("Opción incorrecta.")
 
                 elif opAdmin == 0:
                     print("Saliendo...")

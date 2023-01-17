@@ -114,3 +114,19 @@ class Parking:
                         salir = True
                         return plaza
                 cont += 1
+
+    def estado_parking(self, lista_reservadas):
+        for plaza in self.__plazas:
+            if isinstance(plaza.ocupada, Ocupada):
+                if isinstance(plaza.ocupada.cliente, ClienteAbono):
+                    print("\n=============================\n\t\tCLIENTE ABONADO\n=============================")
+                    print(plaza)
+                else:
+                    print("\n=============================\n\t\tCLIENTE NO ABONADO\n=============================")
+                    print(plaza)
+            elif plaza in lista_reservadas:
+                print("\n=============================\n\t\tPLAZA RESERVADA\n=============================")
+                print(plaza)
+            else:
+                print("\n=============================\n\t\tPLAZA LIBRE\n=============================")
+                print(plaza)

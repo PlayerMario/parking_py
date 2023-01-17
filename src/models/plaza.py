@@ -57,5 +57,5 @@ class Plaza:
                    f"-{self.__precio_mins}€/min\n=============================\n{self.__ocupada}\n" \
                    f"=============================\n"
         else:
-            return f"\t\t\tPlaza {self.__id_plaza}\n=============================\n-{self.__tipo_vehiculo}\n" \
+            return f"\t\t Plaza {self.__id_plaza}\n=============================\n-{self.__tipo_vehiculo}\n" \
                    f"-{self.__precio_mins}€/min\n=============================\n"

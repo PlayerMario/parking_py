@@ -77,3 +77,17 @@ class ClienteAbono(Cliente):
                     salir = True
                     return cliente
             cont += 1
+
+    def buscar_abonados(self, lista_clientes):
+        total = 0
+        for cliente in lista_clientes:
+            if isinstance(cliente, ClienteAbono):
+                cliente.mostrar_abonados()
+                total += cliente.__abono.precio
+        print(f"===================================\n\n\tImporte total: {total}€")
+
+    def mostrar_abonados(self):
+        print(f"\n===================================\n"
+              f"Abonado: {self.__nombre} {self.__apellidos}\nPlaza: {self.__abono.plaza.id_plaza}"
+              f"\nTipo abono: {self.__abono.tipo}\nValidez hasta: "
+              f"{self.__abono.fecha_cancelacion.strftime('%d/%m/%Y, %H:%M')}\nImporte: {self.__abono.precio}€")
