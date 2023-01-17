@@ -1,4 +1,5 @@
 from datetime import datetime
+import pickle
 
 from models.abono import Abono
 from models.cliente import Cliente
@@ -12,6 +13,9 @@ from models.vehiculo import Vehiculo
 
 class Data:
     parking = Parking(num_plazas=40)
+    f_parking = open('data/parking.pckl', 'wb')
+    pickle.dump(parking, f_parking)
+    f_parking.close()
 
     v1 = Vehiculo(matricula="1111AAA", tipo="Turismo")
     v2 = Vehiculo(matricula="3215OGR", tipo="Movilidad Reducida")
@@ -24,7 +28,10 @@ class Data:
     v9 = Vehiculo(matricula="4766CVF", tipo="Movilidad Reducida")
     v10 = Vehiculo(matricula="2014POK", tipo="Motocicleta")
 
-    listaVehiculos = [v1, v2, v3, v4, v5, v6, v7, v8, v9, v10]
+    # lista_vehiculos = [v1, v2, v3, v4, v5, v6, v7, v8, v9, v10]
+    # f_vehiculos = open('lista_vehiculos.pckl', 'wb')
+    # pickle.dump(lista_vehiculos, f_vehiculos)
+    # f_vehiculos.close()
 
     a1 = Abono(tipo="Mensual", plaza=parking.plazas[35])
     a2 = Abono(tipo="Semestral", plaza=parking.plazas[1])
@@ -35,7 +42,10 @@ class Data:
     a7 = Abono(tipo="Trimestral", plaza=parking.plazas[37])
     a8 = Abono(tipo="Anual", plaza=parking.plazas[30])
 
-    listaAbonos = [a1, a2, a3, a4, a5, a6, a7, a8]
+    # lista_abonos = [a1, a2, a3, a4, a5, a6, a7, a8]
+    # f_abonos = open('lista_abonos.pckl', 'wb')
+    # pickle.dump(lista_abonos, f_abonos)
+    # f_abonos.close()
 
     c1 = Cliente(vehiculo=v1)
     c2 = ClienteAbono(vehiculo=v2, nombre="Bartolomé", apellidos="Méndez Zuluaga", dni="12345678A",
@@ -74,13 +84,23 @@ class Data:
     coa10 = CobroAbono(c10.vehiculo.matricula, c10.abono.fecha_alta, c10.abono.fecha_cancelacion, c10.abono.precio,
                        c10.num_tarjeta)
 
-    listaClientes = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10]
-    listaCobrosAbonados = [coa2, coa3, coa5, coa6, coa7, coa8, coa9, coa10]
+    lista_clientes = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10]
+    f_clientes = open('data/lista_clientes.pckl', 'wb')
+    pickle.dump(lista_clientes, f_clientes)
+    f_clientes.close()
+
+    lista_cobros_abonos = [coa2, coa3, coa5, coa6, coa7, coa8, coa9, coa10]
+    f_cobros_abono = open('data/lista_cobros_abono.pckl', 'wb')
+    pickle.dump(lista_cobros_abonos, f_cobros_abono)
+    f_cobros_abono.close()
 
     lista_reservadas = []
-    for cliente in listaClientes:
+    for cliente in lista_clientes:
         if isinstance(cliente, ClienteAbono):
             lista_reservadas.append(cliente.abono.plaza)
+    f_reservadas = open('data/lista_reservadas.pckl', 'wb')
+    pickle.dump(lista_reservadas, f_reservadas)
+    f_reservadas.close()
 
     o1 = Ocupada(cliente=c1)
     o2 = Ocupada(cliente=c2)
@@ -89,9 +109,12 @@ class Data:
     o5 = Ocupada(cliente=c5)
     o6 = Ocupada(cliente=c6)
 
-    listaOcupada = [o1, o2, o3, o4, o5, o6]
+    # lista_ocupadas = [o1, o2, o3, o4, o5, o6]
+    # f_ocupadas = open('lista_ocupadas.pckl', 'wb')
+    # pickle.dump(lista_ocupadas, f_ocupadas)
+    # f_ocupadas.close()
 
-    for oc in listaOcupada:
+    for oc in [o1, o2, o3, o4, o5, o6]:
         salir = False
         cont = 0
         while not salir:
@@ -133,4 +156,35 @@ class Data:
     co15 = Cobro(matricula="3652HMK", fecha_entrada=datetime(2023, 1, 16, 17, 29),
                  fecha_salida=datetime(2023, 1, 16, 19, 35), cobro=12.6)  # MovRed
 
-    listaCobros = [co1, co2, co3, co4, co5, co6, co7, co8, co9, co10, co11, co12, co13, co14, co15]
+    lista_cobros = [co1, co2, co3, co4, co5, co6, co7, co8, co9, co10, co11, co12, co13, co14, co15]
+    f_cobros = open('data/lista_cobros.pckl', 'wb')
+    pickle.dump(lista_cobros, f_cobros)
+    f_cobros.close()
+
+    def cargar_datos(self):
+        f_parking = open('data/parking.pckl', 'rb')
+        parking = pickle.load(f_parking)
+        f_parking.close()
+
+        f_clientes = open('data/lista_clientes.pckl', 'rb')
+        clientes = pickle.load(f_clientes)
+        f_clientes.close()
+
+        f_cobros_abono = open('data/lista_cobros_abono.pckl', 'rb')
+        cobros_abono = pickle.load(f_cobros_abono)
+        f_cobros_abono.close()
+
+        f_reservadas = open('data/lista_reservadas.pckl', 'rb')
+        reservadas = pickle.load(f_reservadas)
+        f_reservadas.close()
+
+        f_cobros = open('data/lista_cobros.pckl', 'rb')
+        cobros = pickle.load(f_cobros)
+        f_cobros.close()
+
+        parking.clientes = clientes
+        parking.cobros_abonos = cobros_abono
+        parking.reservadas = reservadas
+        parking.cobros = cobros
+
+        return parking

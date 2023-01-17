@@ -17,9 +17,16 @@ class CobroAbono(Cobro):
     def num_tarjeta(self, num_tarjeta):
         self.__num_tarjeta = num_tarjeta
 
-    # TOSTRING
-    def __str__(self):
-        super().__str__()
+        # TOSTRING
+        def __str__(self):
+            return f"""
+                    ==================================
+                    | ·MATRÍCULA: {self.__matricula}\t\t\t |
+                    | ·ENTRADA: {self.__fecha_alta.strftime('%d/%m/%Y, %H:%M')}\t |
+                    | ·SALIDA: {self.__fecha_baja.strftime('%d/%m/%Y, %H:%M')}\t |
+                    | ·A PAGAR: {self.__cobro}€\t\t\t\t |
+                    ==================================
+                    """
 
     # MÉTODOS DE CLASE:
     def calcular_historico(self, lista_cobros_abonados):

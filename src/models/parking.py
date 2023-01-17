@@ -9,6 +9,10 @@ class Parking:
     def __init__(self, num_plazas):
         self.__num_plazas = num_plazas
         self.__plazas = self.inicializar_parking()
+        self.__clientes = None
+        self.__reservadas = None
+        self.__cobros = None
+        self.__cobros_abonos = None
 
     # GETTERS & SETTERS
     @property
@@ -27,6 +31,38 @@ class Parking:
     @plazas.setter
     def plazas(self, plazas):
         self.__plazas = plazas
+
+    @property
+    def clientes(self):
+        return self.__clientes
+
+    @clientes.setter
+    def clientes(self, clientes):
+        self.__clientes = clientes
+
+    @property
+    def reservadas(self):
+        return self.__reservadas
+
+    @reservadas.setter
+    def reservadas(self, reservadas):
+        self.__reservadas = reservadas
+
+    @property
+    def cobros(self):
+        return self.__cobros
+
+    @cobros.setter
+    def cobros(self, cobros):
+        self.__cobros = cobros
+
+    @property
+    def cobros_abonos(self):
+        return self.__cobros_abonos
+
+    @cobros_abonos.setter
+    def cobros_abonos(self, cobros_abonos):
+        self.__cobros_abonos = cobros_abonos
 
     # TOSTRING
     def __str__(self):
