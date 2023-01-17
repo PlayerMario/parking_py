@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from data.data import Data
+from models.abono import Abono
 from models.cliente import Cliente
 from models.cliente_abono import ClienteAbono
 from models.cobros import Cobro
@@ -144,7 +145,45 @@ while opZona != 0:
                         opAbono = int(input("\nSeleccione una opción:\n[1] Nuevo abonado.\n[2] Modificación abonado."
                                             "\n[3] Baja de abonado.\n[0] Salir.\n> "))
                         if opAbono == 1:
-                            pass
+                            tipo_a = int(input("\nSeleccione el tipo de abono:\n[1] Mensual (25€).\n[2] Trimestral (70€)."
+                                               "\n[3] Semestral (130€).\n[4] Anual (200€).\n> "))
+                            if tipo_a == 1:
+                                tipo_abono = "Mensual"
+                            elif tipo_a == 2:
+                                tipo_abono = "Trimestral"
+                            elif tipo_a == 3:
+                                tipo_abono = "Semestral"
+                            elif tipo_a == 4:
+                                tipo_abono = "Anual"
+
+                            matricula = input("Introduzca su matrícula: ")
+                            tipo_v = int(
+                                input("\nSeleccione el tipo de vehículo:\n[1] Turismo.\n[2] Motocicleta."
+                                      "\n[3] Movilidad Reducida.\n> "))
+                            if tipo_v == 1:
+                                tipo_vehiculo = "Turismo"
+                            elif tipo_v == 2:
+                                tipo_vehiculo = "Motocicleta"
+                            elif tipo_v == 3:
+                                tipo_vehiculo = "Movilidad Reducida"
+
+                            vehiculo = Vehiculo(matricula, tipo_vehiculo)
+
+                            plaza = parking.reservar_plaza(tipo_vehiculo, lista_reservadas)
+                            if isinstance(plaza, Plaza):
+                                abono = Abono(tipo_abono, plaza)
+
+                                # CREACIÓN CLIENTE:
+                                nombre = input("Indique su nombre: ")
+                                apellidos = input("Indique sus apellidos: ")
+                                dni = input("Indique su DNI: ")
+                                num_tarjeta = input("Indique su número de tarjeta: ")
+                                email = input("Indique su email: ")
+                                cliente = ClienteAbono(vehiculo, nombre, apellidos, dni, num_tarjeta, email, abono)
+                                print(cliente)
+                            else:
+                                print("No hay plazas disponibles para reservar.")
+
                         elif opAbono == 2:
                             pass
                         elif opAbono == 3:
