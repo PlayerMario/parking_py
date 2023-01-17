@@ -5,6 +5,7 @@ from models.abono import Abono
 from models.cliente import Cliente
 from models.cliente_abono import ClienteAbono
 from models.cobros import Cobro
+from models.cobros_abono import CobroAbono
 from models.ocupada import Ocupada
 from models.plaza import Plaza
 from models.vehiculo import Vehiculo
@@ -15,12 +16,17 @@ opCliente = -1
 opAdmin = -1
 opAbono = -1
 opCad = -1
-usuario = "user"
+opModif = -1
+opDato = -1
+usuario = "admin"
 pswd = "1234"
 parking = Data.parking
 lista_clientes = Data.listaClientes
 lista_reservadas = Data.lista_reservadas
 lista_cobros = Data.listaCobros
+lista_cobros_abonados = Data.listaCobrosAbonados
+lista_abonos = Data.listaAbonos
+lista_vehiculos = Data.listaVehiculos
 
 print("Bienvenido al Parking Triana.\n")
 
@@ -61,7 +67,8 @@ while opZona != 0:
                         tipo_vehiculo = "Movilidad Reducida"
 
                     parking.mostrar_ticket(
-                        parking.depositar_ocasional(Cliente(Vehiculo(matricula, tipo_vehiculo)), tipo_vehiculo))
+                        parking.depositar_ocasional(Cliente(Vehiculo(matricula, tipo_vehiculo)), tipo_vehiculo,
+                                                    lista_reservadas))
 
                 else:
                     print("Opción incorrecta / No hay plazas de ese tipo disponibles")
@@ -108,7 +115,7 @@ while opZona != 0:
                 print("Opción incorrecta.")
 
     elif opZona == 2:
-        # USUARIO Y CONTRASEÑA (user - 1234)
+        # USUARIO Y CONTRASEÑA (admin - 1234)
         user = input("\nIndique su usuario: ")
         psw = input("Indique su contraseña: ")
 
@@ -145,8 +152,9 @@ while opZona != 0:
                         opAbono = int(input("\nSeleccione una opción:\n[1] Nuevo abonado.\n[2] Modificación abonado."
                                             "\n[3] Baja de abonado.\n[0] Salir.\n> "))
                         if opAbono == 1:
-                            tipo_a = int(input("\nSeleccione el tipo de abono:\n[1] Mensual (25€).\n[2] Trimestral (70€)."
-                                               "\n[3] Semestral (130€).\n[4] Anual (200€).\n> "))
+                            tipo_a = int(
+                                input("\nSeleccione el tipo de abono:\n[1] Mensual (25€).\n[2] Trimestral (70€)."
+                                      "\n[3] Semestral (130€).\n[4] Anual (200€).\n> "))
                             if tipo_a == 1:
                                 tipo_abono = "Mensual"
                             elif tipo_a == 2:
@@ -168,28 +176,99 @@ while opZona != 0:
                                 tipo_vehiculo = "Movilidad Reducida"
 
                             vehiculo = Vehiculo(matricula, tipo_vehiculo)
+                            lista_vehiculos.append(vehiculo)
 
                             plaza = parking.reservar_plaza(tipo_vehiculo, lista_reservadas)
                             if isinstance(plaza, Plaza):
                                 abono = Abono(tipo_abono, plaza)
+                                lista_abonos.append(abono)
 
                                 # CREACIÓN CLIENTE:
                                 nombre = input("Indique su nombre: ")
                                 apellidos = input("Indique sus apellidos: ")
                                 dni = input("Indique su DNI: ")
-                                num_tarjeta = input("Indique su número de tarjeta: ")
+                                num_tarjeta = input("Indique su número de cuenta: ")
                                 email = input("Indique su email: ")
                                 cliente = ClienteAbono(vehiculo, nombre, apellidos, dni, num_tarjeta, email, abono)
+                                cobro_abono = CobroAbono(cliente.vehiculo.matricula, cliente.abono.fecha_alta,
+                                                         cliente.abono.fecha_cancelacion, cliente.abono.precio,
+                                                         cliente.num_tarjeta)
+                                lista_clientes.append(cliente)
+                                lista_cobros_abonados.append(cobro_abono)
                                 print(cliente)
                             else:
                                 print("No hay plazas disponibles para reservar.")
 
                         elif opAbono == 2:
-                            pass
+                            opModif = -1
+                            dni = input("Indique su DNI: ")
+                            cliente = ClienteAbono.buscar_cliente_dni(None, dni, lista_clientes)
+                            if isinstance(cliente, ClienteAbono):
+                                while opModif != 0:
+                                    opModif = int(input("\nSeleccione una opción:\n[1] Datos del abonado.\n[2] "
+                                                        "Renovar abono.\n[0] Salir.\n> "))
+                                    if opModif == 1:
+                                        opDato = -1
+                                        while opDato != 0:
+                                            opDato = int(input("\nSeleccione una opción:\n[1] Nombre.\n[2] "
+                                                               "Apellidos.\n[3] Número de cuenta.\n[4] Email."
+                                                               "\n[0] Salir.\n> "))
+                                            if opDato == 1:
+                                                nombre = input("Indique su nombre: ")
+                                                cliente.nombre = nombre
+                                                print(cliente)
+                                            elif opDato == 2:
+                                                apellidos = input("Indique sus apellidos: ")
+                                                cliente.apellidos = apellidos
+                                                print(cliente)
+                                            elif opDato == 3:
+                                                num_tarjeta = input("Indique su número de cuenta: ")
+                                                cliente.num_tarjeta = num_tarjeta
+                                                print(cliente)
+                                            elif opDato == 4:
+                                                email = input("Indique su email: ")
+                                                cliente.email = email
+                                                print(cliente)
+                                            elif opDato == 0:
+                                                print("Saliendo...")
+                                            else:
+                                                print("Opción incorrecta.")
+                                    elif opModif == 2:
+                                        tipo_a = int(input("\nSeleccione el tipo de abono:\n[1] Mensual (25€)."
+                                                           "\n[2] Trimestral (70€).\n[3] Semestral (130€)."
+                                                           "\n[4] Anual (200€).\n> "))
+                                        if tipo_a == 1:
+                                            tipo_abono = "Mensual"
+                                        elif tipo_a == 2:
+                                            tipo_abono = "Trimestral"
+                                        elif tipo_a == 3:
+                                            tipo_abono = "Semestral"
+                                        elif tipo_a == 4:
+                                            tipo_abono = "Anual"
+                                        cliente.abono = Abono.renovar_abono(None, cliente.abono, tipo_abono)
+                                        lista_cobros_abonados.append(cliente.abono)
+                                        print(cliente, cliente.abono)
+                                    elif opModif == 0:
+                                        print("Saliendo...")
+                                    else:
+                                        print("Opción incorrecta.")
+                            else:
+                                print("No se ha encontrado el cliente.")
+
                         elif opAbono == 3:
-                            pass
+                            dni = input("Indique su DNI: ")
+                            cliente = ClienteAbono.buscar_cliente_dni(None, dni, lista_clientes)
+                            if isinstance(cliente, ClienteAbono):
+                                cliente.abono.plaza.ocupada = None
+                                lista_reservadas.remove(cliente.abono.plaza)
+                                cliente.abono.plaza = None
+                                cliente.__del__()
+                            else:
+                                print("No se ha encontrado el cliente.")
+
                         elif opAbono == 0:
                             print("Saliendo...")
+
                         else:
                             print("Opción incorrecta.")
 
@@ -199,11 +278,17 @@ while opZona != 0:
                         opCad = int(input("\nSeleccione una opción:\n[1] Caducidad en un mes.\n[2] Caducidad "
                                           "en próximos 10 días.\n[0] Salir.\n> "))
                         if opCad == 1:
-                            pass
+                            mes = 0
+                            while mes < 1 or mes > 13:
+                                mes = int(input("Indique el mes: "))
+                            ClienteAbono.buscar_clientes_cad(None, mes, lista_clientes, opCad)
+
                         elif opCad == 2:
-                            pass
+                            ClienteAbono.buscar_clientes_cad(None, 0, lista_clientes, opCad)
+
                         elif opCad == 0:
                             print("Saliendo...")
+
                         else:
                             print("Opción incorrecta.")
 

@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from models.cliente import Cliente
 
 
@@ -12,6 +14,10 @@ class ClienteAbono(Cliente):
         self.__num_tarjeta = num_tarjeta
         self.__email = email
         self.__abono = abono
+
+    # DESTRUCTOR
+    def __del__(self):
+        print("Baja realiza con éxito.")
 
     # GETTERS & SETTERS
     @property
@@ -91,3 +97,20 @@ class ClienteAbono(Cliente):
               f"Abonado: {self.__nombre} {self.__apellidos}\nPlaza: {self.__abono.plaza.id_plaza}"
               f"\nTipo abono: {self.__abono.tipo}\nValidez hasta: "
               f"{self.__abono.fecha_cancelacion.strftime('%d/%m/%Y, %H:%M')}\nImporte: {self.__abono.precio}€")
+
+    def buscar_cliente_dni(self, dni, listado_clientes):
+        for cliente in listado_clientes:
+            if isinstance(cliente, ClienteAbono):
+                if cliente.__dni == dni:
+                    return cliente
+        return None
+
+    def buscar_clientes_cad(self, mes, listado_clientes, opcion):
+        for cliente in listado_clientes:
+            if isinstance(cliente, ClienteAbono):
+                if opcion == 1:
+                    if cliente.abono.fecha_cancelacion.month == mes:
+                        cliente.mostrar_abonados()
+                elif opcion == 2:
+                    if datetime.now() < cliente.abono.fecha_cancelacion < (datetime.now() + timedelta(days=10)):
+                        cliente.mostrar_abonados()

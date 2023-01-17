@@ -4,6 +4,7 @@ from models.abono import Abono
 from models.cliente import Cliente
 from models.cliente_abono import ClienteAbono
 from models.cobros import Cobro
+from models.cobros_abono import CobroAbono
 from models.ocupada import Ocupada
 from models.parking import Parking
 from models.vehiculo import Vehiculo
@@ -40,24 +41,42 @@ class Data:
     c2 = ClienteAbono(vehiculo=v2, nombre="Bartolomé", apellidos="Méndez Zuluaga", dni="12345678A",
                       num_tarjeta="123-456",
                       email="bartolome@bartolome.com", abono=a3)
+    coa2 = CobroAbono(c2.vehiculo.matricula, c2.abono.fecha_alta, c2.abono.fecha_cancelacion, c2.abono.precio,
+                      c2.num_tarjeta)
     c3 = ClienteAbono(vehiculo=v3, nombre="Juan", apellidos="Cuesta Hurtado", dni="63258741C", num_tarjeta="365-158",
                       email="juan@juan.com", abono=a2)
+    coa3 = CobroAbono(c3.vehiculo.matricula, c3.abono.fecha_alta, c3.abono.fecha_cancelacion, c3.abono.precio,
+                      c3.num_tarjeta)
     c4 = Cliente(vehiculo=v4)
     c5 = ClienteAbono(vehiculo=v5, nombre="Isabel", apellidos="Ruiz García", dni="96521475B", num_tarjeta="854-032",
                       email="isabel@isabel.com", abono=a1)
+    coa5 = CobroAbono(c5.vehiculo.matricula, c5.abono.fecha_alta, c5.abono.fecha_cancelacion, c5.abono.precio,
+                      c5.num_tarjeta)
     c6 = ClienteAbono(vehiculo=v6, nombre="Emilio", apellidos="Delgado Martín", dni="02145876G", num_tarjeta="852-370",
                       email="emilio@emilio.com", abono=a4)
+    coa6 = CobroAbono(c6.vehiculo.matricula, c6.abono.fecha_alta, c6.abono.fecha_cancelacion, c6.abono.precio,
+                      c6.num_tarjeta)
     c7 = ClienteAbono(vehiculo=v7, nombre="Luis", apellidos="Verde Rodríguez", dni="65478201C", num_tarjeta="524-000",
                       email="luis@luis.com", abono=a5)
+    coa7 = CobroAbono(c7.vehiculo.matricula, c7.abono.fecha_alta, c7.abono.fecha_cancelacion, c7.abono.precio,
+                      c7.num_tarjeta)
     c8 = ClienteAbono(vehiculo=v8, nombre="Antonio", apellidos="López Rincón", dni="87410256V", num_tarjeta="032-552",
                       email="antonio@antonio.com", abono=a6)
+    coa8 = CobroAbono(c8.vehiculo.matricula, c8.abono.fecha_alta, c8.abono.fecha_cancelacion, c8.abono.precio,
+                      c8.num_tarjeta)
     c9 = ClienteAbono(vehiculo=v9, nombre="Ana", apellidos="Bascón Ruiz", dni="32147580B", num_tarjeta="201-369",
                       email="ana@ana.com", abono=a7)
+    coa9 = CobroAbono(c9.vehiculo.matricula, c9.abono.fecha_alta, c9.abono.fecha_cancelacion, c9.abono.precio,
+                      c9.num_tarjeta)
     c10 = ClienteAbono(vehiculo=v10, nombre="Isabel", apellidos="Avilés Pérez", dni="21478503G",
                        num_tarjeta="336-807",
                        email="isabel@isabel.com", abono=a8)
+    coa10 = CobroAbono(c10.vehiculo.matricula, c10.abono.fecha_alta, c10.abono.fecha_cancelacion, c10.abono.precio,
+                       c10.num_tarjeta)
 
     listaClientes = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10]
+    listaCobrosAbonados = [coa2, coa3, coa5, coa6, coa7, coa8, coa9, coa10]
+
     lista_reservadas = []
     for cliente in listaClientes:
         if isinstance(cliente, ClienteAbono):

@@ -65,12 +65,12 @@ class Parking:
                 -MOTOCICLETAS: {self.mostrar_libres(lista_reservadas)[1]}
                 -MOVILIDAD REDUCIDA: {self.mostrar_libres(lista_reservadas)[2]}""")
 
-    def depositar_ocasional(self, cliente, tipo_vehiculo):
+    def depositar_ocasional(self, cliente, tipo_vehiculo, lista_reservadas):
         salir = False
         cont = 0
         while not salir and cont != len(self.__plazas):
             plaza = self.__plazas[cont]
-            if not isinstance(plaza.ocupada, Ocupada):
+            if not isinstance(plaza.ocupada, Ocupada) and plaza not in lista_reservadas:
                 if plaza.tipo_vehiculo == tipo_vehiculo:
                     plaza.ocupada = Ocupada(cliente)
                     salir = True

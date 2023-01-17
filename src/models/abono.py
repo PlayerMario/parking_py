@@ -83,3 +83,9 @@ class Abono:
         for i in range(1, 7):
             pin += str(random.randint(0, 9))
         return pin
+
+    def renovar_abono(self, abono, tipo):
+        pin_antiguo = abono.__pin
+        nuevo_abono = Abono(tipo, abono.__plaza)
+        nuevo_abono.pin = pin_antiguo
+        return nuevo_abono
