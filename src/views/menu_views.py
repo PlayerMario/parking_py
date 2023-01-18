@@ -21,4 +21,8 @@ class MenuViews:
         return "\nSeleccione el tipo de abono:\n[1] Mensual (25€).\n[2] Trimestral (70€).\n[3] Semestral (130€)." \
                "\n[4] Anual (200€).\n> "
 
+    def menu_modificar_abono(self):
+        return "\nSeleccione una opción:\n[1] Datos del abonado.\n[2] Renovar abono.\n[0] Salir.\n> "
 
+    def menu_opcion_dato(self):
+        return "\nSeleccione una opción:\n[1] Nombre.\n[2] Apellidos.\n[3] Número de cuenta.\n[4] Email.\n[0] Salir\n> "

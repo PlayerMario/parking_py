@@ -93,18 +93,18 @@ class ClienteAbono(Cliente):
     #             total += cliente.__abono.precio
     #     print(f"===================================\n\n\tImporte total: {total}€")
 
-    def mostrar_abonados(self):
-        print(f"\n===================================\n"
-              f"Abonado: {self.__nombre} {self.__apellidos}\nPlaza: {self.__abono.plaza.id_plaza}"
-              f"\nTipo abono: {self.__abono.tipo}\nValidez hasta: "
-              f"{self.__abono.fecha_cancelacion.strftime('%d/%m/%Y, %H:%M')}\nImporte: {self.__abono.precio}€")
-
-    def buscar_cliente_dni(self, dni, listado_clientes):
-        for cliente in listado_clientes:
-            if isinstance(cliente, ClienteAbono):
-                if cliente.__dni == dni:
-                    return cliente
-        return None
+    # def mostrar_abonados(self):
+    #     print(f"\n===================================\n"
+    #           f"Abonado: {self.__nombre} {self.__apellidos}\nPlaza: {self.__abono.plaza.id_plaza}"
+    #           f"\nTipo abono: {self.__abono.tipo}\nValidez hasta: "
+    #           f"{self.__abono.fecha_cancelacion.strftime('%d/%m/%Y, %H:%M')}\nImporte: {self.__abono.precio}€")
+    #
+    # def buscar_cliente_dni(self, dni, listado_clientes):
+    #     for cliente in listado_clientes:
+    #         if isinstance(cliente, ClienteAbono):
+    #             if cliente.__dni == dni:
+    #                 return cliente
+    #     return None
 
     def buscar_clientes_cad(self, mes, listado_clientes, opcion):
         for cliente in listado_clientes:

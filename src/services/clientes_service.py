@@ -43,8 +43,9 @@ class ClienteService:
                     and plaza.tipo_vehiculo == cliente.vehiculo.tipo:
                 plaza.ocupada = Ocupada(cliente)
                 salir = True
-                return plaza
+                return plaza, plaza.actualizar_listado(lista_plazas)
             cont += 1
+        return None
 
     def buscar_plaza(self, matricula, lista_plazas, id_plaza, pin):
         salir = False
@@ -54,6 +55,7 @@ class ClienteService:
             plaza = lista_plazas[cont]
             if isinstance(plaza.ocupada, Ocupada) and plaza.id_plaza == id_plaza and plaza.ocupada.pin == pin and \
                     plaza.ocupada.cliente.vehiculo.matricula == matricula:
+                salir = True
                 return plaza
             cont += 1
         return None

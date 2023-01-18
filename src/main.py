@@ -69,8 +69,10 @@ while opZona != 0:
                     vehiculos = v.actualizar_listado(vehiculos)
                     c = Cliente(v)
                     clientes = c.actualizar_listado(clientes)
-                    parking_views.mostrar_ticket(
-                        cliente_service.depositar_ocasional(plazas, c, plazas_reservadas))
+                    plaza_depo = cliente_service.depositar_ocasional(plazas, c, plazas_reservadas)
+                    if plaza_depo is not None:
+                        plazas = plaza_depo[1]
+                    parking_views.mostrar_ticket(plaza_depo[0])
                 else:
                     print("Opción incorrecta / No hay plazas de ese tipo disponibles")
 
@@ -113,7 +115,6 @@ while opZona != 0:
 
             elif opCliente == 0:
                 print("Saliendo...")
-
             else:
                 print("Opción incorrecta.")
 
@@ -172,11 +173,10 @@ while opZona != 0:
                                     vehiculos = v.actualizar_listado(vehiculos)
                                     reserva = admin_service.reservar_plaza(tipo_vehiculo, plazas, plazas_reservadas,
                                                                            reservadas)
-                                    plaza = reserva[0]
-                                    reservadas = reserva[1]
-                                    plazas_reservadas = reserva[2]
-
-                                    if plaza is not None:
+                                    if reserva is not None:
+                                        plaza = reserva[0]
+                                        reservadas = reserva[1]
+                                        plazas_reservadas = reserva[2]
                                         abono = Abono(tipo_abono, plaza)
                                         abono.actualizar_listado(abonos)
 
@@ -197,62 +197,62 @@ while opZona != 0:
                                         print("No hay plazas disponibles para reservar.")
                                 else:
                                     print("Tipo de vehículo incorrecto.")
-#
-#                         elif opAbono == 2:
-#                             opModif = -1
-#                             dni = input("Indique su DNI: ")
-#                             cliente = ClienteAbono.buscar_cliente_dni(None, dni, lista_clientes)
-#                             if isinstance(cliente, ClienteAbono):
-#                                 while opModif != 0:
-#                                     opModif = int(input("\nSeleccione una opción:\n[1] Datos del abonado.\n[2] "
-#                                                         "Renovar abono.\n[0] Salir.\n> "))
-#                                     if opModif == 1:
-#                                         opDato = -1
-#                                         while opDato != 0:
-#                                             opDato = int(input("\nSeleccione una opción:\n[1] Nombre.\n[2] "
-#                                                                "Apellidos.\n[3] Número de cuenta.\n[4] Email."
-#                                                                "\n[0] Salir.\n> "))
-#                                             if opDato == 1:
-#                                                 nombre = input("Indique su nombre: ")
-#                                                 cliente.nombre = nombre
-#                                                 print(cliente)
-#                                             elif opDato == 2:
-#                                                 apellidos = input("Indique sus apellidos: ")
-#                                                 cliente.apellidos = apellidos
-#                                                 print(cliente)
-#                                             elif opDato == 3:
-#                                                 num_tarjeta = input("Indique su número de cuenta: ")
-#                                                 cliente.num_tarjeta = num_tarjeta
-#                                                 print(cliente)
-#                                             elif opDato == 4:
-#                                                 email = input("Indique su email: ")
-#                                                 cliente.email = email
-#                                                 print(cliente)
-#                                             elif opDato == 0:
-#                                                 print("Saliendo...")
-#                                             else:
-#                                                 print("Opción incorrecta.")
-#                                     elif opModif == 2:
-#                                         tipo_a = int(input("\nSeleccione el tipo de abono:\n[1] Mensual (25€)."
-#                                                            "\n[2] Trimestral (70€).\n[3] Semestral (130€)."
-#                                                            "\n[4] Anual (200€).\n> "))
-#                                         if tipo_a == 1:
-#                                             tipo_abono = "Mensual"
-#                                         elif tipo_a == 2:
-#                                             tipo_abono = "Trimestral"
-#                                         elif tipo_a == 3:
-#                                             tipo_abono = "Semestral"
-#                                         elif tipo_a == 4:
-#                                             tipo_abono = "Anual"
-#                                         cliente.abono = Abono.renovar_abono(None, cliente.abono, tipo_abono)
-#                                         lista_cobros_abonados.append(cliente.abono)
-#                                         print(cliente, cliente.abono)
-#                                     elif opModif == 0:
-#                                         print("Saliendo...")
-#                                     else:
-#                                         print("Opción incorrecta.")
-#                             else:
-#                                 print("No se ha encontrado el cliente.")
+                            else:
+                                print("Tipo de abono incorrecto.")
+
+                        elif opAbono == 2:
+                            opModif = -1
+                            dni = input("Indique su DNI: ")
+                            cliente_dni = admin_service.buscar_cliente_dni(dni, clientes)
+                            if cliente_dni is not None:
+                                cliente = cliente_dni[0]
+                                indice_cliente = cliente_dni[1]
+                                while opModif != 0:
+                                    try:
+                                        opModif = int(input(menu_views.menu_modificar_abono()))
+                                    except ValueError:
+                                        print("\nError, introduzca un número.")
+                                    if opModif == 1:
+                                        opDato = -1
+                                        while opDato != 0:
+                                            try:
+                                                opDato = int(input(menu_views.menu_opcion_dato()))
+                                            except ValueError:
+                                                print("\nError, introduzca un número.")
+                                            cliente_mod = admin_service.modificar_cliente(cliente, opDato, clientes,
+                                                                                          indice_cliente, plazas)
+                                            if cliente_mod is not None and cliente_mod[2] is not None:
+                                                clientes = cliente_mod[1]
+                                                plazas = cliente_mod[2]
+                                                print(cliente_mod[0])
+                                            elif opDato == 0:
+                                                print("Saliendo...")
+                                            else:
+                                                print("Opción incorrecta.")
+
+                                    elif opModif == 2:
+                                        try:
+                                            tipo_a = int(input(menu_views.menu_tipo_abono()))
+                                        except ValueError:
+                                            print("\nError, introduzca un número.")
+                                        tipo_abono = admin_service.elegir_tipo_abono(tipo_a)
+                                        if tipo_abono != "":
+                                            reno = admin_service.renovar_abono(cliente, tipo_abono, clientes, abonos,
+                                                                               cobros_abono)
+                                            abonos = reno[2]
+                                            clientes = reno[3]
+                                            cobros_abono = reno[4]
+                                            print(reno[0])
+                                            print(reno[1])
+                                        else:
+                                            print("Tipo de abono incorrecto.")
+
+                                    elif opModif == 0:
+                                        print("Saliendo...")
+                                    else:
+                                        print("Opción incorrecta.")
+                            else:
+                                print("No se ha encontrado el cliente.")
 #
 #                         elif opAbono == 3:
 #                             dni = input("Indique su DNI: ")

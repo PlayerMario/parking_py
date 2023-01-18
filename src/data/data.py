@@ -153,6 +153,7 @@ class Data:
     # NO SE SOBREESCRIBAN Y SE QUEDEN AHÍ GUARDADOS
     # AL CERRAR SESIÓN, GUARDARÍA TODAS LAS LISTAS, O NO HARÍA FALTA PORQUE AL ACTUALIZARLAS YA SE HACE EL PASO DE
     # GUARDAR
+    # NO BORRAR, DEJAR COMENTADO EN LOS CARGAR, LA PARTE DE .dump
 
     def cargar_vehiculos(self):
         f_vehiculos = open('data/lista_vehiculos.pckl', 'wb')

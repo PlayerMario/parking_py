@@ -1,6 +1,7 @@
 import pickle
 import random
 
+from models.cliente_abono import ClienteAbono
 from models.ocupada import Ocupada
 
 

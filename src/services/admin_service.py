@@ -1,5 +1,8 @@
 from datetime import datetime
 
+from models.abono import Abono
+from models.cliente_abono import ClienteAbono
+from models.cobros_abono import CobroAbono
 from models.ocupada import Ocupada
 
 
@@ -56,3 +59,58 @@ class AdminService:
                 return plaza, plaza.actualizar_listado_reservadas(lista_reservadas), self.cargar_plazas_reservadas_id(
                     lista_reservadas)
         return None
+
+    def buscar_cliente_dni(self, dni, lista_clientes):
+        # for cliente in listado_clientes:
+        #     if isinstance(cliente, ClienteAbono):
+        #         if cliente.dni == dni:
+        #             return cliente
+        # return None
+
+        for i in range(len(lista_clientes)):
+            if isinstance(lista_clientes[i], ClienteAbono) and lista_clientes[i].dni == dni:
+                return lista_clientes[i], i
+        return None
+
+    def actualizar_plaza_ocupada(self, lista_plazas, cliente):
+        for plaza in lista_plazas:
+            if isinstance(plaza.ocupada, Ocupada) and isinstance(plaza.ocupada.cliente, ClienteAbono) and \
+                    plaza.ocupada.cliente.dni == cliente.dni:
+                plaza.ocupada.cliente = cliente
+                return plaza.actualizar_listado(lista_plazas)
+        return None
+
+    def modificar_cliente(self, cliente, opcion, lista_clientes, indice, lista_plazas):
+        if opcion == 1:
+            lista_clientes[indice].nombre = input("Indique su nombre: ")
+            return cliente, cliente.actualizar_listado(lista_clientes), self.actualizar_plaza_ocupada(lista_plazas,
+                                                                                                      cliente)
+        elif opcion == 2:
+            lista_clientes[indice].apellidos = input("Indique sus apellidos: ")
+            return cliente, cliente.actualizar_listado(lista_clientes), self.actualizar_plaza_ocupada(lista_plazas,
+                                                                                                      cliente)
+        elif opcion == 3:
+            lista_clientes[indice].num_tarjeta = input("Indique su número de cuenta: ")
+            return cliente, cliente.actualizar_listado(lista_clientes), self.actualizar_plaza_ocupada(lista_plazas,
+                                                                                                      cliente)
+        elif opcion == 4:
+            lista_clientes[indice].email = input("Indique su email: ")
+            return cliente, cliente.actualizar_listado(lista_clientes), self.actualizar_plaza_ocupada(lista_plazas,
+                                                                                                      cliente)
+        else:
+            return None
+
+    def renovar_abono(self, cliente, tipo, lista_clientes, lista_abonos, lista_cobros_abono):
+        # Crear nuevo abono
+        nuevo_abono = Abono(tipo, cliente.abono.plaza)
+        nuevo_abono.pin = cliente.abono.pin
+
+        # Setearlo al cliente
+        cliente.abono = nuevo_abono
+
+        # Constatar nuevo abono en los cobros de abonados
+        cobro_abono = CobroAbono(cliente.vehiculo.matricula, nuevo_abono.fecha_alta, nuevo_abono.fecha_cancelacion,
+                                 nuevo_abono.precio, cliente.num_tarjeta)
+
+        return cliente, nuevo_abono, nuevo_abono.actualizar_listado(lista_abonos), cliente.actualizar_listado(
+            lista_clientes), cobro_abono.actualizar_listado(lista_cobros_abono)
