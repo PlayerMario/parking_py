@@ -167,8 +167,8 @@ class Parking:
     #             print("\n=============================\n\t\tPLAZA LIBRE\n=============================")
     #             print(plaza)
 
-    def reservar_plaza(self, tipo, lista_reservadas):
-        for plaza in self.__plazas:
-            if not isinstance(plaza.ocupada, Ocupada) and plaza not in lista_reservadas and plaza.tipo_vehiculo == tipo:
-                return plaza
-        return None
+    # def reservar_plaza(self, tipo, lista_reservadas):
+    #     for plaza in self.__plazas:
+    #         if not isinstance(plaza.ocupada, Ocupada) and plaza not in lista_reservadas and plaza.tipo_vehiculo == tipo:
+    #             return plaza
+    #     return None

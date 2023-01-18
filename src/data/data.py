@@ -143,6 +143,17 @@ class Data:
                  fecha_salida=datetime(2023, 1, 16, 19, 35), cobro=12.6)  # MovRed
     lista_cobros = [co1, co2, co3, co4, co5, co6, co7, co8, co9, co10, co11, co12, co13, co14, co15]
 
+    # SI NO SE METEN DATOS DE PRUEBA, AL INICIAR LA SESIÓN SOLO HABRÍA QUE HACER UN LOAD EN UNA LISTA VACÍA, POR EJEMPLO
+    # f_vehiculos = open('data/lista_vehiculos.pckl', 'rb')
+    #         vehiculos = pickle.load(f_vehiculos)
+    #         f_vehiculos.close()
+    #         return vehiculos
+    # y en el main se guardaría en un vehiculos = cargar_vehiculos() para que siempre se traiga la lista actualizada
+    # PROBAR A HACER UN RUN ASÍ, Y QUITAR DESPÚES LOS DATOS DE PRUEBA Y LOS DUMP AL CARGAR PARA QUE AL VOVLER A EJECUTAR
+    # NO SE SOBREESCRIBAN Y SE QUEDEN AHÍ GUARDADOS
+    # AL CERRAR SESIÓN, GUARDARÍA TODAS LAS LISTAS, O NO HARÍA FALTA PORQUE AL ACTUALIZARLAS YA SE HACE EL PASO DE
+    # GUARDAR
+
     def cargar_vehiculos(self):
         f_vehiculos = open('data/lista_vehiculos.pckl', 'wb')
         pickle.dump(self.lista_vehiculos, f_vehiculos)

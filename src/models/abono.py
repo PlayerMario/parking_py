@@ -1,3 +1,4 @@
+import pickle
 from datetime import datetime, timedelta
 import random
 
@@ -89,3 +90,17 @@ class Abono:
         nuevo_abono = Abono(tipo, abono.__plaza)
         nuevo_abono.pin = pin_antiguo
         return nuevo_abono
+
+    def actualizar_listado(self, lista_abonos):
+        lista_abonos.append(self)
+
+        # Actualizar lista
+        f_abonos = open('data/lista_abonos.pckl', 'wb')
+        pickle.dump(lista_abonos, f_abonos)
+        f_abonos.close()
+
+        # Cargar lista
+        f_abonos = open('data/lista_abonos.pckl', 'rb')
+        abonos = pickle.load(f_abonos)
+        f_abonos.close()
+        return abonos

@@ -11,4 +11,14 @@ class MenuViews:
 
     def menu_admin(self):
         return "\nSeleccione una opción:\n[1] Estado del parking.\n[2] Facturación.\n[3] Consulta de abonados." \
-               "\n[4] Abonos.\n[5] Caducidad de abonos.\n[0] Salir.\n> "
+               "\n[4] Gestión de abonos.\n[5] Caducidad de abonos.\n[0] Salir.\n> "
+
+    def menu_abono(self):
+        return "\nSeleccione una opción:\n[1] Nuevo abonado.\n[2] Modificación abonado.\n[3] Baja de abonado." \
+               "\n[0] Salir.\n> "
+
+    def menu_tipo_abono(self):
+        return "\nSeleccione el tipo de abono:\n[1] Mensual (25€).\n[2] Trimestral (70€).\n[3] Semestral (130€)." \
+               "\n[4] Anual (200€).\n> "
+
+

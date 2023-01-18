@@ -55,3 +55,11 @@ class ParkingViews:
             print(f"\t· {fecha.strftime('%d/%m/%Y, %H:%M')} -> {cobro}€.")
             total += cobro
         print(f"\t===============================\n\t\tRecaudado: {round(total, 2)}€\n")
+
+    def buscar_abonados(self, lista_clientes):
+        total = 0
+        for cliente in lista_clientes:
+            if isinstance(cliente, ClienteAbono):
+                cliente.mostrar_abonados()
+                total += cliente.abono.precio
+        print(f"===================================\n\n\tImporte total: {total}€")

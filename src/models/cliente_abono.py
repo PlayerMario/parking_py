@@ -85,13 +85,13 @@ class ClienteAbono(Cliente):
     #                 return cliente
     #         cont += 1
 
-    def buscar_abonados(self, lista_clientes):
-        total = 0
-        for cliente in lista_clientes:
-            if isinstance(cliente, ClienteAbono):
-                cliente.mostrar_abonados()
-                total += cliente.__abono.precio
-        print(f"===================================\n\n\tImporte total: {total}€")
+    # def buscar_abonados(self, lista_clientes):
+    #     total = 0
+    #     for cliente in lista_clientes:
+    #         if isinstance(cliente, ClienteAbono):
+    #             cliente.mostrar_abonados()
+    #             total += cliente.__abono.precio
+    #     print(f"===================================\n\n\tImporte total: {total}€")
 
     def mostrar_abonados(self):
         print(f"\n===================================\n"

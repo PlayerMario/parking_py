@@ -75,3 +75,17 @@ class Plaza:
         plazas = pickle.load(f_plazas)
         f_plazas.close()
         return plazas
+
+    def actualizar_listado_reservadas(self, lista_reservadas):
+        lista_reservadas.append(self)
+
+        # Actualizar lista
+        f_reservadas = open('data/lista_reservadas.pckl', 'wb')
+        pickle.dump(lista_reservadas, f_reservadas)
+        f_reservadas.close()
+
+        # Cargar lista
+        f_reservadas = open('data/lista_reservadas.pckl', 'rb')
+        reservadas = pickle.load(f_reservadas)
+        f_reservadas.close()
+        return reservadas

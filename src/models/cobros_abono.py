@@ -1,3 +1,5 @@
+import pickle
+
 from models.cobros import Cobro
 
 
@@ -34,3 +36,17 @@ class CobroAbono(Cobro):
         for cobro in lista_cobros_abonados:
             total += cobro.__cobro
         return total
+
+    def actualizar_listado(self, lista_cobro_abonos):
+        lista_cobro_abonos.append(self)
+
+        # Actualizar lista
+        f_cobros_abono = open('data/lista_cobros_abono.pckl', 'wb')
+        pickle.dump(lista_cobro_abonos, f_cobros_abono)
+        f_cobros_abono.close()
+
+        # Cargar lista
+        f_cobros_abono = open('data/lista_cobros_abono.pckl', 'rb')
+        cobros_abono = pickle.load(f_cobros_abono)
+        f_cobros_abono.close()
+        return cobros_abono

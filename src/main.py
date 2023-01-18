@@ -1,7 +1,10 @@
 from datetime import datetime
 
 from data.data import Data
+from models.abono import Abono
 from models.cliente import Cliente
+from models.cliente_abono import ClienteAbono
+from models.cobros_abono import CobroAbono
 from models.vehiculo import Vehiculo
 from services.admin_service import AdminService
 from services.clientes_service import ClienteService
@@ -9,6 +12,10 @@ from views.menu_views import MenuViews
 from views.parking_views import ParkingViews
 
 # CARGAR DATOS INICIALES:
+menu_views = MenuViews()
+parking_views = ParkingViews()
+cliente_service = ClienteService()
+admin_service = AdminService()
 data = Data()
 parking = data.cargar_parking()
 clientes = data.cargar_clientes()
@@ -19,6 +26,7 @@ vehiculos = data.cargar_vehiculos()
 abonos = data.cargar_abonos()
 # ocupadas = data.cargar_ocupadas()
 plazas = data.cargar_plazas()
+plazas_reservadas = admin_service.cargar_plazas_reservadas_id(reservadas)
 
 # VARIABLES APLICACIÓN:
 opZona = -1
@@ -29,15 +37,10 @@ opCad = -1
 opModif = -1
 opDato = -1
 opTipo = -1
+tipo_a = -1
+tipo_v = -1
 usuario = "admin"
 pswd = "1234"
-menu_views = MenuViews()
-parking_views = ParkingViews()
-cliente_service = ClienteService()
-admin_service = AdminService()
-plazas_reservadas = []
-for r in reservadas:
-    plazas_reservadas.append(r.id_plaza)
 
 print("Bienvenido al Parking Triana.")
 
@@ -139,64 +142,61 @@ while opZona != 0:
                         if isinstance(fecha2, datetime):
                             print(f"{fecha1.strftime('%d/%m/%Y, %H:%M')} - {fecha2.strftime('%d/%m/%Y, %H:%M')}\n")
                             parking_views.mostrar_facturacion(admin_service.obtener_facturacion(fecha1, fecha2, cobros))
-#
-#                     Cobro.mostrar_facturacion(None, Cobro.obtener_facturacion(None, fecha1, fecha2, lista_cobros))
-#
-#                 elif opAdmin == 3:
-#                     ClienteAbono.buscar_abonados(None, lista_clientes)
-#
-#                 elif opAdmin == 4:
-#                     opAbono = -1
-#                     while opAbono != 0:
-#                         opAbono = int(input("\nSeleccione una opción:\n[1] Nuevo abonado.\n[2] Modificación abonado."
-#                                             "\n[3] Baja de abonado.\n[0] Salir.\n> "))
-#                         if opAbono == 1:
-#                             tipo_a = int(
-#                                 input("\nSeleccione el tipo de abono:\n[1] Mensual (25€).\n[2] Trimestral (70€)."
-#                                       "\n[3] Semestral (130€).\n[4] Anual (200€).\n> "))
-#                             if tipo_a == 1:
-#                                 tipo_abono = "Mensual"
-#                             elif tipo_a == 2:
-#                                 tipo_abono = "Trimestral"
-#                             elif tipo_a == 3:
-#                                 tipo_abono = "Semestral"
-#                             elif tipo_a == 4:
-#                                 tipo_abono = "Anual"
-#
-#                             matricula = input("Introduzca su matrícula: ")
-#                             tipo_v = int(
-#                                 input("\nSeleccione el tipo de vehículo:\n[1] Turismo.\n[2] Motocicleta."
-#                                       "\n[3] Movilidad Reducida.\n> "))
-#                             if tipo_v == 1:
-#                                 tipo_vehiculo = "Turismo"
-#                             elif tipo_v == 2:
-#                                 tipo_vehiculo = "Motocicleta"
-#                             elif tipo_v == 3:
-#                                 tipo_vehiculo = "Movilidad Reducida"
-#
-#                             vehiculo = Vehiculo(matricula, tipo_vehiculo)
-#                             lista_vehiculos.append(vehiculo)
-#
-#                             plaza = parking.reservar_plaza(tipo_vehiculo, lista_reservadas)
-#                             if isinstance(plaza, Plaza):
-#                                 abono = Abono(tipo_abono, plaza)
-#                                 lista_abonos.append(abono)
-#
-#                                 # CREACIÓN CLIENTE:
-#                                 nombre = input("Indique su nombre: ")
-#                                 apellidos = input("Indique sus apellidos: ")
-#                                 dni = input("Indique su DNI: ")
-#                                 num_tarjeta = input("Indique su número de cuenta: ")
-#                                 email = input("Indique su email: ")
-#                                 cliente = ClienteAbono(vehiculo, nombre, apellidos, dni, num_tarjeta, email, abono)
-#                                 cobro_abono = CobroAbono(cliente.vehiculo.matricula, cliente.abono.fecha_alta,
-#                                                          cliente.abono.fecha_cancelacion, cliente.abono.precio,
-#                                                          cliente.num_tarjeta)
-#                                 lista_clientes.append(cliente)
-#                                 lista_cobros_abonados.append(cobro_abono)
-#                                 print(cliente)
-#                             else:
-#                                 print("No hay plazas disponibles para reservar.")
+
+                elif opAdmin == 3:
+                    parking_views.buscar_abonados(clientes)
+
+                elif opAdmin == 4:
+                    opAbono = -1
+                    while opAbono != 0:
+                        try:
+                            opAbono = int(input(menu_views.menu_abono()))
+                        except ValueError:
+                            print("\nError, introduzca un número.")
+
+                        if opAbono == 1:
+                            try:
+                                tipo_a = int(input(menu_views.menu_tipo_abono()))
+                            except ValueError:
+                                print("\nError, introduzca un número.")
+                            tipo_abono = admin_service.elegir_tipo_abono(tipo_a)
+                            if tipo_abono != "":
+                                matricula = input("Introduzca su matrícula: ")
+                                try:
+                                    tipo_v = int(input(menu_views.menu_tipo_vehiculo()))
+                                except ValueError:
+                                    print("\nError, introduzca un número.")
+                                tipo_vehiculo = admin_service.elegir_tipo_vehiculo(tipo_v)
+                                if tipo_vehiculo != "":
+                                    v = Vehiculo(matricula, tipo_vehiculo)
+                                    vehiculos = v.actualizar_listado(vehiculos)
+                                    reserva = admin_service.reservar_plaza(tipo_vehiculo, plazas, plazas_reservadas,
+                                                                           reservadas)
+                                    plaza = reserva[0]
+                                    reservadas = reserva[1]
+                                    plazas_reservadas = reserva[2]
+
+                                    if plaza is not None:
+                                        abono = Abono(tipo_abono, plaza)
+                                        abono.actualizar_listado(abonos)
+
+                                        nombre = input("Indique su nombre: ")
+                                        apellidos = input("Indique sus apellidos: ")
+                                        dni = input("Indique su DNI: ")
+                                        num_tarjeta = input("Indique su número de cuenta: ")
+                                        email = input("Indique su email: ")
+
+                                        c = ClienteAbono(v, nombre, apellidos, dni, num_tarjeta, email, abono)
+                                        c.actualizar_listado(clientes)
+                                        cobro_abono = CobroAbono(c.vehiculo.matricula, c.abono.fecha_alta,
+                                                                 c.abono.fecha_cancelacion, c.abono.precio,
+                                                                 c.num_tarjeta)
+                                        cobro_abono.actualizar_listado(cobros_abono)
+                                        print(f"{c}\n-Plaza {plaza.id_plaza}")
+                                    else:
+                                        print("No hay plazas disponibles para reservar.")
+                                else:
+                                    print("Tipo de vehículo incorrecto.")
 #
 #                         elif opAbono == 2:
 #                             opModif = -1
