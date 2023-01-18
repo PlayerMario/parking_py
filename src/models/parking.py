@@ -9,10 +9,10 @@ class Parking:
     def __init__(self, num_plazas):
         self.__num_plazas = num_plazas
         self.__plazas = self.inicializar_parking()
-        self.__clientes = None
-        self.__reservadas = None
-        self.__cobros = None
-        self.__cobros_abonos = None
+        # self.__clientes = None
+        # self.__reservadas = None
+        # self.__cobros = None
+        # self.__cobros_abonos = None
 
     # GETTERS & SETTERS
     @property
@@ -31,38 +31,38 @@ class Parking:
     @plazas.setter
     def plazas(self, plazas):
         self.__plazas = plazas
-
-    @property
-    def clientes(self):
-        return self.__clientes
-
-    @clientes.setter
-    def clientes(self, clientes):
-        self.__clientes = clientes
-
-    @property
-    def reservadas(self):
-        return self.__reservadas
-
-    @reservadas.setter
-    def reservadas(self, reservadas):
-        self.__reservadas = reservadas
-
-    @property
-    def cobros(self):
-        return self.__cobros
-
-    @cobros.setter
-    def cobros(self, cobros):
-        self.__cobros = cobros
-
-    @property
-    def cobros_abonos(self):
-        return self.__cobros_abonos
-
-    @cobros_abonos.setter
-    def cobros_abonos(self, cobros_abonos):
-        self.__cobros_abonos = cobros_abonos
+    #
+    # @property
+    # def clientes(self):
+    #     return self.__clientes
+    #
+    # @clientes.setter
+    # def clientes(self, clientes):
+    #     self.__clientes = clientes
+    #
+    # @property
+    # def reservadas(self):
+    #     return self.__reservadas
+    #
+    # @reservadas.setter
+    # def reservadas(self, reservadas):
+    #     self.__reservadas = reservadas
+    #
+    # @property
+    # def cobros(self):
+    #     return self.__cobros
+    #
+    # @cobros.setter
+    # def cobros(self, cobros):
+    #     self.__cobros = cobros
+    #
+    # @property
+    # def cobros_abonos(self):
+    #     return self.__cobros_abonos
+    #
+    # @cobros_abonos.setter
+    # def cobros_abonos(self, cobros_abonos):
+    #     self.__cobros_abonos = cobros_abonos
 
     # TOSTRING
     def __str__(self):
@@ -101,30 +101,30 @@ class Parking:
     #             -MOTOCICLETAS: {self.mostrar_libres(lista_reservadas)[1]}
     #             -MOVILIDAD REDUCIDA: {self.mostrar_libres(lista_reservadas)[2]}""")
 
-    def depositar_ocasional(self, cliente, tipo_vehiculo, lista_reservadas):
-        salir = False
-        cont = 0
-        while not salir and cont != len(self.__plazas):
-            plaza = self.__plazas[cont]
-            if not isinstance(plaza.ocupada, Ocupada) and plaza not in lista_reservadas:
-                if plaza.tipo_vehiculo == tipo_vehiculo:
-                    plaza.ocupada = Ocupada(cliente)
-                    salir = True
-                    return plaza
-            cont += 1
-
-    def mostrar_ticket(self, plaza):
-        if isinstance(plaza.ocupada, Ocupada):
-            print(f"""
-                    ==================================
-                    | ·PLAZA: {plaza.id_plaza}\t\t\t\t\t\t |
-                    | ·MATRÍCULA: {plaza.ocupada.cliente.vehiculo.matricula}\t\t\t |
-                    | ·ENTRADA: {plaza.ocupada.fecha_deposito.strftime('%d/%m/%Y, %H:%M')}\t |
-                    | ·PIN: {plaza.ocupada.pin}\t\t\t\t\t |
-                    ==================================
-                    """)
-        else:
-            print(f"La operación no ha podido completarse.")
+    # def depositar_ocasional(self, cliente, tipo_vehiculo, lista_reservadas):
+    #     salir = False
+    #     cont = 0
+    #     while not salir and cont != len(self.__plazas):
+    #         plaza = self.__plazas[cont]
+    #         if not isinstance(plaza.ocupada, Ocupada) and plaza not in lista_reservadas:
+    #             if plaza.tipo_vehiculo == tipo_vehiculo:
+    #                 plaza.ocupada = Ocupada(cliente)
+    #                 salir = True
+    #                 return plaza
+    #         cont += 1
+    #
+    # def mostrar_ticket(self, plaza):
+    #     if isinstance(plaza.ocupada, Ocupada):
+    #         print(f"""
+    #                 ==================================
+    #                 | ·PLAZA: {plaza.id_plaza}\t\t\t\t\t\t |
+    #                 | ·MATRÍCULA: {plaza.ocupada.cliente.vehiculo.matricula}\t\t\t |
+    #                 | ·ENTRADA: {plaza.ocupada.fecha_deposito.strftime('%d/%m/%Y, %H:%M')}\t |
+    #                 | ·PIN: {plaza.ocupada.pin}\t\t\t\t\t |
+    #                 ==================================
+    #                 """)
+    #     else:
+    #         print(f"La operación no ha podido completarse.")
 
     def buscar_plaza(self, matricula, id_plaza, pin):
         salir = False

@@ -191,11 +191,6 @@ class Data:
         cobros = pickle.load(f_cobros)
         f_cobros.close()
 
-        self.parking.clientes = clientes
-        self.parking.cobros_abonos = cobros_abono
-        self.parking.reservadas = reservadas
-        self.parking.cobros = cobros
-
         f_parking = open('data/parking.pckl', 'wb')
         pickle.dump(self.parking, f_parking)
         f_parking.close()
@@ -203,4 +198,4 @@ class Data:
         parking = pickle.load(f_parking)
         f_parking.close()
 
-        return parking
+        return parking, clientes, cobros_abono, cobros, reservadas

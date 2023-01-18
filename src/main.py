@@ -1,6 +1,9 @@
 from data.data import Data
+from models.cliente import Cliente
+from models.vehiculo import Vehiculo
 from services.parking_service import ParkingService
 from views.menu_views import MenuViews
+from views.parking_views import ParkingViews
 
 # VARIABLES APLICACIÓN:
 opZona = -1
@@ -14,8 +17,10 @@ usuario = "admin"
 pswd = "1234"
 data = Data()
 
-parking = data.cargar_datos()
+parking = data.cargar_datos()[0]
+reservadas = data.cargar_datos()[4]
 menu_views = MenuViews()
+parking_views = ParkingViews()
 parking_service = ParkingService()
 
 print("Bienvenido al Parking Triana.\n")
@@ -30,31 +35,16 @@ while opZona != 0:
         while opCliente != 0:
             opCliente = int(input(menu_views.menu_cliente()))
             if opCliente == 1:
-                #parking.mostrar_info_plazas(lista_reservadas)
-                print(parking_service.mostrar_libres(parking))
+                print(parking_service.mostrar_libres(parking, reservadas)[3])
                 opTipo = int(input(menu_views.menu_tipo_vehiculo()))
-#
-#                 if (opTipo == 1 and parking.mostrar_libres(lista_reservadas)[0] != 0) \
-#                         or (opTipo == 2 and parking.mostrar_libres(lista_reservadas)[1] != 0) \
-#                         or (opTipo == 3 and parking.mostrar_libres(lista_reservadas)[2] != 0):
-#
-#                     matricula = input("Indique su matrícula: ")
-#
-#                     if opTipo == 1:
-#                         tipo_vehiculo = "Turismo"
-#
-#                     elif opTipo == 2:
-#                         tipo_vehiculo = "Motocicleta"
-#
-#                     else:
-#                         tipo_vehiculo = "Movilidad Reducida"
-#
-#                     parking.mostrar_ticket(
-#                         parking.depositar_ocasional(Cliente(Vehiculo(matricula, tipo_vehiculo)), tipo_vehiculo,
-#                                                     lista_reservadas))
-#
-#                 else:
-#                     print("Opción incorrecta / No hay plazas de ese tipo disponibles")
+                tipo_vehiculo = parking_service.devolver_tipo(opTipo, parking, reservadas)
+                if tipo_vehiculo != "":
+                    matricula = input("Indique su matrícula: ")
+                    parking_views.mostrar_ticket(
+                        parking_service.depositar_ocasional(parking, Cliente(Vehiculo(matricula, tipo_vehiculo)),
+                                                            reservadas))
+                else:
+                    print("Opción incorrecta / No hay plazas de ese tipo disponibles")
 #
 #             elif opCliente == 2:
 #                 matricula = input("Indique su matrícula: ")
