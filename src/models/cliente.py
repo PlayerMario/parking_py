@@ -1,3 +1,5 @@
+import pickle
+
 from models.vehiculo import Vehiculo
 
 
@@ -19,3 +21,19 @@ class Cliente:
     # TOSTRING
     def __str__(self):
         return f"{self.__vehiculo}"
+
+    # MÉTODOS DE CLASE
+    def actualizar_listado(self, lista_clientes):
+        lista_clientes.append(self)
+
+        # Actualizar lista
+        f_clientes = open('data/lista_clientes.pckl', 'wb')
+        pickle.dump(lista_clientes, f_clientes)
+        f_clientes.close()
+
+        # Devolverla
+        f_clientes = open('data/lista_clientes.pckl', 'rb')
+        clientes = pickle.load(f_clientes)
+        f_clientes.close()
+
+        return clientes

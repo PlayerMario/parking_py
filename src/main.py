@@ -1,7 +1,7 @@
 from data.data import Data
 from models.cliente import Cliente
 from models.vehiculo import Vehiculo
-from services.parking_service import ParkingService
+from services.clientes_service import ClienteService
 from views.menu_views import MenuViews
 from views.parking_views import ParkingViews
 
@@ -18,40 +18,54 @@ pswd = "1234"
 data = Data()
 
 parking = data.cargar_datos()[0]
+clientes = data.cargar_datos()[1]
+cobros_abono = data.cargar_datos()[2]
+cobros = data.cargar_datos()[3]
 reservadas = data.cargar_datos()[4]
+vehiculos = data.cargar_datos()[5]
+abonos = data.cargar_datos()[6]
+ocupadas = data.cargar_datos()[7]
+plazas = data.cargar_datos()[8]
+
 menu_views = MenuViews()
 parking_views = ParkingViews()
-parking_service = ParkingService()
+cliente_service = ClienteService()
+
+plaza_no_dispo = []
+for r in reservadas:
+    plaza_no_dispo.append(r.id_plaza)
 
 print("Bienvenido al Parking Triana.\n")
 
 # MENÚ ZONA:
 while opZona != 0:
-
     opZona = int(input(menu_views.menu_ppal()))
-
     if opZona == 1:
         opCliente = -1
         while opCliente != 0:
             opCliente = int(input(menu_views.menu_cliente()))
             if opCliente == 1:
-                print(parking_service.mostrar_libres(parking, reservadas)[3])
+                print(cliente_service.mostrar_libres(plazas, plaza_no_dispo)[3])
                 opTipo = int(input(menu_views.menu_tipo_vehiculo()))
-                tipo_vehiculo = parking_service.devolver_tipo(opTipo, parking, reservadas)
+                tipo_vehiculo = cliente_service.devolver_tipo(opTipo, plazas, plaza_no_dispo)
                 if tipo_vehiculo != "":
                     matricula = input("Indique su matrícula: ")
+                    v = Vehiculo(matricula, tipo_vehiculo)
+                    vehiculos = v.actualizar_listado(vehiculos)
+                    c = Cliente(v)
+                    clientes = c.actualizar_listado(clientes)
                     parking_views.mostrar_ticket(
-                        parking_service.depositar_ocasional(parking, Cliente(Vehiculo(matricula, tipo_vehiculo)),
-                                                            reservadas))
+                        cliente_service.depositar_ocasional(plazas, c, plaza_no_dispo))
                 else:
                     print("Opción incorrecta / No hay plazas de ese tipo disponibles")
-#
-#             elif opCliente == 2:
-#                 matricula = input("Indique su matrícula: ")
-#                 id_plaza = input("Indique la plaza: ")
-#                 pin = input("Indique su pin: ")
-#
-#                 plaza = parking.buscar_plaza(matricula, id_plaza, pin)
+
+            elif opCliente == 2:
+                matricula = input("Indique su matrícula: ")
+                id_plaza = input("Indique la plaza: ")
+                pin = input("Indique su pin: ")
+
+                plaza = cliente_service.buscar_plaza(matricula, plazas, id_plaza, pin)
+                # METER ESTO EN UN MÉTODO EN CLIENTE_CLIENTE
 #                 if isinstance(plaza, Plaza):
 #                     cobro = plaza.ocupada.salida_vehiculo()
 #                     if isinstance(cobro, Cobro):

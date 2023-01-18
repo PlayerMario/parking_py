@@ -1,3 +1,6 @@
+import pickle
+
+
 class Vehiculo:
 
     # CONSTRUCTOR
@@ -25,3 +28,20 @@ class Vehiculo:
     # TOSTRING
     def __str__(self):
         return f"-Vehículo: {self.__matricula}"
+
+    # MÉTODOS DE CLASE
+    def actualizar_listado(self, lista_vehiculos):
+        lista_vehiculos.append(self)
+
+        # Actualizar lista
+        f_vehiculos = open('data/lista_vehiculos.pckl', 'wb')
+        pickle.dump(lista_vehiculos, f_vehiculos)
+        f_vehiculos.close()
+
+        # Devolverla
+        f_vehiculos = open('data/lista_vehiculos.pckl', 'rb')
+        vehiculos = pickle.load(f_vehiculos)
+        f_vehiculos.close()
+
+        return vehiculos
+

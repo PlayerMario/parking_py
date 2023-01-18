@@ -8,7 +8,7 @@ class Parking:
     # CONSTRUCTOR
     def __init__(self, num_plazas):
         self.__num_plazas = num_plazas
-        self.__plazas = self.inicializar_parking()
+        #self.__plazas = self.inicializar_parking()
         # self.__clientes = None
         # self.__reservadas = None
         # self.__cobros = None
@@ -22,15 +22,15 @@ class Parking:
     @num_plaza.setter
     def num_plaza(self, num_plaza):
         self.__num_plazas = num_plaza
-        self.__plazas = self.inicializar_parking()
+        #0self.__plazas = self.inicializar_parking()
 
-    @property
-    def plazas(self):
-        return self.__plazas
-
-    @plazas.setter
-    def plazas(self, plazas):
-        self.__plazas = plazas
+    # @property
+    # def plazas(self):
+    #     return self.__plazas
+    #
+    # @plazas.setter
+    # def plazas(self, plazas):
+    #     self.__plazas = plazas
     #
     # @property
     # def clientes(self):
@@ -69,16 +69,16 @@ class Parking:
         return f"""-PLAZAS: {self.__num_plazas}"""
 
     # MÉTODOS DE CLASE
-    def inicializar_parking(self):
-        plazas = []
-        for i in range(1, self.__num_plazas + 1):
-            if i <= round(self.__num_plazas * 0.7):
-                plazas.append(Plaza(id_plaza=f"{i}", tipo_vehiculo="Turismo", ocupada=Ocupada))
-            elif i <= round(self.__num_plazas * 0.85):
-                plazas.append(Plaza(id_plaza=f"{i}", tipo_vehiculo="Motocicleta", ocupada=Ocupada))
-            else:
-                plazas.append(Plaza(id_plaza=f"{i}", tipo_vehiculo="Movilidad Reducida", ocupada=Ocupada))
-        return plazas
+    # def inicializar_parking(self):
+    #     plazas = []
+    #     for i in range(1, self.__num_plazas + 1):
+    #         if i <= round(self.__num_plazas * 0.7):
+    #             plazas.append(Plaza(id_plaza=f"{i}", tipo_vehiculo="Turismo", ocupada=Ocupada))
+    #         elif i <= round(self.__num_plazas * 0.85):
+    #             plazas.append(Plaza(id_plaza=f"{i}", tipo_vehiculo="Motocicleta", ocupada=Ocupada))
+    #         else:
+    #             plazas.append(Plaza(id_plaza=f"{i}", tipo_vehiculo="Movilidad Reducida", ocupada=Ocupada))
+    #     return plazas
 
     # def mostrar_libres(self, lista_reservadas):
     #     num_turismo = 0
@@ -126,17 +126,17 @@ class Parking:
     #     else:
     #         print(f"La operación no ha podido completarse.")
 
-    def buscar_plaza(self, matricula, id_plaza, pin):
-        salir = False
-        cont = 0
-
-        while not salir and cont != len(self.__plazas):
-            plaza = self.__plazas[cont]
-            if isinstance(plaza.ocupada, Ocupada):
-                if plaza.id_plaza == id_plaza and plaza.ocupada.pin == pin and \
-                        plaza.ocupada.cliente.vehiculo.matricula == matricula:
-                    return plaza
-            cont += 1
+    # def buscar_plaza(self, matricula, id_plaza, pin):
+    #     salir = False
+    #     cont = 0
+    #
+    #     while not salir and cont != len(self.__plazas):
+    #         plaza = self.__plazas[cont]
+    #         if isinstance(plaza.ocupada, Ocupada):
+    #             if plaza.id_plaza == id_plaza and plaza.ocupada.pin == pin and \
+    #                     plaza.ocupada.cliente.vehiculo.matricula == matricula:
+    #                 return plaza
+    #         cont += 1
 
     def depositar_abonado(self, cliente):
         if isinstance(cliente, ClienteAbono):

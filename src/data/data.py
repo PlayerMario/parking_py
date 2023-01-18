@@ -8,6 +8,7 @@ from models.cobros import Cobro
 from models.cobros_abono import CobroAbono
 from models.ocupada import Ocupada
 from models.parking import Parking
+from models.plaza import Plaza
 from models.vehiculo import Vehiculo
 
 
@@ -16,6 +17,16 @@ class Data:
     # f_parking = open('data/parking.pckl', 'wb')
     # pickle.dump(parking, f_parking)
     # f_parking.close()
+
+    lista_plazas = []
+    num_plazas = 40
+    for i in range(1, num_plazas + 1):
+        if i <= round(num_plazas * 0.7):
+            lista_plazas.append(Plaza(id_plaza=f"{i}", tipo_vehiculo="Turismo", ocupada=Ocupada))
+        elif i <= round(num_plazas * 0.85):
+            lista_plazas.append(Plaza(id_plaza=f"{i}", tipo_vehiculo="Motocicleta", ocupada=Ocupada))
+        else:
+            lista_plazas.append(Plaza(id_plaza=f"{i}", tipo_vehiculo="Movilidad Reducida", ocupada=Ocupada))
 
     v1 = Vehiculo(matricula="1111AAA", tipo="Turismo")
     v2 = Vehiculo(matricula="3215OGR", tipo="Movilidad Reducida")
@@ -28,21 +39,21 @@ class Data:
     v9 = Vehiculo(matricula="4766CVF", tipo="Movilidad Reducida")
     v10 = Vehiculo(matricula="2014POK", tipo="Motocicleta")
 
-    # lista_vehiculos = [v1, v2, v3, v4, v5, v6, v7, v8, v9, v10]
+    lista_vehiculos = [v1, v2, v3, v4, v5, v6, v7, v8, v9, v10]
     # f_vehiculos = open('lista_vehiculos.pckl', 'wb')
     # pickle.dump(lista_vehiculos, f_vehiculos)
     # f_vehiculos.close()
 
-    a1 = Abono(tipo="Mensual", plaza=parking.plazas[35])
-    a2 = Abono(tipo="Semestral", plaza=parking.plazas[1])
-    a3 = Abono(tipo="Trimestral", plaza=parking.plazas[34])
-    a4 = Abono(tipo="Anual", plaza=parking.plazas[29])
-    a5 = Abono(tipo="Mensual", plaza=parking.plazas[4])
-    a6 = Abono(tipo="Semestral", plaza=parking.plazas[15])
-    a7 = Abono(tipo="Trimestral", plaza=parking.plazas[37])
-    a8 = Abono(tipo="Anual", plaza=parking.plazas[30])
+    a1 = Abono(tipo="Mensual", plaza=lista_plazas[35])
+    a2 = Abono(tipo="Semestral", plaza=lista_plazas[1])
+    a3 = Abono(tipo="Trimestral", plaza=lista_plazas[34])
+    a4 = Abono(tipo="Anual", plaza=lista_plazas[29])
+    a5 = Abono(tipo="Mensual", plaza=lista_plazas[4])
+    a6 = Abono(tipo="Semestral", plaza=lista_plazas[15])
+    a7 = Abono(tipo="Trimestral", plaza=lista_plazas[37])
+    a8 = Abono(tipo="Anual", plaza=lista_plazas[30])
 
-    # lista_abonos = [a1, a2, a3, a4, a5, a6, a7, a8]
+    lista_abonos = [a1, a2, a3, a4, a5, a6, a7, a8]
     # f_abonos = open('lista_abonos.pckl', 'wb')
     # pickle.dump(lista_abonos, f_abonos)
     # f_abonos.close()
@@ -109,16 +120,16 @@ class Data:
     o5 = Ocupada(cliente=c5)
     o6 = Ocupada(cliente=c6)
 
-    # lista_ocupadas = [o1, o2, o3, o4, o5, o6]
+    lista_ocupadas = [o1, o2, o3, o4, o5, o6]
     # f_ocupadas = open('lista_ocupadas.pckl', 'wb')
     # pickle.dump(lista_ocupadas, f_ocupadas)
     # f_ocupadas.close()
 
-    for oc in [o1, o2, o3, o4, o5, o6]:
+    for oc in lista_ocupadas:
         salir = False
         cont = 0
         while not salir:
-            plaza = parking.plazas[cont]
+            plaza = lista_plazas[cont]
             if not isinstance(plaza.ocupada, Ocupada):
                 if plaza.tipo_vehiculo == oc.cliente.vehiculo.tipo:
                     plaza.ocupada = oc
@@ -163,6 +174,20 @@ class Data:
     # f_cobros.close()
 
     def cargar_datos(self):
+        f_vehiculos = open('data/lista_vehiculos.pckl', 'wb')
+        pickle.dump(self.lista_vehiculos, f_vehiculos)
+        f_vehiculos.close()
+        f_vehiculos = open('data/lista_vehiculos.pckl', 'rb')
+        vehiculos = pickle.load(f_vehiculos)
+        f_vehiculos.close()
+
+        f_abonos = open('data/lista_abonos.pckl', 'wb')
+        pickle.dump(self.lista_abonos, f_abonos)
+        f_abonos.close()
+        f_abonos = open('data/lista_abonos.pckl', 'rb')
+        abonos = pickle.load(f_abonos)
+        f_abonos.close()
+
         f_clientes = open('data/lista_clientes.pckl', 'wb')
         pickle.dump(self.lista_clientes, f_clientes)
         f_clientes.close()
@@ -184,6 +209,13 @@ class Data:
         reservadas = pickle.load(f_reservadas)
         f_reservadas.close()
 
+        f_ocupadas = open('data/lista_ocupadas.pckl', 'wb')
+        pickle.dump(self.lista_ocupadas, f_ocupadas)
+        f_ocupadas.close()
+        f_ocupadas = open('data/lista_ocupadas.pckl', 'rb')
+        ocupadas = pickle.load(f_ocupadas)
+        f_ocupadas.close()
+
         f_cobros = open('data/lista_cobros.pckl', 'wb')
         pickle.dump(self.lista_cobros, f_cobros)
         f_cobros.close()
@@ -198,4 +230,11 @@ class Data:
         parking = pickle.load(f_parking)
         f_parking.close()
 
-        return parking, clientes, cobros_abono, cobros, reservadas
+        f_plazas = open('data/lista_plazas.pckl', 'wb')
+        pickle.dump(self.lista_plazas, f_plazas)
+        f_plazas.close()
+        f_plazas = open('data/lista_plazas.pckl', 'rb')
+        plazas = pickle.load(f_plazas)
+        f_plazas.close()
+
+        return parking, clientes, cobros_abono, cobros, reservadas, vehiculos, abonos, ocupadas, plazas
