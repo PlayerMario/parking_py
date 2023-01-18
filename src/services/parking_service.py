@@ -1,5 +1,10 @@
 import pickle
 
+from models.ocupada import Ocupada
+from views.parking_views import ParkingViews
+
+# CARGAR TODAS LAS LISTAS AL PRINCIPIO
+
 # f_parking = open('../data/parking.pckl', 'rb')
 # parking = pickle.load(f_parking)
 # f_parking.close()
@@ -27,3 +32,25 @@ import pickle
 #     parking.cobros = cobros
 #
 #     return parking
+
+parking_views = ParkingViews()
+
+# f_reservadas = open('data/lista_reservadas.pckl', 'rb')
+# reservadas = pickle.load(f_reservadas)
+# f_reservadas.close()
+
+
+class ParkingService:
+    def mostrar_libres(self, parking):
+        num_turismo = 0
+        num_moto = 0
+        num_mov_red = 0
+        for plaza in parking.plazas:
+            if not isinstance(plaza.ocupada, Ocupada) and plaza not in parking.reservadas:
+                if plaza.tipo_vehiculo == "Turismo":
+                    num_turismo += 1
+                elif plaza.tipo_vehiculo == "Motocicleta":
+                    num_moto += 1
+                else:
+                    num_mov_red += 1
+        return parking_views.mostrar_disponibles(num_turismo, num_moto, num_mov_red)

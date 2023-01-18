@@ -13,9 +13,9 @@ from models.vehiculo import Vehiculo
 
 class Data:
     parking = Parking(num_plazas=40)
-    f_parking = open('data/parking.pckl', 'wb')
-    pickle.dump(parking, f_parking)
-    f_parking.close()
+    # f_parking = open('data/parking.pckl', 'wb')
+    # pickle.dump(parking, f_parking)
+    # f_parking.close()
 
     v1 = Vehiculo(matricula="1111AAA", tipo="Turismo")
     v2 = Vehiculo(matricula="3215OGR", tipo="Movilidad Reducida")
@@ -85,22 +85,22 @@ class Data:
                        c10.num_tarjeta)
 
     lista_clientes = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10]
-    f_clientes = open('data/lista_clientes.pckl', 'wb')
-    pickle.dump(lista_clientes, f_clientes)
-    f_clientes.close()
+    # f_clientes = open('data/lista_clientes.pckl', 'wb')
+    # pickle.dump(lista_clientes, f_clientes)
+    # f_clientes.close()
 
     lista_cobros_abonos = [coa2, coa3, coa5, coa6, coa7, coa8, coa9, coa10]
-    f_cobros_abono = open('data/lista_cobros_abono.pckl', 'wb')
-    pickle.dump(lista_cobros_abonos, f_cobros_abono)
-    f_cobros_abono.close()
+    # f_cobros_abono = open('data/lista_cobros_abono.pckl', 'wb')
+    # pickle.dump(lista_cobros_abonos, f_cobros_abono)
+    # f_cobros_abono.close()
 
     lista_reservadas = []
     for cliente in lista_clientes:
         if isinstance(cliente, ClienteAbono):
             lista_reservadas.append(cliente.abono.plaza)
-    f_reservadas = open('data/lista_reservadas.pckl', 'wb')
-    pickle.dump(lista_reservadas, f_reservadas)
-    f_reservadas.close()
+    # f_reservadas = open('data/lista_reservadas.pckl', 'wb')
+    # pickle.dump(lista_reservadas, f_reservadas)
+    # f_reservadas.close()
 
     o1 = Ocupada(cliente=c1)
     o2 = Ocupada(cliente=c2)
@@ -157,34 +157,50 @@ class Data:
                  fecha_salida=datetime(2023, 1, 16, 19, 35), cobro=12.6)  # MovRed
 
     lista_cobros = [co1, co2, co3, co4, co5, co6, co7, co8, co9, co10, co11, co12, co13, co14, co15]
-    f_cobros = open('data/lista_cobros.pckl', 'wb')
-    pickle.dump(lista_cobros, f_cobros)
-    f_cobros.close()
+
+    # f_cobros = open('data/lista_cobros.pckl', 'wb')
+    # pickle.dump(lista_cobros, f_cobros)
+    # f_cobros.close()
 
     def cargar_datos(self):
-        f_parking = open('data/parking.pckl', 'rb')
-        parking = pickle.load(f_parking)
-        f_parking.close()
-
+        f_clientes = open('data/lista_clientes.pckl', 'wb')
+        pickle.dump(self.lista_clientes, f_clientes)
+        f_clientes.close()
         f_clientes = open('data/lista_clientes.pckl', 'rb')
         clientes = pickle.load(f_clientes)
         f_clientes.close()
 
+        f_cobros_abono = open('data/lista_cobros_abono.pckl', 'wb')
+        pickle.dump(self.lista_cobros_abonos, f_cobros_abono)
+        f_cobros_abono.close()
         f_cobros_abono = open('data/lista_cobros_abono.pckl', 'rb')
         cobros_abono = pickle.load(f_cobros_abono)
         f_cobros_abono.close()
 
+        f_reservadas = open('data/lista_reservadas.pckl', 'wb')
+        pickle.dump(self.lista_reservadas, f_reservadas)
+        f_reservadas.close()
         f_reservadas = open('data/lista_reservadas.pckl', 'rb')
         reservadas = pickle.load(f_reservadas)
         f_reservadas.close()
 
+        f_cobros = open('data/lista_cobros.pckl', 'wb')
+        pickle.dump(self.lista_cobros, f_cobros)
+        f_cobros.close()
         f_cobros = open('data/lista_cobros.pckl', 'rb')
         cobros = pickle.load(f_cobros)
         f_cobros.close()
 
-        parking.clientes = clientes
-        parking.cobros_abonos = cobros_abono
-        parking.reservadas = reservadas
-        parking.cobros = cobros
+        self.parking.clientes = clientes
+        self.parking.cobros_abonos = cobros_abono
+        self.parking.reservadas = reservadas
+        self.parking.cobros = cobros
+
+        f_parking = open('data/parking.pckl', 'wb')
+        pickle.dump(self.parking, f_parking)
+        f_parking.close()
+        f_parking = open('data/parking.pckl', 'rb')
+        parking = pickle.load(f_parking)
+        f_parking.close()
 
         return parking

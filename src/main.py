@@ -1,14 +1,6 @@
-from datetime import datetime
-
 from data.data import Data
-from models.abono import Abono
-from models.cliente import Cliente
-from models.cliente_abono import ClienteAbono
-from models.cobros import Cobro
-from models.cobros_abono import CobroAbono
-from models.ocupada import Ocupada
-from models.plaza import Plaza
-from models.vehiculo import Vehiculo
+from services.parking_service import ParkingService
+from views.menu_views import MenuViews
 
 # VARIABLES APLICACIÓN:
 opZona = -1
@@ -20,49 +12,27 @@ opModif = -1
 opDato = -1
 usuario = "admin"
 pswd = "1234"
-data = Data
-# lista_clientes = Data.listaClientes
-# lista_reservadas = Data.lista_reservadas
-# lista_cobros = Data.listaCobros
-# lista_cobros_abonados = Data.listaCobrosAbonados
-# lista_abonos = Data.listaAbonos
-# lista_vehiculos = Data.listaVehiculos
+data = Data()
 
-parking = data.cargar_datos(None)
+parking = data.cargar_datos()
+menu_views = MenuViews()
+parking_service = ParkingService()
 
-for cliente in parking.clientes:
-    print(cliente)
-    print(cliente.vehiculo)
-    if isinstance(cliente, ClienteAbono):
-        print(cliente.abono)
-        print(cliente.abono.plaza)
+print("Bienvenido al Parking Triana.\n")
 
-for cobros in parking.cobros_abonos:
-    print(cobros)
-for cobros in parking.cobros:
-    print(cobros)
+# MENÚ ZONA:
+while opZona != 0:
 
-for res in parking.reservadas:
-    print(res)
+    opZona = int(input(menu_views.menu_ppal()))
 
-# print("Bienvenido al Parking Triana.\n")
-#
-# # MENÚ ZONA:
-# while opZona != 0:
-#
-#     opZona = int(input("\nSeleccione una opción:\n[1] Acceso clientes.\n[2] Adminstración.\n[0] Salir.\n> "))
-#
-#     if opZona == 1:
-#         # MENÚ CLIENTE
-#         opCliente = -1
-#         while opCliente != 0:
-#             opCliente = int(input("\nSeleccione una opción:\n[1] Depositar vehículo.\n[2] Retirar vehículo."
-#                                   "\n[3] Depositar abonados.\n[4] Retirar abonados.\n[0] Salir.\n> "))
-#
-#             if opCliente == 1:
-#                 parking.mostrar_info_plazas(lista_reservadas)
-#                 opTipo = int(input("\nSeleccione el tipo:\n[1] Turismo.\n[2] Motocicleta."
-#                                    "\n[3] Movilidad Reducida.\n> "))
+    if opZona == 1:
+        opCliente = -1
+        while opCliente != 0:
+            opCliente = int(input(menu_views.menu_cliente()))
+            if opCliente == 1:
+                #parking.mostrar_info_plazas(lista_reservadas)
+                print(parking_service.mostrar_libres(parking))
+                opTipo = int(input(menu_views.menu_tipo_vehiculo()))
 #
 #                 if (opTipo == 1 and parking.mostrar_libres(lista_reservadas)[0] != 0) \
 #                         or (opTipo == 2 and parking.mostrar_libres(lista_reservadas)[1] != 0) \

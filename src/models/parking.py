@@ -80,26 +80,26 @@ class Parking:
                 plazas.append(Plaza(id_plaza=f"{i}", tipo_vehiculo="Movilidad Reducida", ocupada=Ocupada))
         return plazas
 
-    def mostrar_libres(self, lista_reservadas):
-        num_turismo = 0
-        num_moto = 0
-        num_mov_red = 0
-        for plaza in self.__plazas:
-            if not isinstance(plaza.ocupada, Ocupada) and plaza not in lista_reservadas:
-                if plaza.tipo_vehiculo == "Turismo":
-                    num_turismo += 1
-                elif plaza.tipo_vehiculo == "Motocicleta":
-                    num_moto += 1
-                else:
-                    num_mov_red += 1
-        return num_turismo, num_moto, num_mov_red
-
-    def mostrar_info_plazas(self, lista_reservadas):
-        print(f"""\t\t\t\tPLAZAS DISPONIBLES:
-                ==========================
-                -TURISMOS: {self.mostrar_libres(lista_reservadas)[0]}
-                -MOTOCICLETAS: {self.mostrar_libres(lista_reservadas)[1]}
-                -MOVILIDAD REDUCIDA: {self.mostrar_libres(lista_reservadas)[2]}""")
+    # def mostrar_libres(self, lista_reservadas):
+    #     num_turismo = 0
+    #     num_moto = 0
+    #     num_mov_red = 0
+    #     for plaza in self.__plazas:
+    #         if not isinstance(plaza.ocupada, Ocupada) and plaza not in lista_reservadas:
+    #             if plaza.tipo_vehiculo == "Turismo":
+    #                 num_turismo += 1
+    #             elif plaza.tipo_vehiculo == "Motocicleta":
+    #                 num_moto += 1
+    #             else:
+    #                 num_mov_red += 1
+    #     return num_turismo, num_moto, num_mov_red
+    #
+    # def mostrar_info_plazas(self, lista_reservadas):
+    #     print(f"""\t\t\t\tPLAZAS DISPONIBLES:
+    #             ==========================
+    #             -TURISMOS: {self.mostrar_libres(lista_reservadas)[0]}
+    #             -MOTOCICLETAS: {self.mostrar_libres(lista_reservadas)[1]}
+    #             -MOVILIDAD REDUCIDA: {self.mostrar_libres(lista_reservadas)[2]}""")
 
     def depositar_ocasional(self, cliente, tipo_vehiculo, lista_reservadas):
         salir = False
