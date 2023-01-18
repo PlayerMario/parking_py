@@ -1,6 +1,5 @@
 from datetime import datetime
 import pickle
-
 from models.abono import Abono
 from models.cliente import Cliente
 from models.cliente_abono import ClienteAbono
@@ -14,9 +13,6 @@ from models.vehiculo import Vehiculo
 
 class Data:
     parking = Parking(num_plazas=40)
-    # f_parking = open('data/parking.pckl', 'wb')
-    # pickle.dump(parking, f_parking)
-    # f_parking.close()
 
     lista_plazas = []
     num_plazas = 40
@@ -40,9 +36,6 @@ class Data:
     v10 = Vehiculo(matricula="2014POK", tipo="Motocicleta")
 
     lista_vehiculos = [v1, v2, v3, v4, v5, v6, v7, v8, v9, v10]
-    # f_vehiculos = open('lista_vehiculos.pckl', 'wb')
-    # pickle.dump(lista_vehiculos, f_vehiculos)
-    # f_vehiculos.close()
 
     a1 = Abono(tipo="Mensual", plaza=lista_plazas[35])
     a2 = Abono(tipo="Semestral", plaza=lista_plazas[1])
@@ -54,9 +47,6 @@ class Data:
     a8 = Abono(tipo="Anual", plaza=lista_plazas[30])
 
     lista_abonos = [a1, a2, a3, a4, a5, a6, a7, a8]
-    # f_abonos = open('lista_abonos.pckl', 'wb')
-    # pickle.dump(lista_abonos, f_abonos)
-    # f_abonos.close()
 
     c1 = Cliente(vehiculo=v1)
     c2 = ClienteAbono(vehiculo=v2, nombre="Bartolomé", apellidos="Méndez Zuluaga", dni="12345678A",
@@ -94,24 +84,13 @@ class Data:
                        email="isabel@isabel.com", abono=a8)
     coa10 = CobroAbono(c10.vehiculo.matricula, c10.abono.fecha_alta, c10.abono.fecha_cancelacion, c10.abono.precio,
                        c10.num_tarjeta)
-
     lista_clientes = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10]
-    # f_clientes = open('data/lista_clientes.pckl', 'wb')
-    # pickle.dump(lista_clientes, f_clientes)
-    # f_clientes.close()
-
     lista_cobros_abonos = [coa2, coa3, coa5, coa6, coa7, coa8, coa9, coa10]
-    # f_cobros_abono = open('data/lista_cobros_abono.pckl', 'wb')
-    # pickle.dump(lista_cobros_abonos, f_cobros_abono)
-    # f_cobros_abono.close()
 
     lista_reservadas = []
     for cliente in lista_clientes:
         if isinstance(cliente, ClienteAbono):
             lista_reservadas.append(cliente.abono.plaza)
-    # f_reservadas = open('data/lista_reservadas.pckl', 'wb')
-    # pickle.dump(lista_reservadas, f_reservadas)
-    # f_reservadas.close()
 
     o1 = Ocupada(cliente=c1)
     o2 = Ocupada(cliente=c2)
@@ -121,10 +100,6 @@ class Data:
     o6 = Ocupada(cliente=c6)
 
     lista_ocupadas = [o1, o2, o3, o4, o5, o6]
-    # f_ocupadas = open('lista_ocupadas.pckl', 'wb')
-    # pickle.dump(lista_ocupadas, f_ocupadas)
-    # f_ocupadas.close()
-
     for oc in lista_ocupadas:
         salir = False
         cont = 0
@@ -166,75 +141,85 @@ class Data:
                  fecha_salida=datetime(2023, 1, 14, 21, 53), cobro=12.24)  # Motocicleta
     co15 = Cobro(matricula="3652HMK", fecha_entrada=datetime(2023, 1, 16, 17, 29),
                  fecha_salida=datetime(2023, 1, 16, 19, 35), cobro=12.6)  # MovRed
-
     lista_cobros = [co1, co2, co3, co4, co5, co6, co7, co8, co9, co10, co11, co12, co13, co14, co15]
 
-    # f_cobros = open('data/lista_cobros.pckl', 'wb')
-    # pickle.dump(lista_cobros, f_cobros)
-    # f_cobros.close()
-
-    def cargar_datos(self):
+    def cargar_vehiculos(self):
         f_vehiculos = open('data/lista_vehiculos.pckl', 'wb')
         pickle.dump(self.lista_vehiculos, f_vehiculos)
         f_vehiculos.close()
         f_vehiculos = open('data/lista_vehiculos.pckl', 'rb')
         vehiculos = pickle.load(f_vehiculos)
         f_vehiculos.close()
+        return vehiculos
 
+    def cargar_abonos(self):
         f_abonos = open('data/lista_abonos.pckl', 'wb')
         pickle.dump(self.lista_abonos, f_abonos)
         f_abonos.close()
         f_abonos = open('data/lista_abonos.pckl', 'rb')
         abonos = pickle.load(f_abonos)
         f_abonos.close()
+        return abonos
 
+    def cargar_clientes(self):
         f_clientes = open('data/lista_clientes.pckl', 'wb')
         pickle.dump(self.lista_clientes, f_clientes)
         f_clientes.close()
         f_clientes = open('data/lista_clientes.pckl', 'rb')
         clientes = pickle.load(f_clientes)
         f_clientes.close()
+        return clientes
 
+    def cargar_cobros_abono(self):
         f_cobros_abono = open('data/lista_cobros_abono.pckl', 'wb')
         pickle.dump(self.lista_cobros_abonos, f_cobros_abono)
         f_cobros_abono.close()
         f_cobros_abono = open('data/lista_cobros_abono.pckl', 'rb')
         cobros_abono = pickle.load(f_cobros_abono)
         f_cobros_abono.close()
+        return cobros_abono
 
+    def cargar_reservadas(self):
         f_reservadas = open('data/lista_reservadas.pckl', 'wb')
         pickle.dump(self.lista_reservadas, f_reservadas)
         f_reservadas.close()
         f_reservadas = open('data/lista_reservadas.pckl', 'rb')
         reservadas = pickle.load(f_reservadas)
         f_reservadas.close()
+        return reservadas
 
+    def cargar_ocupadas(self):
         f_ocupadas = open('data/lista_ocupadas.pckl', 'wb')
         pickle.dump(self.lista_ocupadas, f_ocupadas)
         f_ocupadas.close()
         f_ocupadas = open('data/lista_ocupadas.pckl', 'rb')
         ocupadas = pickle.load(f_ocupadas)
         f_ocupadas.close()
+        return ocupadas
 
+    def cargar_cobros(self):
         f_cobros = open('data/lista_cobros.pckl', 'wb')
         pickle.dump(self.lista_cobros, f_cobros)
         f_cobros.close()
         f_cobros = open('data/lista_cobros.pckl', 'rb')
         cobros = pickle.load(f_cobros)
         f_cobros.close()
+        return cobros
 
+    def cargar_parking(self):
         f_parking = open('data/parking.pckl', 'wb')
         pickle.dump(self.parking, f_parking)
         f_parking.close()
         f_parking = open('data/parking.pckl', 'rb')
         parking = pickle.load(f_parking)
         f_parking.close()
+        return parking
 
+    def cargar_plazas(self):
         f_plazas = open('data/lista_plazas.pckl', 'wb')
         pickle.dump(self.lista_plazas, f_plazas)
         f_plazas.close()
         f_plazas = open('data/lista_plazas.pckl', 'rb')
         plazas = pickle.load(f_plazas)
         f_plazas.close()
-
-        return parking, clientes, cobros_abono, cobros, reservadas, vehiculos, abonos, ocupadas, plazas
+        return plazas

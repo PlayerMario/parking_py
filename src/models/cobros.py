@@ -1,3 +1,6 @@
+import pickle
+
+
 class Cobro:
 
     # CONSTRUCTOR
@@ -52,16 +55,30 @@ class Cobro:
                 """
 
     # MÉTODOS DE CLASE:
-    def obtener_facturacion(self, fecha1, fecha2, lista_cobros):
-        cobros = {}
-        for cobro in lista_cobros:
-            if fecha1 < cobro.__fecha_salida < fecha2:
-                cobros[cobro.__fecha_salida] = cobro.__cobro
+    def actualizar_listado(self, lista_cobros):
+        lista_cobros.append(self)
+
+        # Actualizar lista
+        f_cobros = open('data/lista_cobros.pckl', 'wb')
+        pickle.dump(lista_cobros, f_cobros)
+        f_cobros.close()
+
+        # Cargar lista
+        f_cobros = open('data/lista_cobros.pckl', 'rb')
+        cobros = pickle.load(f_cobros)
+        f_cobros.close()
         return cobros
 
-    def mostrar_facturacion(self, cobros):
-        total = 0
-        for fecha, cobro in cobros.items():
-            print(f"\t· {fecha.strftime('%d/%m/%Y, %H:%M')} -> {cobro}€.")
-            total += cobro
-        print(f"\t===============================\n\tRecaudado: {total}€\n")
+    # def obtener_facturacion(self, fecha1, fecha2, lista_cobros):
+    #     cobros = {}
+    #     for cobro in lista_cobros:
+    #         if fecha1 < cobro.__fecha_salida < fecha2:
+    #             cobros[cobro.__fecha_salida] = cobro.__cobro
+    #     return cobros
+    #
+    # def mostrar_facturacion(self, cobros):
+    #     total = 0
+    #     for fecha, cobro in cobros.items():
+    #         print(f"\t· {fecha.strftime('%d/%m/%Y, %H:%M')} -> {cobro}€.")
+    #         total += cobro
+    #     print(f"\t===============================\n\tRecaudado: {total}€\n")

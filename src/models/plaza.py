@@ -1,3 +1,4 @@
+import pickle
 import random
 
 from models.ocupada import Ocupada
@@ -59,3 +60,18 @@ class Plaza:
         else:
             return f"\t\t Plaza {self.__id_plaza}\n=============================\n-{self.__tipo_vehiculo}\n" \
                    f"-{self.__precio_mins}€/min\n=============================\n"
+
+    # MÉTODOS DE CLASE
+    def actualizar_listado(self, lista_plazas):
+        lista_plazas.append(self)
+
+        # Actualizar lista
+        f_plazas = open('data/lista_plazas.pckl', 'wb')
+        pickle.dump(lista_plazas, f_plazas)
+        f_plazas.close()
+
+        # Cargar lista
+        f_plazas = open('data/lista_plazas.pckl', 'rb')
+        plazas = pickle.load(f_plazas)
+        f_plazas.close()
+        return plazas

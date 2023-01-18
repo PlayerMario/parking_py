@@ -1,9 +1,24 @@
+from datetime import datetime
+
 from data.data import Data
 from models.cliente import Cliente
 from models.vehiculo import Vehiculo
+from services.admin_service import AdminService
 from services.clientes_service import ClienteService
 from views.menu_views import MenuViews
 from views.parking_views import ParkingViews
+
+# CARGAR DATOS INICIALES:
+data = Data()
+parking = data.cargar_parking()
+clientes = data.cargar_clientes()
+cobros_abono = data.cargar_cobros_abono()
+cobros = data.cargar_cobros()
+reservadas = data.cargar_reservadas()
+vehiculos = data.cargar_vehiculos()
+abonos = data.cargar_abonos()
+# ocupadas = data.cargar_ocupadas()
+plazas = data.cargar_plazas()
 
 # VARIABLES APLICACIÓN:
 opZona = -1
@@ -13,41 +28,38 @@ opAbono = -1
 opCad = -1
 opModif = -1
 opDato = -1
+opTipo = -1
 usuario = "admin"
 pswd = "1234"
-data = Data()
-
-parking = data.cargar_datos()[0]
-clientes = data.cargar_datos()[1]
-cobros_abono = data.cargar_datos()[2]
-cobros = data.cargar_datos()[3]
-reservadas = data.cargar_datos()[4]
-vehiculos = data.cargar_datos()[5]
-abonos = data.cargar_datos()[6]
-ocupadas = data.cargar_datos()[7]
-plazas = data.cargar_datos()[8]
-
 menu_views = MenuViews()
 parking_views = ParkingViews()
 cliente_service = ClienteService()
-
-plaza_no_dispo = []
+admin_service = AdminService()
+plazas_reservadas = []
 for r in reservadas:
-    plaza_no_dispo.append(r.id_plaza)
+    plazas_reservadas.append(r.id_plaza)
 
-print("Bienvenido al Parking Triana.\n")
+print("Bienvenido al Parking Triana.")
 
-# MENÚ ZONA:
 while opZona != 0:
-    opZona = int(input(menu_views.menu_ppal()))
+    try:
+        opZona = int(input(menu_views.menu_ppal()))
+    except ValueError:
+        print("\nError, introduzca un número.")
     if opZona == 1:
         opCliente = -1
         while opCliente != 0:
-            opCliente = int(input(menu_views.menu_cliente()))
+            try:
+                opCliente = int(input(menu_views.menu_cliente()))
+            except ValueError:
+                print("\nError, introduzca un número.")
             if opCliente == 1:
-                print(cliente_service.mostrar_libres(plazas, plaza_no_dispo)[3])
-                opTipo = int(input(menu_views.menu_tipo_vehiculo()))
-                tipo_vehiculo = cliente_service.devolver_tipo(opTipo, plazas, plaza_no_dispo)
+                print(cliente_service.mostrar_libres(plazas, plazas_reservadas)[3])
+                try:
+                    opTipo = int(input(menu_views.menu_tipo_vehiculo()))
+                except ValueError:
+                    print("\nError, introduzca un número.")
+                tipo_vehiculo = cliente_service.devolver_tipo(opTipo, plazas, plazas_reservadas)
                 if tipo_vehiculo != "":
                     matricula = input("Indique su matrícula: ")
                     v = Vehiculo(matricula, tipo_vehiculo)
@@ -55,7 +67,7 @@ while opZona != 0:
                     c = Cliente(v)
                     clientes = c.actualizar_listado(clientes)
                     parking_views.mostrar_ticket(
-                        cliente_service.depositar_ocasional(plazas, c, plaza_no_dispo))
+                        cliente_service.depositar_ocasional(plazas, c, plazas_reservadas))
                 else:
                     print("Opción incorrecta / No hay plazas de ese tipo disponibles")
 
@@ -63,70 +75,70 @@ while opZona != 0:
                 matricula = input("Indique su matrícula: ")
                 id_plaza = input("Indique la plaza: ")
                 pin = input("Indique su pin: ")
-
                 plaza = cliente_service.buscar_plaza(matricula, plazas, id_plaza, pin)
-                # METER ESTO EN UN MÉTODO EN CLIENTE_CLIENTE
-#                 if isinstance(plaza, Plaza):
-#                     cobro = plaza.ocupada.salida_vehiculo()
-#                     if isinstance(cobro, Cobro):
-#                         Data.listaCobros.append(plaza.ocupada.salida_vehiculo())
-#                     print(plaza.ocupada.salida_vehiculo())
-#                     plaza.ocupada = None
-#                 else:
-#                     print("Error en la operación.")
-#
-#             elif opCliente == 3:
-#                 matricula = input("Indique su matrícula: ")
-#                 dni = input("Indique su DNI: ")
-#
-#                 cliente = ClienteAbono.buscar_cliente(None, matricula, dni, lista_clientes)
-#                 if isinstance(cliente, ClienteAbono):
-#                     parking.mostrar_ticket(parking.depositar_abonado(cliente))
-#                 else:
-#                     print("\nNo se ha encontrado cliente.")
-#
-#             elif opCliente == 4:
-#                 matricula = input("Indique su matrícula: ")
-#                 id_plaza = input("Indique la plaza: ")
-#                 pin = input("Indique su pin: ")
-#
-#                 plaza = parking.buscar_plaza(matricula, id_plaza, pin)
-#                 if isinstance(plaza, Plaza):
-#                     print(plaza.ocupada.salida_vehiculo())
-#                     plaza.ocupada = None
-#
-#             elif opCliente == 0:
-#                 print("Saliendo...")
-#
-#             else:
-#                 print("Opción incorrecta.")
-#
-#     elif opZona == 2:
-#         # USUARIO Y CONTRASEÑA (admin - 1234)
-#         user = input("\nIndique su usuario: ")
-#         psw = input("Indique su contraseña: ")
-#
-#         # MENÚ ADMINISTRADOR
-#         if user == usuario and psw == pswd:
-#             opAdmin = -1
-#             while opAdmin != 0:
-#                 opAdmin = int(input("\nSeleccione una opción:\n[1] Estado del parking.\n[2] Facturación."
-#                                     "\n[3] Consulta de abonados.\n[4] Abonos.\n[5] Caducidad de abonos."
-#                                     "\n[0] Salir.\n> "))
-#
-#                 if opAdmin == 1:
-#                     parking.estado_parking(lista_reservadas)
-#
-#                 elif opAdmin == 2:
-#                     print("Indique la primera fecha: ")
-#                     fecha1 = datetime(int(input("Indique el año: ")), int(input("Indique el mes: ")),
-#                                       int(input("Indique el día: ")), int(input("Indique la hora: ")))
-#
-#                     print("Indique la segunda fecha: ")
-#                     fecha2 = datetime(int(input("Indique el año: ")), int(input("Indique el mes: ")),
-#                                       int(input("Indique el día: ")), int(input("Indique la hora: ")))
-#
-#                     print(f"{fecha1.strftime('%d/%m/%Y, %H:%M')} - {fecha2.strftime('%d/%m/%Y, %H:%M')}\n")
+                salida = cliente_service.generar_cobro(plaza, cobros, plazas)
+                if salida is not None:
+                    cobros = salida[1]
+                    plazas = salida[2]
+                    print(salida[0])
+                else:
+                    print("\nError en la operación.")
+
+            elif opCliente == 3:
+                matricula = input("Indique su matrícula: ")
+                dni = input("Indique su DNI: ")
+                cliente = cliente_service.buscar_cliente(matricula, dni, clientes)
+                if cliente is not None:
+                    deposito = cliente_service.depositar_abonado(cliente, plazas)
+                    if deposito is not None:
+                        plazas = deposito[1]
+                        parking_views.mostrar_ticket(deposito[0])
+                else:
+                    print("\nAbonado no encontrado.")
+
+            elif opCliente == 4:
+                matricula = input("Indique su matrícula: ")
+                id_plaza = input("Indique la plaza: ")
+                pin = input("Indique su pin: ")
+                plaza = cliente_service.buscar_plaza(matricula, plazas, id_plaza, pin)
+                salida = cliente_service.salida_vehiculo(plaza, plazas)
+                if salida is not None:
+                    plazas = salida[1]
+                    print(salida[0])
+                else:
+                    print("\nAbonado no encontrado.")
+
+            elif opCliente == 0:
+                print("Saliendo...")
+
+            else:
+                print("Opción incorrecta.")
+
+    elif opZona == 2:
+        user = input("Indique su usuario: ")
+        psw = input("Indique su contraseña: ")
+
+        if user == usuario and psw == pswd:
+            opAdmin = -1
+            while opAdmin != 0:
+                try:
+                    opAdmin = int(input(menu_views.menu_admin()))
+                except ValueError:
+                    print("\nError, introduzca un número.")
+
+                if opAdmin == 1:
+                    parking_views.estado_parking(plazas, plazas_reservadas)
+                    print(cliente_service.mostrar_libres(plazas, plazas_reservadas)[3])
+
+                elif opAdmin == 2:
+                    print("Indique la primera fecha: ")
+                    fecha1 = admin_service.generar_fecha()
+                    if isinstance(fecha1, datetime):
+                        print("Indique la segunda fecha: ")
+                        fecha2 = admin_service.generar_fecha()
+                        if isinstance(fecha2, datetime):
+                            print(f"{fecha1.strftime('%d/%m/%Y, %H:%M')} - {fecha2.strftime('%d/%m/%Y, %H:%M')}\n")
+                            parking_views.mostrar_facturacion(admin_service.obtener_facturacion(fecha1, fecha2, cobros))
 #
 #                     Cobro.mostrar_facturacion(None, Cobro.obtener_facturacion(None, fecha1, fecha2, lista_cobros))
 #

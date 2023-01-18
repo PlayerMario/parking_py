@@ -74,16 +74,16 @@ class ClienteAbono(Cliente):
         return f"-{self.__nombre} {self.__apellidos}\n-DNI: {self.__dni}\n{self.vehiculo}"
 
     # MÉTODOS DE CLASE
-    def buscar_cliente(self, matricula, dni, lista_clientes):
-        salir = False
-        cont = 0
-        while not salir and cont != len(lista_clientes):
-            cliente = lista_clientes[cont]
-            if isinstance(cliente, ClienteAbono):
-                if cliente.vehiculo.matricula == matricula and cliente.__dni == dni:
-                    salir = True
-                    return cliente
-            cont += 1
+    # def buscar_cliente(self, matricula, dni, lista_clientes):
+    #     salir = False
+    #     cont = 0
+    #     while not salir and cont != len(lista_clientes):
+    #         cliente = lista_clientes[cont]
+    #         if isinstance(cliente, ClienteAbono):
+    #             if cliente.vehiculo.matricula == matricula and cliente.__dni == dni:
+    #                 salir = True
+    #                 return cliente
+    #         cont += 1
 
     def buscar_abonados(self, lista_clientes):
         total = 0

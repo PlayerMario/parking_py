@@ -138,34 +138,34 @@ class Parking:
     #                 return plaza
     #         cont += 1
 
-    def depositar_abonado(self, cliente):
-        if isinstance(cliente, ClienteAbono):
-            salir = False
-            cont = 0
-            while not salir and cont != len(self.__plazas):
-                plaza = self.__plazas[cont]
-                if not isinstance(plaza.ocupada, Ocupada):
-                    if plaza.id_plaza == cliente.abono.plaza.id_plaza:
-                        plaza.ocupada = Ocupada(cliente)
-                        salir = True
-                        return plaza
-                cont += 1
+    # def depositar_abonado(self, cliente):
+    #     if isinstance(cliente, ClienteAbono):
+    #         salir = False
+    #         cont = 0
+    #         while not salir and cont != len(self.__plazas):
+    #             plaza = self.__plazas[cont]
+    #             if not isinstance(plaza.ocupada, Ocupada):
+    #                 if plaza.id_plaza == cliente.abono.plaza.id_plaza:
+    #                     plaza.ocupada = Ocupada(cliente)
+    #                     salir = True
+    #                     return plaza
+    #             cont += 1
 
-    def estado_parking(self, lista_reservadas):
-        for plaza in self.__plazas:
-            if isinstance(plaza.ocupada, Ocupada):
-                if isinstance(plaza.ocupada.cliente, ClienteAbono):
-                    print("\n=============================\n\t\tCLIENTE ABONADO\n=============================")
-                    print(plaza)
-                else:
-                    print("\n=============================\n\t\tCLIENTE NO ABONADO\n=============================")
-                    print(plaza)
-            elif plaza in lista_reservadas:
-                print("\n=============================\n\t\tPLAZA RESERVADA\n=============================")
-                print(plaza)
-            else:
-                print("\n=============================\n\t\tPLAZA LIBRE\n=============================")
-                print(plaza)
+    # def estado_parking(self, lista_reservadas):
+    #     for plaza in self.__plazas:
+    #         if isinstance(plaza.ocupada, Ocupada):
+    #             if isinstance(plaza.ocupada.cliente, ClienteAbono):
+    #                 print("\n=============================\n\t\tCLIENTE ABONADO\n=============================")
+    #                 print(plaza)
+    #             else:
+    #                 print("\n=============================\n\t\tCLIENTE NO ABONADO\n=============================")
+    #                 print(plaza)
+    #         elif plaza in lista_reservadas:
+    #             print("\n=============================\n\t\tPLAZA RESERVADA\n=============================")
+    #             print(plaza)
+    #         else:
+    #             print("\n=============================\n\t\tPLAZA LIBRE\n=============================")
+    #             print(plaza)
 
     def reservar_plaza(self, tipo, lista_reservadas):
         for plaza in self.__plazas:

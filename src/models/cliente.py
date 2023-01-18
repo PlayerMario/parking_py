@@ -31,7 +31,7 @@ class Cliente:
         pickle.dump(lista_clientes, f_clientes)
         f_clientes.close()
 
-        # Devolverla
+        # Cargar lista
         f_clientes = open('data/lista_clientes.pckl', 'rb')
         clientes = pickle.load(f_clientes)
         f_clientes.close()

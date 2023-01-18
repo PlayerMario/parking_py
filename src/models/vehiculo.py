@@ -38,7 +38,7 @@ class Vehiculo:
         pickle.dump(lista_vehiculos, f_vehiculos)
         f_vehiculos.close()
 
-        # Devolverla
+        # Cargar lista
         f_vehiculos = open('data/lista_vehiculos.pckl', 'rb')
         vehiculos = pickle.load(f_vehiculos)
         f_vehiculos.close()
