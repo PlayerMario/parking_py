@@ -35,3 +35,8 @@ class Cliente:
         # f_clientes.close()
         #
         # return clientes
+
+    def actualizar_listado_modif(self, lista_clientes):
+        f_clientes = open('data/lista_clientes.pckl', 'wb')
+        pickle.dump(lista_clientes, f_clientes)
+        f_clientes.close()

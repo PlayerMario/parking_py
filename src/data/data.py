@@ -8,7 +8,7 @@ from models.cobros_abono import CobroAbono
 from models.ocupada import Ocupada
 from models.plaza import Plaza
 from models.vehiculo import Vehiculo
-
+from services.admin_service import AdminService
 
 class Data:
     lista_plazas = []
@@ -160,7 +160,13 @@ class Data:
         f_clientes = open('data/lista_clientes.pckl', 'rb')
         clientes = pickle.load(f_clientes)
         f_clientes.close()
-        return clientes
+
+        reservadas_id = []
+        for cliente in clientes:
+            if isinstance(cliente, ClienteAbono):
+                reservadas_id.append(cliente.abono.plaza.id_plaza)
+
+        return clientes, reservadas_id
 
     def cargar_cobros_abono(self):
         f_cobros_abono = open('data/lista_cobros_abono.pckl', 'wb')
@@ -188,6 +194,12 @@ class Data:
         plazas = pickle.load(f_plazas)
         f_plazas.close()
         return plazas
+    #
+    # def cargar_plazas_reservadas_id(self, lista_reservadas):
+    #     plazas_reservadas = []
+    #     for r in lista_reservadas:
+    #         plazas_reservadas.append(r.id_plaza)
+    #     return plazas_reservadas
 
     def cargar_datos(self):
         f_clientes = open('data/lista_clientes.pckl', 'rb')
@@ -206,4 +218,9 @@ class Data:
         plazas = pickle.load(f_plazas)
         f_plazas.close()
 
-        return clientes, cobros_abono, cobros, plazas
+        reservadas_id = []
+        for cliente in clientes:
+            if isinstance(cliente, ClienteAbono):
+                reservadas_id.append(cliente.abono.plaza.id_plaza)
+
+        return clientes, cobros_abono, cobros, plazas, reservadas_id

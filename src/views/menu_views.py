@@ -1,6 +1,6 @@
 class MenuViews:
     def menu_ppal(self):
-        return "\nSeleccione una opción:\n[1] Acceso clientes.\n[2] Adminstración.\n[3] Pruebas.\n[0] Salir.\n> "
+        return "\nSeleccione una opción:\n[1] Acceso clientes.\n[2] Adminstración.\n[3] Base datos.\n[0] Salir.\n> "
 
     def menu_cliente(self):
         return "\nSeleccione una opción:\n[1] Depositar vehículo.\n[2] Retirar vehículo.\n[3] Depositar abonados." \

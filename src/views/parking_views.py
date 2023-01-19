@@ -52,24 +52,30 @@ class ParkingViews:
     def mostrar_facturacion(self, cobros):
         total = 0
         for fecha, cobro in cobros.items():
-            print(f"\t· {fecha.strftime('%d/%m/%Y, %H:%M')} -> {cobro}€.")
+            print(f"\t· {fecha.strftime('%d/%m/%Y, %H:%M')} -> {cobro}€")
             total += cobro
         print(f"\t===============================\n\t\tRecaudado: {round(total, 2)}€\n")
-
-    def buscar_abonados(self, lista_clientes):
-        total = 0
-        for cliente in lista_clientes:
-            if isinstance(cliente, ClienteAbono):
-                self.mostrar_abonados(cliente)
-                total += cliente.abono.precio
-        print(f"===================================\n\n\tImporte total: {total}€")
 
     def mostrar_abonados(self, lista_clientes):
         if len(lista_clientes) == 0:
             print("\nNo se encuentran clientes.")
         else:
             for cliente in lista_clientes:
-                print(f"\n===================================\n"
-                      f"Abonado: {cliente.nombre} {cliente.apellidos}\nPlaza: {cliente.abono.plaza.id_plaza}"
-                      f"\nTipo abono: {cliente.abono.tipo}\nValidez hasta: "
-                      f"{cliente.abono.fecha_cancelacion.strftime('%d/%m/%Y, %H:%M')}\nImporte: {cliente.abono.precio}€")
+                print(f"========================================\n"
+                      f"-Abonado: {cliente.nombre} {cliente.apellidos}\n-Plaza: {cliente.abono.plaza.id_plaza}"
+                      f"\n-Tipo abono: {cliente.abono.tipo}\n-Validez hasta: "
+                      f"{cliente.abono.fecha_cancelacion.strftime('%d/%m/%Y, %H:%M')}\n-Importe: {cliente.abono.precio}€")
+
+    def buscar_abonados(self, lista_clientes):
+        total = 0
+        clientes = []
+        for cliente in lista_clientes:
+            if isinstance(cliente, ClienteAbono):
+                clientes.append(cliente)
+                total += cliente.abono.precio
+        self.mostrar_abonados(clientes)
+        print(f"========================================\n\n\tImporte total: {total}€")
+
+    def mostrar_nuevo_abono(self, cliente):
+        print(cliente)
+        print(cliente.abono)
