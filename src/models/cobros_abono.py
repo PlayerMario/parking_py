@@ -38,16 +38,13 @@ class CobroAbono(Cobro):
         return total
 
     def actualizar_listado(self, lista_cobro_abonos):
-        if self is not None:
-            lista_cobro_abonos.append(self)
-
-        # Actualizar lista
+        lista_cobro_abonos.append(self)
         f_cobros_abono = open('data/lista_cobros_abono.pckl', 'wb')
         pickle.dump(lista_cobro_abonos, f_cobros_abono)
         f_cobros_abono.close()
-
-        # Cargar lista
-        f_cobros_abono = open('data/lista_cobros_abono.pckl', 'rb')
-        cobros_abono = pickle.load(f_cobros_abono)
-        f_cobros_abono.close()
-        return cobros_abono
+        #
+        # # Cargar lista
+        # f_cobros_abono = open('data/lista_cobros_abono.pckl', 'rb')
+        # cobros_abono = pickle.load(f_cobros_abono)
+        # f_cobros_abono.close()
+        # return cobros_abono

@@ -1,6 +1,6 @@
 class MenuViews:
     def menu_ppal(self):
-        return "\nSeleccione una opción:\n[1] Acceso clientes.\n[2] Adminstración.\n[0] Salir.\n> "
+        return "\nSeleccione una opción:\n[1] Acceso clientes.\n[2] Adminstración.\n[3] Pruebas.\n[0] Salir.\n> "
 
     def menu_cliente(self):
         return "\nSeleccione una opción:\n[1] Depositar vehículo.\n[2] Retirar vehículo.\n[3] Depositar abonados." \
@@ -29,3 +29,7 @@ class MenuViews:
 
     def menu_caducidad(self):
         return "\nSeleccione una opción:\n[1] Caducidad en un mes.\n[2] Caducidad en próximos 10 días.\n[0] Salir.\n> "
+
+    def menu_pruebas(self):
+        return "\nSeleccione una opción:\n[1] Lista clientes.\n[2] Lista plazas.\n[3] Lista id plazas reservadas." \
+               "\n[4] Lista cobros.\n[5] Lista cobros abonados.\n[0] Salir.\n> "

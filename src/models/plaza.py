@@ -64,31 +64,28 @@ class Plaza:
 
     # MÉTODOS DE CLASE
     def actualizar_listado(self, lista_plazas):
-        #if self is not None:
-        if self not in lista_plazas:
-            lista_plazas.append(self)
-
-        # Actualizar lista
+        # if self not in lista_plazas:
+        #     lista_plazas.append(self)
         f_plazas = open('data/lista_plazas.pckl', 'wb')
         pickle.dump(lista_plazas, f_plazas)
         f_plazas.close()
+        #
+        # # Cargar lista
+        # f_plazas = open('data/lista_plazas.pckl', 'rb')
+        # plazas = pickle.load(f_plazas)
+        # f_plazas.close()
+        # return plazas
 
-        # Cargar lista
-        f_plazas = open('data/lista_plazas.pckl', 'rb')
-        plazas = pickle.load(f_plazas)
-        f_plazas.close()
-        return plazas
-
-    def actualizar_listado_reservadas(self, lista_reservadas):
-        lista_reservadas.append(self)
-
-        # Actualizar lista
-        f_reservadas = open('data/lista_reservadas.pckl', 'wb')
-        pickle.dump(lista_reservadas, f_reservadas)
-        f_reservadas.close()
-
-        # Cargar lista
-        f_reservadas = open('data/lista_reservadas.pckl', 'rb')
-        reservadas = pickle.load(f_reservadas)
-        f_reservadas.close()
-        return reservadas
+    # def actualizar_listado_reservadas(self, lista_reservadas):
+    #     lista_reservadas.append(self)
+    #
+    #     # Actualizar lista
+    #     f_reservadas = open('data/lista_reservadas.pckl', 'wb')
+    #     pickle.dump(lista_reservadas, f_reservadas)
+    #     f_reservadas.close()
+    #     #
+    #     # # Cargar lista
+    #     # f_reservadas = open('data/lista_reservadas.pckl', 'rb')
+    #     # reservadas = pickle.load(f_reservadas)
+    #     # f_reservadas.close()
+    #     # return reservadas

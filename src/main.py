@@ -9,23 +9,25 @@ from services.admin_service import AdminService
 from services.clientes_service import ClienteService
 from views.menu_views import MenuViews
 from views.parking_views import ParkingViews
+from views.pruebas_views import PruebasView
 
 # VARIABLES APLICACIÓN:
 menu_views = MenuViews()
 parking_views = ParkingViews()
+pruebas = PruebasView()
 cliente_service = ClienteService()
 admin_service = AdminService()
 data = Data()
-opZona = -1
-opCliente = -1
-opAdmin = -1
-opAbono = -1
-opCad = -1
-opModif = -1
-opDato = -1
-opTipo = -1
-tipo_a = -1
-tipo_v = -1
+# opZona = -1
+# opCliente = -1
+# opAdmin = -1
+# opAbono = -1
+# opCad = -1
+# opModif = -1
+# opDato = -1
+# opTipo = -1
+# tipo_a = -1
+# tipo_v = -1
 usuario = "admin"
 pswd = "1234"
 
@@ -34,10 +36,12 @@ clientes = data.cargar_clientes()
 cobros_abono = data.cargar_cobros_abono()
 cobros = data.cargar_cobros()
 plazas = data.cargar_plazas()
+# clientes, cobros_abono, cobros, plazas = data.cargar_datos()
 id_plazas_reservadas = admin_service.cargar_plazas_reservadas_id(data.lista_reservadas)
 
 print("Bienvenido al Parking Triana.")
 
+opZona = -1
 while opZona != 0:
     try:
         opZona = int(input(menu_views.menu_ppal()))
@@ -54,30 +58,28 @@ while opZona != 0:
                 print(cliente_service.mostrar_libres(plazas, id_plazas_reservadas)[3])
                 try:
                     opTipo = int(input(menu_views.menu_tipo_vehiculo()))
+                    tipo_vehiculo = cliente_service.devolver_tipo(opTipo, plazas, id_plazas_reservadas)
+                    if tipo_vehiculo != "":
+                        matricula = input("Indique su matrícula: ")
+                        c = Cliente(Vehiculo(matricula, tipo_vehiculo))
+                        c.actualizar_listado(clientes)
+                        plaza = cliente_service.depositar_ocasional(plazas, c, id_plazas_reservadas)
+                        if plaza is not None:
+                            parking_views.mostrar_ticket(plaza)
+                        else:
+                            print("Error al asignar una plaza.")
+                    else:
+                        print("Opción incorrecta / No hay plazas disponibles.")
                 except ValueError:
                     print("\nError, introduzca un número.")
-                tipo_vehiculo = cliente_service.devolver_tipo(opTipo, plazas, id_plazas_reservadas)
-                if tipo_vehiculo != "":
-                    matricula = input("Indique su matrícula: ")
-                    c = Cliente(Vehiculo(matricula, tipo_vehiculo))
-                    clientes = c.actualizar_listado(clientes)
-                    plaza_depo = cliente_service.depositar_ocasional(plazas, c, id_plazas_reservadas)
-                    if plaza_depo is not None:
-                        ticket, plazas = plaza_depo
-                        parking_views.mostrar_ticket(ticket)
-                    else:
-                        print("Error al asignar una plaza.")
-                else:
-                    print("Opción incorrecta / No hay plazas de ese tipo disponibles.")
 
-            elif opCliente == 2:
+            elif opCliente == 2 or opCliente == 4:
                 matricula = input("Indique su matrícula: ")
                 id_plaza = input("Indique la plaza: ")
                 pin = input("Indique su pin: ")
                 plaza = cliente_service.buscar_plaza(matricula, plazas, id_plaza, pin)
-                salida = cliente_service.generar_cobro(plaza, cobros, plazas)
-                if salida is not None:
-                    cobro, cobros, plazas = salida
+                cobro = cliente_service.salida_vehiculo(plaza, plazas, cobros)
+                if cobro is not None:
                     print(cobro)
                 else:
                     print("\nError en la operación.")
@@ -87,22 +89,11 @@ while opZona != 0:
                 dni = input("Indique su DNI: ")
                 cliente = cliente_service.buscar_cliente(matricula, dni, clientes)
                 if cliente is not None:
-                    deposito = cliente_service.depositar_abonado(cliente, plazas)
-                    if deposito is not None:
-                        plaza, plazas = deposito
+                    plaza = cliente_service.depositar_abonado(cliente, plazas)
+                    if plaza is not None:
                         parking_views.mostrar_ticket(plaza)
-                else:
-                    print("\nAbonado no encontrado.")
-
-            elif opCliente == 4:
-                matricula = input("Indique su matrícula: ")
-                id_plaza = input("Indique la plaza: ")
-                pin = input("Indique su pin: ")
-                plaza = cliente_service.buscar_plaza(matricula, plazas, id_plaza, pin)
-                salida = cliente_service.salida_vehiculo(plaza, plazas)
-                if salida is not None:
-                    cobro, plazas = salida
-                    print(cobro)
+                    else:
+                        print("\nNo se ha podido completar la operación.")
                 else:
                     print("\nAbonado no encontrado.")
 
@@ -277,7 +268,17 @@ while opZona != 0:
                     print("Opción incorrecta.")
         else:
             print("\nUsuario y/o contraseña errónea.")
+    elif opZona == 3:
+        opView = -1
+        while opView != 0:
+            try:
+                opView = int(input(menu_views.menu_pruebas()))
+            except ValueError:
+                print("Error, introduzca un número.")
+            pruebas.mostrar_info(opView, clientes, plazas, id_plazas_reservadas, cobros, cobros_abono)
     elif opZona == 0:
         print("Saliendo...")
     else:
         print("Opción incorrecta.")
+
+print("¡Muchas gracias, vuelva pronto!")

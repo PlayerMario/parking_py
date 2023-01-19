@@ -24,17 +24,14 @@ class Cliente:
 
     # MÉTODOS DE CLASE
     def actualizar_listado(self, lista_clientes):
-        if self is not None:
-            lista_clientes.append(self)
-
-        # Actualizar lista
+        lista_clientes.append(self)
         f_clientes = open('data/lista_clientes.pckl', 'wb')
         pickle.dump(lista_clientes, f_clientes)
         f_clientes.close()
-
-        # Cargar lista
-        f_clientes = open('data/lista_clientes.pckl', 'rb')
-        clientes = pickle.load(f_clientes)
-        f_clientes.close()
-
-        return clientes
+        #
+        # # Cargar lista
+        # f_clientes = open('data/lista_clientes.pckl', 'rb')
+        # clientes = pickle.load(f_clientes)
+        # f_clientes.close()
+        #
+        # return clientes
