@@ -43,7 +43,7 @@ class Data:
     a7 = Abono(tipo="Trimestral", plaza=lista_plazas[37])
     a8 = Abono(tipo="Anual", plaza=lista_plazas[30])
 
-    lista_abonos = [a1, a2, a3, a4, a5, a6, a7, a8]
+    # lista_abonos = [a1, a2, a3, a4, a5, a6, a7, a8]
 
     c1 = Cliente(vehiculo=v1)
     c2 = ClienteAbono(vehiculo=v2, nombre="Bartolomé", apellidos="Méndez Zuluaga", dni="12345678A",
@@ -97,6 +97,7 @@ class Data:
     o6 = Ocupada(cliente=c6)
 
     lista_ocupadas = [o1, o2, o3, o4, o5, o6]
+
     for oc in lista_ocupadas:
         salir = False
         cont = 0
@@ -152,23 +153,23 @@ class Data:
     # GUARDAR
     # NO BORRAR, DEJAR COMENTADO EN LOS CARGAR, LA PARTE DE .dump
 
-    def cargar_vehiculos(self):
-        f_vehiculos = open('data/lista_vehiculos.pckl', 'wb')
-        pickle.dump(self.lista_vehiculos, f_vehiculos)
-        f_vehiculos.close()
-        f_vehiculos = open('data/lista_vehiculos.pckl', 'rb')
-        vehiculos = pickle.load(f_vehiculos)
-        f_vehiculos.close()
-        return vehiculos
+    # def cargar_vehiculos(self):
+    #     f_vehiculos = open('data/lista_vehiculos.pckl', 'wb')
+    #     pickle.dump(self.lista_vehiculos, f_vehiculos)
+    #     f_vehiculos.close()
+    #     f_vehiculos = open('data/lista_vehiculos.pckl', 'rb')
+    #     vehiculos = pickle.load(f_vehiculos)
+    #     f_vehiculos.close()
+    #     return vehiculos
 
-    def cargar_abonos(self):
-        f_abonos = open('data/lista_abonos.pckl', 'wb')
-        pickle.dump(self.lista_abonos, f_abonos)
-        f_abonos.close()
-        f_abonos = open('data/lista_abonos.pckl', 'rb')
-        abonos = pickle.load(f_abonos)
-        f_abonos.close()
-        return abonos
+    # def cargar_abonos(self):
+    #     f_abonos = open('data/lista_abonos.pckl', 'wb')
+    #     pickle.dump(self.lista_abonos, f_abonos)
+    #     f_abonos.close()
+    #     f_abonos = open('data/lista_abonos.pckl', 'rb')
+    #     abonos = pickle.load(f_abonos)
+    #     f_abonos.close()
+    #     return abonos
 
     def cargar_clientes(self):
         f_clientes = open('data/lista_clientes.pckl', 'wb')
@@ -188,23 +189,23 @@ class Data:
         f_cobros_abono.close()
         return cobros_abono
 
-    def cargar_reservadas(self):
-        f_reservadas = open('data/lista_reservadas.pckl', 'wb')
-        pickle.dump(self.lista_reservadas, f_reservadas)
-        f_reservadas.close()
-        f_reservadas = open('data/lista_reservadas.pckl', 'rb')
-        reservadas = pickle.load(f_reservadas)
-        f_reservadas.close()
-        return reservadas
+    # def cargar_reservadas(self):
+    #     f_reservadas = open('data/lista_reservadas.pckl', 'wb')
+    #     pickle.dump(self.lista_reservadas, f_reservadas)
+    #     f_reservadas.close()
+    #     f_reservadas = open('data/lista_reservadas.pckl', 'rb')
+    #     reservadas = pickle.load(f_reservadas)
+    #     f_reservadas.close()
+    #     return reservadas
 
-    def cargar_ocupadas(self):
-        f_ocupadas = open('data/lista_ocupadas.pckl', 'wb')
-        pickle.dump(self.lista_ocupadas, f_ocupadas)
-        f_ocupadas.close()
-        f_ocupadas = open('data/lista_ocupadas.pckl', 'rb')
-        ocupadas = pickle.load(f_ocupadas)
-        f_ocupadas.close()
-        return ocupadas
+    # def cargar_ocupadas(self):
+    #     f_ocupadas = open('data/lista_ocupadas.pckl', 'wb')
+    #     pickle.dump(self.lista_ocupadas, f_ocupadas)
+    #     f_ocupadas.close()
+    #     f_ocupadas = open('data/lista_ocupadas.pckl', 'rb')
+    #     ocupadas = pickle.load(f_ocupadas)
+    #     f_ocupadas.close()
+    #     return ocupadas
 
     def cargar_cobros(self):
         f_cobros = open('data/lista_cobros.pckl', 'wb')

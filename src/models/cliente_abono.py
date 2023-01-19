@@ -17,7 +17,6 @@ class ClienteAbono(Cliente):
 
     # DESTRUCTOR
     def __del__(self):
-        # print("Baja realiza con éxito.")
         pass
 
     # GETTERS & SETTERS
