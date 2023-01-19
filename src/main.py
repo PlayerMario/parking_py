@@ -169,7 +169,7 @@ while opZona != 0:
 
                             elif opAbono == 2:
                                 opModif = -1
-                                dni = input("Indique su DNI (12345678A): ")
+                                dni = input("Indique su DNI (12345678A): ").upper()
                                 cliente_dni = admin_service.buscar_cliente_dni(dni, clientes)
                                 if cliente_dni is not None:
                                     cliente, indice_cliente = cliente_dni
@@ -214,7 +214,7 @@ while opZona != 0:
                                     print("\nNo se ha encontrado el cliente.")
 
                             elif opAbono == 3:
-                                dni = input("Indique su DNI (12345678A): ")
+                                dni = input("Indique su DNI (12345678A): ").upper()
                                 cliente_dni = admin_service.buscar_cliente_dni(dni, clientes)
                                 if cliente_dni is not None:
                                     cliente = cliente_dni[0]
