@@ -253,24 +253,28 @@ while opZona != 0:
                                         print("Opción incorrecta.")
                             else:
                                 print("No se ha encontrado el cliente.")
-#
-#                         elif opAbono == 3:
-#                             dni = input("Indique su DNI: ")
-#                             cliente = ClienteAbono.buscar_cliente_dni(None, dni, lista_clientes)
-#                             if isinstance(cliente, ClienteAbono):
-#                                 cliente.abono.plaza.ocupada = None
-#                                 lista_reservadas.remove(cliente.abono.plaza)
-#                                 cliente.abono.plaza = None
-#                                 cliente.__del__()
-#                             else:
-#                                 print("No se ha encontrado el cliente.")
-#
-#                         elif opAbono == 0:
-#                             print("Saliendo...")
-#
-#                         else:
-#                             print("Opción incorrecta.")
-#
+
+                        elif opAbono == 3:
+                            dni = input("Indique su DNI: ")
+                            cliente_dni = admin_service.buscar_cliente_dni(dni, clientes)
+                            if cliente_dni is not None:
+                                cliente = cliente_dni[0]
+                                baja = admin_service.baja_abono(cliente, clientes, abonos, plazas, plazas_reservadas, reservadas)
+                                plazas = baja[0]
+                                #plazas_reservadas = baja[1]
+                                abonos = baja[1]
+                                clientes = baja[2]
+                                # NO SE ACTUALIZA LA LISTA DE RESERVAS
+                                reservadas = baja[3]
+                                print("Abono eliminado correctamente.")
+                            else:
+                                print("No se ha encontrado el cliente.")
+
+                        elif opAbono == 0:
+                            print("Saliendo...")
+                        else:
+                            print("Opción incorrecta.")
+
 #                 elif opAdmin == 5:
 #                     opCad = -1
 #                     while opCad != 0:

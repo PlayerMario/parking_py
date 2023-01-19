@@ -24,6 +24,10 @@ class Abono:
             self.__fecha_cancelacion = self.__fecha_alta + timedelta(days=365)
         self.__plaza = plaza
 
+    # DESTRUCTOR
+    def __del__(self):
+        pass
+
     # GETTERS & SETTERS
     @property
     def tipo(self):

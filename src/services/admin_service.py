@@ -114,3 +114,31 @@ class AdminService:
 
         return cliente, nuevo_abono, nuevo_abono.actualizar_listado(lista_abonos), cliente.actualizar_listado(
             lista_clientes), cobro_abono.actualizar_listado(lista_cobros_abono)
+
+    def baja_abono(self, cliente, lista_clientes, lista_abonos, lista_plazas, reservadas_id, lista_reservadas):
+        cliente.abono.plaza.ocupada = None
+        # lista_reservadas.remove(cliente.abono.plaza)
+        plazas_act = cliente.abono.plaza.actualizar_listado(lista_plazas)
+        reservadas_id.remove(cliente.abono.plaza.id_plaza)
+        #lista_abonos.remove(cliente.abono)
+        reservadas_act = cliente.abono.plaza.actualizar_listado_reservadas(lista_reservadas)
+        abonos_act = cliente.abono.actualizar_listado(lista_abonos)
+        cliente.abono.plaza = None
+        lista_clientes.remove(cliente)
+        clientes_act = cliente.actualizar_listado(lista_clientes)
+        cliente.__del__()
+        return plazas_act, abonos_act, clientes_act, reservadas_act
+
+    def baja(self, cliente, lista_abonos, lista_plazas):
+        plaza = cliente.abono.plaza
+        ocupada = plaza.ocupada
+        abono = cliente.abono
+        if isinstance(ocupada, Ocupada):
+            plaza.ocupada = None
+            plazas_act = plaza.actualizar_listado(lista_plazas)
+            ocupada.__del__()
+        abono.plaza = None
+        abonos_act = abono.actualizar_listado(lista_abonos)
+        abono.__del__()
+
+
