@@ -69,10 +69,14 @@ while opZona != 0:
                     clientes = c.actualizar_listado(clientes)
                     plaza_depo = cliente_service.depositar_ocasional(plazas, c, plazas_reservadas)
                     if plaza_depo is not None:
-                        plazas = plaza_depo[1]
-                    parking_views.mostrar_ticket(plaza_depo[0])
+                        ticket, plazas = plaza_depo
+                        parking_views.mostrar_ticket(ticket)
+                        # plazas = plaza_depo[1]
+                    # parking_views.mostrar_ticket(plaza_depo[0])
+                    else:
+                        print("Error al asignar una plaza.")
                 else:
-                    print("Opción incorrecta / No hay plazas de ese tipo disponibles")
+                    print("Opción incorrecta / No hay plazas de ese tipo disponibles.")
 
             elif opCliente == 2:
                 matricula = input("Indique su matrícula: ")
@@ -81,9 +85,11 @@ while opZona != 0:
                 plaza = cliente_service.buscar_plaza(matricula, plazas, id_plaza, pin)
                 salida = cliente_service.generar_cobro(plaza, cobros, plazas)
                 if salida is not None:
-                    cobros = salida[1]
-                    plazas = salida[2]
-                    print(salida[0])
+                    cobro, cobros, plazas = salida
+                    print(cobro)
+                    # cobros = salida[1]
+                    # plazas = salida[2]
+                    # print(salida[0])
                 else:
                     print("\nError en la operación.")
 
@@ -94,8 +100,10 @@ while opZona != 0:
                 if cliente is not None:
                     deposito = cliente_service.depositar_abonado(cliente, plazas)
                     if deposito is not None:
-                        plazas = deposito[1]
-                        parking_views.mostrar_ticket(deposito[0])
+                        plaza, plazas = deposito
+                        parking_views.mostrar_ticket(plaza)
+                        # plazas = deposito[1]
+                        # parking_views.mostrar_ticket(deposito[0])
                 else:
                     print("\nAbonado no encontrado.")
 
@@ -106,8 +114,10 @@ while opZona != 0:
                 plaza = cliente_service.buscar_plaza(matricula, plazas, id_plaza, pin)
                 salida = cliente_service.salida_vehiculo(plaza, plazas)
                 if salida is not None:
-                    plazas = salida[1]
-                    print(salida[0])
+                    cobro, plazas = salida
+                    print(cobro)
+                    # plazas = salida[1]
+                    # print(salida[0])
                 else:
                     print("\nAbonado no encontrado.")
 
@@ -172,9 +182,10 @@ while opZona != 0:
                                     reserva = admin_service.reservar_plaza(tipo_vehiculo, plazas, plazas_reservadas,
                                                                            reservadas)
                                     if reserva is not None:
-                                        plaza = reserva[0]
-                                        reservadas = reserva[1]
-                                        plazas_reservadas = reserva[2]
+                                        plaza, reservadas, plazas_reservadas = reserva
+                                        # plaza = reserva[0]
+                                        # reservadas = reserva[1]
+                                        # plazas_reservadas = reserva[2]
                                         abono = Abono(tipo_abono, plaza)
                                         abono.actualizar_listado(abonos)
 
@@ -203,8 +214,9 @@ while opZona != 0:
                             dni = input("Indique su DNI: ")
                             cliente_dni = admin_service.buscar_cliente_dni(dni, clientes)
                             if cliente_dni is not None:
-                                cliente = cliente_dni[0]
-                                indice_cliente = cliente_dni[1]
+                                cliente, indice_cliente = cliente_dni
+                                # cliente = cliente_dni[0]
+                                # indice_cliente = cliente_dni[1]
                                 while opModif != 0:
                                     try:
                                         opModif = int(input(menu_views.menu_modificar_abono()))
@@ -220,9 +232,11 @@ while opZona != 0:
                                             cliente_mod = admin_service.modificar_cliente(cliente, opDato, clientes,
                                                                                           indice_cliente, plazas)
                                             if cliente_mod is not None and cliente_mod[2] is not None:
-                                                clientes = cliente_mod[1]
-                                                plazas = cliente_mod[2]
-                                                print(cliente_mod[0])
+                                                cliente, clientes, plazas = cliente_mod
+                                                print(cliente)
+                                                # clientes = cliente_mod[1]
+                                                # plazas = cliente_mod[2]
+                                                # print(cliente_mod[0])
                                             elif opDato == 0:
                                                 print("Saliendo...")
                                             else:
@@ -237,14 +251,15 @@ while opZona != 0:
                                         if tipo_abono != "":
                                             reno = admin_service.renovar_abono(cliente, tipo_abono, clientes, abonos,
                                                                                cobros_abono)
-                                            abonos = reno[2]
-                                            clientes = reno[3]
-                                            cobros_abono = reno[4]
-                                            print(reno[0])
-                                            print(reno[1])
+                                            cliente, abono, abonos, clientes, cobros_abono = reno
+                                            print(cliente + "\n" + abono)
+                                            # abonos = reno[2]
+                                            # clientes = reno[3]
+                                            # cobros_abono = reno[4]
+                                            # print(reno[0])
+                                            # print(reno[1])
                                         else:
                                             print("Tipo de abono incorrecto.")
-
                                     elif opModif == 0:
                                         print("Saliendo...")
                                     else:
