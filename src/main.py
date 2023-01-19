@@ -176,8 +176,8 @@ while opZona != 0:
                                                             cliente_mod = admin_service.modificar_cliente(cliente,
                                                                                                           opDato,
                                                                                                           clientes,
-                                                                                                          indice_cliente,
-                                                                                                          plazas)
+                                                                                                          indice_cliente
+                                                                                                          , plazas)
                                                             print(cliente_mod)
                                                         elif opDato == 0:
                                                             print("Saliendo...")

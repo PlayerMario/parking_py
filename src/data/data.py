@@ -15,86 +15,74 @@ class Data:
     num_plazas = 40
     for i in range(1, num_plazas + 1):
         if i <= round(num_plazas * 0.7):
-            lista_plazas.append(Plaza(id_plaza=f"{i}", tipo_vehiculo="Turismo", ocupada=Ocupada))
+            lista_plazas.append(Plaza(f"{i}", "Turismo", Ocupada))
         elif i <= round(num_plazas * 0.85):
-            lista_plazas.append(Plaza(id_plaza=f"{i}", tipo_vehiculo="Motocicleta", ocupada=Ocupada))
+            lista_plazas.append(Plaza(f"{i}", "Motocicleta", Ocupada))
         else:
-            lista_plazas.append(Plaza(id_plaza=f"{i}", tipo_vehiculo="Movilidad Reducida", ocupada=Ocupada))
+            lista_plazas.append(Plaza(f"{i}", "Movilidad Reducida", Ocupada))
 
-    v1 = Vehiculo(matricula="1111AAA", tipo="Turismo")
-    v2 = Vehiculo(matricula="3215OGR", tipo="Movilidad Reducida")
-    v3 = Vehiculo(matricula="9581BDS", tipo="Turismo")
-    v4 = Vehiculo(matricula="1234AWE", tipo="Motocicleta")
-    v5 = Vehiculo(matricula="6325UJM", tipo="Movilidad Reducida")
-    v6 = Vehiculo(matricula="1024QWE", tipo="Motocicleta")
-    v7 = Vehiculo(matricula="5214AVG", tipo="Turismo")
-    v8 = Vehiculo(matricula="5677LMJ", tipo="Turismo")
-    v9 = Vehiculo(matricula="4766CVF", tipo="Movilidad Reducida")
-    v10 = Vehiculo(matricula="2014POK", tipo="Motocicleta")
-    v11 = Vehiculo(matricula="3302DDC", tipo="Turismo")
+    v1 = Vehiculo("1111AAA", "Turismo")
+    v2 = Vehiculo("3215OGR", "Movilidad Reducida")
+    v3 = Vehiculo("9581BDS", "Turismo")
+    v4 = Vehiculo("1234AWE", "Motocicleta")
+    v5 = Vehiculo("6325UJM", "Movilidad Reducida")
+    v6 = Vehiculo("1024QWE", "Motocicleta")
+    v7 = Vehiculo("5214AVG", "Turismo")
+    v8 = Vehiculo("5677LMJ", "Turismo")
+    v9 = Vehiculo("4766CVF", "Movilidad Reducida")
+    v10 = Vehiculo("2014POK", "Motocicleta")
+    v11 = Vehiculo("3302DDC", "Turismo")
 
-    a1 = Abono(tipo="Mensual", plaza=lista_plazas[35])
-    a2 = Abono(tipo="Semestral", plaza=lista_plazas[1])
-    a3 = Abono(tipo="Trimestral", plaza=lista_plazas[34])
-    a4 = Abono(tipo="Anual", plaza=lista_plazas[29])
-    a5 = Abono(tipo="Mensual", plaza=lista_plazas[4])
-    a6 = Abono(tipo="Semestral", plaza=lista_plazas[15])
-    a7 = Abono(tipo="Trimestral", plaza=lista_plazas[37])
-    a8 = Abono(tipo="Anual", plaza=lista_plazas[30])
-    a9 = Abono(tipo="Mensual", plaza=lista_plazas[10])
+    a1 = Abono("Mensual", lista_plazas[35])
+    a2 = Abono("Semestral", lista_plazas[1])
+    a3 = Abono("Trimestral", lista_plazas[34])
+    a4 = Abono("Anual", lista_plazas[29])
+    a5 = Abono("Mensual", lista_plazas[4])
+    a6 = Abono("Semestral", lista_plazas[15])
+    a7 = Abono("Trimestral", lista_plazas[37])
+    a8 = Abono("Anual", lista_plazas[30])
+    a9 = Abono("Mensual", lista_plazas[10])
     a9.fecha_alta = datetime.now()
     a9.fecha_cancelacion = a9.fecha_alta + timedelta(days=6)
 
-    c1 = Cliente(vehiculo=v1)
-    c2 = ClienteAbono(vehiculo=v2, nombre="Bartolomé", apellidos="Méndez Zuluaga", dni="12345678A",
-                      num_tarjeta="123-456",
-                      email="bartolome@bartolome.com", abono=a3)
+    c1 = Cliente(v1)
+    c2 = ClienteAbono(v2, "Bartolomé", "Méndez Zuluaga", "12345678A", "123-456", "bartolome@bartolome.com", a3)
     coa2 = CobroAbono(c2.vehiculo.matricula, c2.abono.fecha_alta, c2.abono.fecha_cancelacion, c2.abono.precio,
                       c2.num_tarjeta)
-    c3 = ClienteAbono(vehiculo=v3, nombre="Juan", apellidos="Cuesta Hurtado", dni="63258741C", num_tarjeta="365-158",
-                      email="juan@juan.com", abono=a2)
+    c3 = ClienteAbono(v3, "Juan", "Cuesta Hurtado", "63258741C", "365-158", "juan@juan.com", a2)
     coa3 = CobroAbono(c3.vehiculo.matricula, c3.abono.fecha_alta, c3.abono.fecha_cancelacion, c3.abono.precio,
                       c3.num_tarjeta)
-    c4 = Cliente(vehiculo=v4)
-    c5 = ClienteAbono(vehiculo=v5, nombre="Isabel", apellidos="Ruiz García", dni="96521475B", num_tarjeta="854-032",
-                      email="isabel@isabel.com", abono=a1)
+    c4 = Cliente(v4)
+    c5 = ClienteAbono(v5, "Isabel", "Ruiz García", "96521475B", "854-032", "isabel@isabel.com", a1)
     coa5 = CobroAbono(c5.vehiculo.matricula, c5.abono.fecha_alta, c5.abono.fecha_cancelacion, c5.abono.precio,
                       c5.num_tarjeta)
-    c6 = ClienteAbono(vehiculo=v6, nombre="Emilio", apellidos="Delgado Martín", dni="02145876G", num_tarjeta="852-370",
-                      email="emilio@emilio.com", abono=a4)
+    c6 = ClienteAbono(v6, "Emilio", "Delgado Martín", "02145876G", "852-370", "emilio@emilio.com", a4)
     coa6 = CobroAbono(c6.vehiculo.matricula, c6.abono.fecha_alta, c6.abono.fecha_cancelacion, c6.abono.precio,
                       c6.num_tarjeta)
-    c7 = ClienteAbono(vehiculo=v7, nombre="Luis", apellidos="Verde Rodríguez", dni="65478201C", num_tarjeta="524-000",
-                      email="luis@luis.com", abono=a5)
+    c7 = ClienteAbono(v7, "Luis", "Verde Rodríguez", "65478201C", "524-000", "luis@luis.com", a5)
     coa7 = CobroAbono(c7.vehiculo.matricula, c7.abono.fecha_alta, c7.abono.fecha_cancelacion, c7.abono.precio,
                       c7.num_tarjeta)
-    c8 = ClienteAbono(vehiculo=v8, nombre="Antonio", apellidos="López Rincón", dni="87410256V", num_tarjeta="032-552",
-                      email="antonio@antonio.com", abono=a6)
+    c8 = ClienteAbono(v8, "Antonio", "López Rincón", "87410256V", "032-552", "antonio@antonio.com", a6)
     coa8 = CobroAbono(c8.vehiculo.matricula, c8.abono.fecha_alta, c8.abono.fecha_cancelacion, c8.abono.precio,
                       c8.num_tarjeta)
-    c9 = ClienteAbono(vehiculo=v9, nombre="Ana", apellidos="Bascón Ruiz", dni="32147580B", num_tarjeta="201-369",
-                      email="ana@ana.com", abono=a7)
+    c9 = ClienteAbono(v9, "Ana", "Bascón Ruiz", "32147580B", "201-369", "ana@ana.com", a7)
     coa9 = CobroAbono(c9.vehiculo.matricula, c9.abono.fecha_alta, c9.abono.fecha_cancelacion, c9.abono.precio,
                       c9.num_tarjeta)
-    c10 = ClienteAbono(vehiculo=v10, nombre="Isabel", apellidos="Avilés Pérez", dni="21478503G",
-                       num_tarjeta="336-807",
-                       email="isabel@isabel.com", abono=a8)
+    c10 = ClienteAbono(v10, "Isabel", "Avilés Pérez", "21478503G", "336-807", "isabel@isabel.com", a8)
     coa10 = CobroAbono(c10.vehiculo.matricula, c10.abono.fecha_alta, c10.abono.fecha_cancelacion, c10.abono.precio,
                        c10.num_tarjeta)
-    c11 = ClienteAbono(vehiculo=v11, nombre="Jesús", apellidos="Martín Infante", dni="30021485B",
-                       num_tarjeta="333-965",
-                       email="jesus@jesus.com", abono=a9)
+    c11 = ClienteAbono(v11, "Jesús", "Martín Infante", "30021485B", "333-965", "jesus@jesus.com", a9)
     coa11 = CobroAbono(c11.vehiculo.matricula, c11.abono.fecha_alta, c11.abono.fecha_cancelacion, c11.abono.precio,
                        c11.num_tarjeta)
     lista_clientes = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11]
     lista_cobros_abonos = [coa2, coa3, coa5, coa6, coa7, coa8, coa9, coa10, coa11]
 
-    o1 = Ocupada(cliente=c1)
-    o2 = Ocupada(cliente=c2)
-    o3 = Ocupada(cliente=c3)
-    o4 = Ocupada(cliente=c4)
-    o5 = Ocupada(cliente=c5)
-    o6 = Ocupada(cliente=c6)
+    o1 = Ocupada(c1)
+    o2 = Ocupada(c2)
+    o3 = Ocupada(c3)
+    o4 = Ocupada(c4)
+    o5 = Ocupada(c5)
+    o6 = Ocupada(c6)
 
     for oc in [o1, o2, o3, o4, o5, o6]:
         salir = False
@@ -107,36 +95,21 @@ class Data:
                     salir = True
             cont += 1
 
-    co1 = Cobro(matricula="8521CFD", fecha_entrada=datetime(2022, 9, 23, 19, 12),
-                fecha_salida=datetime(2022, 9, 23, 21, 5), cobro=13.56)  # Turismo
-    co2 = Cobro(matricula="3214GVD", fecha_entrada=datetime(2022, 9, 25, 10, 20),
-                fecha_salida=datetime(2022, 9, 25, 17, 30), cobro=34.4)  # Motocicleta
-    co3 = Cobro(matricula="2147HBF", fecha_entrada=datetime(2022, 9, 11, 16, 25),
-                fecha_salida=datetime(2022, 9, 11, 18, 54), cobro=14.9)  # MovRed
-    co4 = Cobro(matricula="5201TGB", fecha_entrada=datetime(2022, 10, 6, 13, 3),
-                fecha_salida=datetime(2022, 10, 6, 22, 10), cobro=65.64)  # Turismo
-    co5 = Cobro(matricula="6324QSX", fecha_entrada=datetime(2022, 10, 30, 11, 41),
-                fecha_salida=datetime(2022, 10, 30, 12, 50), cobro=5.52)  # Motocicleta
-    co6 = Cobro(matricula="0142HNM", fecha_entrada=datetime(2022, 10, 23, 20, 36),
-                fecha_salida=datetime(2022, 10, 23, 22, 30), cobro=11.4)  # MovRed
-    co7 = Cobro(matricula="3014ERE", fecha_entrada=datetime(2022, 11, 23, 11, 29),
-                fecha_salida=datetime(2022, 11, 23, 14, 24), cobro=21)  # Turismo
-    co8 = Cobro(matricula="9879BNH", fecha_entrada=datetime(2022, 11, 8, 15, 1),
-                fecha_salida=datetime(2022, 11, 8, 18, 28), cobro=16.56)  # Motocicleta
-    co9 = Cobro(matricula="2214LMN", fecha_entrada=datetime(2022, 11, 16, 16, 12),
-                fecha_salida=datetime(2022, 11, 16, 19, 5), cobro=17.3)  # MovRed
-    co10 = Cobro(matricula="4152CXS", fecha_entrada=datetime(2022, 12, 23, 10, 32),
-                 fecha_salida=datetime(2022, 12, 23, 13, 45), cobro=23.16)  # Turismo
-    co11 = Cobro(matricula="6632BNV", fecha_entrada=datetime(2022, 12, 10, 14, 32),
-                 fecha_salida=datetime(2022, 12, 10, 19, 15), cobro=22.64)  # Motocicleta
-    co12 = Cobro(matricula="7456AZX", fecha_entrada=datetime(2022, 12, 20, 13, 36),
-                 fecha_salida=datetime(2022, 12, 20, 15, 30), cobro=11.4)  # MovRed
-    co13 = Cobro(matricula="6399NMJ", fecha_entrada=datetime(2023, 1, 3, 12, 10),
-                 fecha_salida=datetime(2023, 1, 3, 17, 26), cobro=37.92)  # Turismo
-    co14 = Cobro(matricula="1002EWQ", fecha_entrada=datetime(2023, 1, 14, 19, 20),
-                 fecha_salida=datetime(2023, 1, 14, 21, 53), cobro=12.24)  # Motocicleta
-    co15 = Cobro(matricula="3652HMK", fecha_entrada=datetime(2023, 1, 16, 17, 29),
-                 fecha_salida=datetime(2023, 1, 16, 19, 35), cobro=12.6)  # MovRed
+    co1 = Cobro("8521CFD", datetime(2022, 9, 23, 19, 12), datetime(2022, 9, 23, 21, 5), 13.56)
+    co2 = Cobro("3214GVD", datetime(2022, 9, 25, 10, 20), datetime(2022, 9, 25, 17, 30), 34.4)
+    co3 = Cobro("2147HBF", datetime(2022, 9, 11, 16, 25), datetime(2022, 9, 11, 18, 54), 14.9)
+    co4 = Cobro("5201TGB", datetime(2022, 10, 6, 13, 3), datetime(2022, 10, 6, 22, 10), 65.64)
+    co5 = Cobro("6324QSX", datetime(2022, 10, 30, 11, 41), datetime(2022, 10, 30, 12, 50), 5.52)
+    co6 = Cobro("0142HNM", datetime(2022, 10, 23, 20, 36), datetime(2022, 10, 23, 22, 30), 11.4)
+    co7 = Cobro("3014ERE", datetime(2022, 11, 23, 11, 29), datetime(2022, 11, 23, 14, 24), 21)
+    co8 = Cobro("9879BNH", datetime(2022, 11, 8, 15, 1), datetime(2022, 11, 8, 18, 28), 16.56)
+    co9 = Cobro("2214LMN", datetime(2022, 11, 16, 16, 12), datetime(2022, 11, 16, 19, 5), 17.3)
+    co10 = Cobro("4152CXS", datetime(2022, 12, 23, 10, 32), datetime(2022, 12, 23, 13, 45), 23.16)
+    co11 = Cobro("6632BNV", datetime(2022, 12, 10, 14, 32), datetime(2022, 12, 10, 19, 15), 22.64)
+    co12 = Cobro("7456AZX", datetime(2022, 12, 20, 13, 36), datetime(2022, 12, 20, 15, 30), 11.4)
+    co13 = Cobro("6399NMJ", datetime(2023, 1, 3, 12, 10), datetime(2023, 1, 3, 17, 26), 37.92)
+    co14 = Cobro("1002EWQ", datetime(2023, 1, 14, 19, 20), datetime(2023, 1, 14, 21, 53), 12.24)
+    co15 = Cobro("3652HMK", datetime(2023, 1, 16, 17, 29), datetime(2023, 1, 16, 19, 35), 12.6)
     lista_cobros = [co1, co2, co3, co4, co5, co6, co7, co8, co9, co10, co11, co12, co13, co14, co15]
 
     def reiniciar_datos(self):
