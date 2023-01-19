@@ -38,7 +38,8 @@ class CobroAbono(Cobro):
         return total
 
     def actualizar_listado(self, lista_cobro_abonos):
-        lista_cobro_abonos.append(self)
+        if self is not None:
+            lista_cobro_abonos.append(self)
 
         # Actualizar lista
         f_cobros_abono = open('data/lista_cobros_abono.pckl', 'wb')

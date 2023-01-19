@@ -86,16 +86,3 @@ class Ocupada:
             precio_mins = 0.1
 
         return round(((self.__fecha_salida - self.__fecha_deposito).total_seconds() / 60) * precio_mins, 2)
-
-    # def salida_vehiculo(self):
-    #     if isinstance(self, Ocupada):
-    #         self.fecha_salida = datetime.now()
-    #         cobro = Cobro(matricula=self.cliente.vehiculo.matricula, fecha_entrada=self.__fecha_deposito,
-    #                       fecha_salida=self.__fecha_salida, cobro=self.__coste_final)
-    #         if isinstance(self.__cliente, ClienteAbono):
-    #             return cobro
-    #         else:
-    #             self.__del__()
-    #             return cobro
-    #     else:
-    #         return "\nError en la operación."

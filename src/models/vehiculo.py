@@ -31,7 +31,8 @@ class Vehiculo:
 
     # MÉTODOS DE CLASE
     def actualizar_listado(self, lista_vehiculos):
-        lista_vehiculos.append(self)
+        if self is not None:
+            lista_vehiculos.append(self)
 
         # Actualizar lista
         f_vehiculos = open('data/lista_vehiculos.pckl', 'wb')

@@ -64,8 +64,12 @@ class ParkingViews:
                 total += cliente.abono.precio
         print(f"===================================\n\n\tImporte total: {total}€")
 
-    def mostrar_abonados(self, cliente):
-        print(f"\n===================================\n"
-              f"Abonado: {cliente.nombre} {cliente.apellidos}\nPlaza: {cliente.abono.plaza.id_plaza}"
-              f"\nTipo abono: {cliente.abono.tipo}\nValidez hasta: "
-              f"{cliente.abono.fecha_cancelacion.strftime('%d/%m/%Y, %H:%M')}\nImporte: {cliente.abono.precio}€")
+    def mostrar_abonados(self, lista_clientes):
+        if len(lista_clientes) == 0:
+            print("\nNo se encuentran clientes.")
+        else:
+            for cliente in lista_clientes:
+                print(f"\n===================================\n"
+                      f"Abonado: {cliente.nombre} {cliente.apellidos}\nPlaza: {cliente.abono.plaza.id_plaza}"
+                      f"\nTipo abono: {cliente.abono.tipo}\nValidez hasta: "
+                      f"{cliente.abono.fecha_cancelacion.strftime('%d/%m/%Y, %H:%M')}\nImporte: {cliente.abono.precio}€")

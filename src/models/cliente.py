@@ -24,7 +24,8 @@ class Cliente:
 
     # MÉTODOS DE CLASE
     def actualizar_listado(self, lista_clientes):
-        lista_clientes.append(self)
+        if self is not None:
+            lista_clientes.append(self)
 
         # Actualizar lista
         f_clientes = open('data/lista_clientes.pckl', 'wb')

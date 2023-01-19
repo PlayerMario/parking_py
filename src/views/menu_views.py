@@ -26,3 +26,6 @@ class MenuViews:
 
     def menu_opcion_dato(self):
         return "\nSeleccione una opción:\n[1] Nombre.\n[2] Apellidos.\n[3] Número de cuenta.\n[4] Email.\n[0] Salir\n> "
+
+    def menu_caducidad(self):
+        return "\nSeleccione una opción:\n[1] Caducidad en un mes.\n[2] Caducidad en próximos 10 días.\n[0] Salir.\n> "

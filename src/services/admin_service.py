@@ -1,9 +1,11 @@
-from datetime import datetime
-
+from datetime import datetime, timedelta
 from models.abono import Abono
 from models.cliente_abono import ClienteAbono
 from models.cobros_abono import CobroAbono
 from models.ocupada import Ocupada
+from views.parking_views import ParkingViews
+
+parking_view = ParkingViews()
 
 
 class AdminService:
@@ -115,30 +117,65 @@ class AdminService:
         return cliente, nuevo_abono, nuevo_abono.actualizar_listado(lista_abonos), cliente.actualizar_listado(
             lista_clientes), cobro_abono.actualizar_listado(lista_cobros_abono)
 
-    def baja_abono(self, cliente, lista_clientes, lista_abonos, lista_plazas, reservadas_id, lista_reservadas):
-        cliente.abono.plaza.ocupada = None
-        # lista_reservadas.remove(cliente.abono.plaza)
-        plazas_act = cliente.abono.plaza.actualizar_listado(lista_plazas)
-        reservadas_id.remove(cliente.abono.plaza.id_plaza)
-        #lista_abonos.remove(cliente.abono)
-        reservadas_act = cliente.abono.plaza.actualizar_listado_reservadas(lista_reservadas)
-        abonos_act = cliente.abono.actualizar_listado(lista_abonos)
-        cliente.abono.plaza = None
-        lista_clientes.remove(cliente)
-        clientes_act = cliente.actualizar_listado(lista_clientes)
-        cliente.__del__()
-        return plazas_act, abonos_act, clientes_act, reservadas_act
+    def buscar_plaza_id(self, lista_plazas, plaza):
+        for i in range(len(lista_plazas)):
+            if lista_plazas[i].id_plaza == plaza.id_plaza:
+                return i
+        return None
 
-    def baja(self, cliente, lista_abonos, lista_plazas):
+    def baja_abonado(self, cliente, lista_clientes, lista_abonos, lista_plazas, lista_reservadas_id, lista_reservadas):
         plaza = cliente.abono.plaza
+        plaza_antigua = plaza
         ocupada = plaza.ocupada
         abono = cliente.abono
         if isinstance(ocupada, Ocupada):
             plaza.ocupada = None
-            plazas_act = plaza.actualizar_listado(lista_plazas)
             ocupada.__del__()
+        lista_reservadas_id.remove(plaza.id_plaza)
+        lista_reservadas = self.borrar_plaza_reservada(plaza, lista_reservadas)
+        # plazas_act = plaza.actualizar_listado(lista_plazas)
+        lista_plazas[self.buscar_plaza_id(lista_plazas, plaza_antigua)] = plaza
+        cliente.abono = None
+        lista_clientes.remove(cliente)
+        # clientes_act = Cliente.actualizar_listado(None, lista_clientes)
         abono.plaza = None
-        abonos_act = abono.actualizar_listado(lista_abonos)
+        lista_abonos = self.borrar_abono(abono, lista_abonos)
+        # abonos_act = Abono.actualizar_listado(None, lista_abonos)
         abono.__del__()
+        cliente.__del__()
+        return lista_plazas
+        # return plazas_act, clientes_act, abonos_act, lista_reservadas_id, lista_reservadas
 
+    def borrar_plaza_reservada(self, plaza, lista_reservadas):
+        salir = False
+        cont = 0
+        while not salir:
+            p = lista_reservadas[cont]
+            if p.id_plaza == plaza.id_plaza:
+                lista_reservadas.remove(p)
+                salir = True
+            cont += 1
+        return lista_reservadas
 
+    def borrar_abono(self, abono, lista_abonos):
+        salir = False
+        cont = 0
+        while not salir:
+            a = lista_abonos[cont]
+            if a.pin == abono.pin:
+                lista_abonos.remove(a)
+                salir = True
+            cont += 1
+        return lista_abonos
+
+    def buscar_clientes_cad(self, mes, listado_clientes, opcion):
+        clientes_cad = []
+        for cliente in listado_clientes:
+            if isinstance(cliente, ClienteAbono):
+                if opcion == 1:
+                    if cliente.abono.fecha_cancelacion.month == mes:
+                        clientes_cad.append(cliente)
+                elif opcion == 2:
+                    if datetime.now() < cliente.abono.fecha_cancelacion < (datetime.now() + timedelta(days=10)):
+                        clientes_cad.append(cliente)
+        return clientes_cad

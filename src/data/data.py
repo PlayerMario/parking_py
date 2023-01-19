@@ -6,14 +6,11 @@ from models.cliente_abono import ClienteAbono
 from models.cobros import Cobro
 from models.cobros_abono import CobroAbono
 from models.ocupada import Ocupada
-from models.parking import Parking
 from models.plaza import Plaza
 from models.vehiculo import Vehiculo
 
 
 class Data:
-    parking = Parking(num_plazas=40)
-
     lista_plazas = []
     num_plazas = 40
     for i in range(1, num_plazas + 1):
@@ -217,15 +214,15 @@ class Data:
         cobros = pickle.load(f_cobros)
         f_cobros.close()
         return cobros
-
-    def cargar_parking(self):
-        f_parking = open('data/parking.pckl', 'wb')
-        pickle.dump(self.parking, f_parking)
-        f_parking.close()
-        f_parking = open('data/parking.pckl', 'rb')
-        parking = pickle.load(f_parking)
-        f_parking.close()
-        return parking
+    #
+    # def cargar_parking(self):
+    #     f_parking = open('data/parking.pckl', 'wb')
+    #     pickle.dump(self.parking, f_parking)
+    #     f_parking.close()
+    #     f_parking = open('data/parking.pckl', 'rb')
+    #     parking = pickle.load(f_parking)
+    #     f_parking.close()
+    #     return parking
 
     def cargar_plazas(self):
         f_plazas = open('data/lista_plazas.pckl', 'wb')

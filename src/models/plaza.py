@@ -64,7 +64,9 @@ class Plaza:
 
     # MÉTODOS DE CLASE
     def actualizar_listado(self, lista_plazas):
-        lista_plazas.append(self)
+        #if self is not None:
+        if self not in lista_plazas:
+            lista_plazas.append(self)
 
         # Actualizar lista
         f_plazas = open('data/lista_plazas.pckl', 'wb')

@@ -1,5 +1,4 @@
 from datetime import datetime
-
 from data.data import Data
 from models.abono import Abono
 from models.cliente import Cliente
@@ -17,7 +16,6 @@ parking_views = ParkingViews()
 cliente_service = ClienteService()
 admin_service = AdminService()
 data = Data()
-parking = data.cargar_parking()
 clientes = data.cargar_clientes()
 cobros_abono = data.cargar_cobros_abono()
 cobros = data.cargar_cobros()
@@ -259,13 +257,11 @@ while opZona != 0:
                             cliente_dni = admin_service.buscar_cliente_dni(dni, clientes)
                             if cliente_dni is not None:
                                 cliente = cliente_dni[0]
-                                baja = admin_service.baja_abono(cliente, clientes, abonos, plazas, plazas_reservadas, reservadas)
-                                plazas = baja[0]
-                                #plazas_reservadas = baja[1]
-                                abonos = baja[1]
-                                clientes = baja[2]
-                                # NO SE ACTUALIZA LA LISTA DE RESERVAS
-                                reservadas = baja[3]
+                                baja = admin_service.baja_abonado(cliente, clientes, abonos, plazas, plazas_reservadas,
+                                                                  reservadas)
+
+                                # REPASAR ESTE Y SI SE ACTUALIZA TO-DO. ACTUALIZAR LISTAS????
+
                                 print("Abono eliminado correctamente.")
                             else:
                                 print("No se ha encontrado el cliente.")
@@ -275,37 +271,35 @@ while opZona != 0:
                         else:
                             print("Opción incorrecta.")
 
-#                 elif opAdmin == 5:
-#                     opCad = -1
-#                     while opCad != 0:
-#                         opCad = int(input("\nSeleccione una opción:\n[1] Caducidad en un mes.\n[2] Caducidad "
-#                                           "en próximos 10 días.\n[0] Salir.\n> "))
-#                         if opCad == 1:
-#                             mes = 0
-#                             while mes < 1 or mes > 13:
-#                                 mes = int(input("Indique el mes: "))
-#                             ClienteAbono.buscar_clientes_cad(None, mes, lista_clientes, opCad)
-#
-#                         elif opCad == 2:
-#                             ClienteAbono.buscar_clientes_cad(None, 0, lista_clientes, opCad)
-#
-#                         elif opCad == 0:
-#                             print("Saliendo...")
-#
-#                         else:
-#                             print("Opción incorrecta.")
-#
-#                 elif opAdmin == 0:
-#                     print("Saliendo...")
-#
-#                 else:
-#                     print("Opción incorrecta.")
-#
-#         else:
-#             print("\nUsuario y/o contraseña errónea.")
-#
-#     elif opZona == 0:
-#         print("Saliendo...")
-#
-#     else:
-#         print("Opción incorrecta.")
+                elif opAdmin == 5:
+                    opCad = -1
+                    while opCad != 0:
+                        try:
+                            opCad = int(input(menu_views.menu_caducidad()))
+                        except ValueError:
+                            print("\nError, introduzca un número.")
+                        if opCad == 1:
+                            mes = 0
+                            while mes < 1 or mes > 13:
+                                try:
+                                    mes = int(input("Indique el mes: "))
+                                except ValueError:
+                                    print("\nError, introduzca un número.")
+                                parking_views.mostrar_abonados(admin_service.buscar_clientes_cad(mes, clientes, opCad))
+
+                        elif opCad == 2:
+                            parking_views.mostrar_abonados(admin_service.buscar_clientes_cad(0, clientes, opCad))
+                        elif opCad == 0:
+                            print("Saliendo...")
+                        else:
+                            print("Opción incorrecta.")
+                elif opAdmin == 0:
+                    print("Saliendo...")
+                else:
+                    print("Opción incorrecta.")
+        else:
+            print("\nUsuario y/o contraseña errónea.")
+    elif opZona == 0:
+        print("Saliendo...")
+    else:
+        print("Opción incorrecta.")
