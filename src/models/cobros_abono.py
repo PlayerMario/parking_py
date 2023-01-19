@@ -19,16 +19,16 @@ class CobroAbono(Cobro):
     def num_tarjeta(self, num_tarjeta):
         self.__num_tarjeta = num_tarjeta
 
-        # TOSTRING
-        def __str__(self):
-            return f"""
-                    ==================================
-                    | ·MATRÍCULA: {self.__matricula}\t\t\t |
-                    | ·ENTRADA: {self.__fecha_alta.strftime('%d/%m/%Y, %H:%M')}\t |
-                    | ·SALIDA: {self.__fecha_baja.strftime('%d/%m/%Y, %H:%M')}\t |
-                    | ·A PAGAR: {self.__cobro}€\t\t\t\t |
-                    ==================================
-                    """
+    # TOSTRING
+    def __str__(self):
+        return f"""
+                ==================================
+                | ·MATRÍCULA: {self.__matricula}\t\t\t |
+                | ·ENTRADA: {self.fecha_entrada.strftime('%d/%m/%Y, %H:%M')}\t |
+                | ·SALIDA: {self.fecha_salida.strftime('%d/%m/%Y, %H:%M')}\t |
+                | ·A PAGAR: {self.__cobro}€\t\t\t\t |
+                ==================================
+                """
 
     # MÉTODOS DE CLASE:
     def calcular_historico(self, lista_cobros_abonados):
@@ -42,9 +42,3 @@ class CobroAbono(Cobro):
         f_cobros_abono = open('data/lista_cobros_abono.pckl', 'wb')
         pickle.dump(lista_cobro_abonos, f_cobros_abono)
         f_cobros_abono.close()
-        #
-        # # Cargar lista
-        # f_cobros_abono = open('data/lista_cobros_abono.pckl', 'rb')
-        # cobros_abono = pickle.load(f_cobros_abono)
-        # f_cobros_abono.close()
-        # return cobros_abono

@@ -60,9 +60,3 @@ class Cobro:
         f_cobros = open('data/lista_cobros.pckl', 'wb')
         pickle.dump(lista_cobros, f_cobros)
         f_cobros.close()
-        #
-        # # Cargar lista
-        # f_cobros = open('data/lista_cobros.pckl', 'rb')
-        # cobros = pickle.load(f_cobros)
-        # f_cobros.close()
-        # return cobros

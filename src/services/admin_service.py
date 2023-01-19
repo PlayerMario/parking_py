@@ -9,12 +9,6 @@ parking_view = ParkingViews()
 
 
 class AdminService:
-    # def cargar_plazas_reservadas_id(self, lista_reservadas):
-    #     plazas_reservadas = []
-    #     for r in lista_reservadas:
-    #         plazas_reservadas.append(r.id_plaza)
-    #     return plazas_reservadas
-
     def generar_fecha(self):
         try:
             anio = int(input("Indique el año: "))
@@ -116,35 +110,29 @@ class AdminService:
                 return i
         return None
 
-    def baja_abonado(self, cliente, lista_clientes, lista_plazas, lista_reservadas_id):
+    def baja_abonado(self, cliente, lista_clientes, lista_plazas, reservadas_id):
         # Cargar datos
         plaza = cliente.abono.plaza
         plaza_antigua = plaza
         ocupada = plaza.ocupada
         abono = cliente.abono
-
         # Si la plaza está ocupada, desocuparla y borrar la instancia de ocupada
         if isinstance(ocupada, Ocupada):
             plaza.ocupada = None
             ocupada.__del__()
-
         # Actualizar lista de IDs de plazas reservadas para abonados
-        lista_reservadas_id.remove(plaza.id_plaza)
-
+        reservadas_id.remove(plaza.id_plaza)
         # Actualizar la plaza de la lista para que no esté ocupada si lo estuviera
         id = self.buscar_plaza_id(lista_plazas, plaza_antigua)
         if id is not None:
             lista_plazas[id] = plaza
-            # LLAMAR A ACTUALIZAR PICKLE
-
+            plaza.actualizar_listado(lista_plazas)
         # Quitar el abono al cliente, y del abono, la plaza asociada
         cliente.abono = None
         abono.plaza = None
-
         # Sacar al cliente de la lista
         lista_clientes.remove(cliente)
-        # LLAMAR A ACTUALIZAR PICKLE
-
+        cliente.actualizar_listado_modif(lista_clientes)
         # Eliminar abono y cliente
         abono.__del__()
         cliente.__del__()

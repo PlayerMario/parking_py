@@ -1,5 +1,3 @@
-from datetime import datetime, timedelta
-
 from models.cliente import Cliente
 
 

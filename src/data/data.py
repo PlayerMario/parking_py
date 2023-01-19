@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import pickle
 from models.abono import Abono
 from models.cliente import Cliente
@@ -8,7 +8,7 @@ from models.cobros_abono import CobroAbono
 from models.ocupada import Ocupada
 from models.plaza import Plaza
 from models.vehiculo import Vehiculo
-from services.admin_service import AdminService
+
 
 class Data:
     lista_plazas = []
@@ -31,8 +31,9 @@ class Data:
     v8 = Vehiculo(matricula="5677LMJ", tipo="Turismo")
     v9 = Vehiculo(matricula="4766CVF", tipo="Movilidad Reducida")
     v10 = Vehiculo(matricula="2014POK", tipo="Motocicleta")
+    v11 = Vehiculo(matricula="3302DDC", tipo="Turismo")
 
-    lista_vehiculos = [v1, v2, v3, v4, v5, v6, v7, v8, v9, v10]
+    # lista_vehiculos = [v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11]
 
     a1 = Abono(tipo="Mensual", plaza=lista_plazas[35])
     a2 = Abono(tipo="Semestral", plaza=lista_plazas[1])
@@ -42,6 +43,9 @@ class Data:
     a6 = Abono(tipo="Semestral", plaza=lista_plazas[15])
     a7 = Abono(tipo="Trimestral", plaza=lista_plazas[37])
     a8 = Abono(tipo="Anual", plaza=lista_plazas[30])
+    a9 = Abono(tipo="Mensual", plaza=lista_plazas[10])
+    a9.fecha_alta = datetime.now()
+    a9.fecha_cancelacion = a9.fecha_alta + timedelta(days=6)
 
     # lista_abonos = [a1, a2, a3, a4, a5, a6, a7, a8]
 
@@ -81,8 +85,13 @@ class Data:
                        email="isabel@isabel.com", abono=a8)
     coa10 = CobroAbono(c10.vehiculo.matricula, c10.abono.fecha_alta, c10.abono.fecha_cancelacion, c10.abono.precio,
                        c10.num_tarjeta)
-    lista_clientes = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10]
-    lista_cobros_abonos = [coa2, coa3, coa5, coa6, coa7, coa8, coa9, coa10]
+    c11 = ClienteAbono(vehiculo=v11, nombre="Jesús", apellidos="Martín Infante", dni="30021485B",
+                       num_tarjeta="333-965",
+                       email="jesus@jesus.com", abono=a9)
+    coa11 = CobroAbono(c11.vehiculo.matricula, c11.abono.fecha_alta, c11.abono.fecha_cancelacion, c11.abono.precio,
+                       c11.num_tarjeta)
+    lista_clientes = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11]
+    lista_cobros_abonos = [coa2, coa3, coa5, coa6, coa7, coa8, coa9, coa10, coa11]
 
     lista_reservadas = []
     for cliente in lista_clientes:
@@ -141,19 +150,7 @@ class Data:
                  fecha_salida=datetime(2023, 1, 16, 19, 35), cobro=12.6)  # MovRed
     lista_cobros = [co1, co2, co3, co4, co5, co6, co7, co8, co9, co10, co11, co12, co13, co14, co15]
 
-    # SI NO SE METEN DATOS DE PRUEBA, AL INICIAR LA SESIÓN SOLO HABRÍA QUE HACER UN LOAD EN UNA LISTA VACÍA, POR EJEMPLO
-    # f_vehiculos = open('data/lista_vehiculos.pckl', 'rb')
-    #         vehiculos = pickle.load(f_vehiculos)
-    #         f_vehiculos.close()
-    #         return vehiculos
-    # y en el main se guardaría en un vehiculos = cargar_vehiculos() para que siempre se traiga la lista actualizada
-    # PROBAR A HACER UN RUN ASÍ, Y QUITAR DESPÚES LOS DATOS DE PRUEBA Y LOS DUMP AL CARGAR PARA QUE AL VOVLER A EJECUTAR
-    # NO SE SOBREESCRIBAN Y SE QUEDEN AHÍ GUARDADOS
-    # AL CERRAR SESIÓN, GUARDARÍA TODAS LAS LISTAS, O NO HARÍA FALTA PORQUE AL ACTUALIZARLAS YA SE HACE EL PASO DE
-    # GUARDAR
-    # NO BORRAR, DEJAR COMENTADO EN LOS CARGAR, LA PARTE DE .dump
-
-    def cargar_clientes(self):
+    def reiniciar_datos(self):
         f_clientes = open('data/lista_clientes.pckl', 'wb')
         pickle.dump(self.lista_clientes, f_clientes)
         f_clientes.close()
@@ -166,40 +163,28 @@ class Data:
             if isinstance(cliente, ClienteAbono):
                 reservadas_id.append(cliente.abono.plaza.id_plaza)
 
-        return clientes, reservadas_id
-
-    def cargar_cobros_abono(self):
         f_cobros_abono = open('data/lista_cobros_abono.pckl', 'wb')
         pickle.dump(self.lista_cobros_abonos, f_cobros_abono)
         f_cobros_abono.close()
         f_cobros_abono = open('data/lista_cobros_abono.pckl', 'rb')
         cobros_abono = pickle.load(f_cobros_abono)
         f_cobros_abono.close()
-        return cobros_abono
 
-    def cargar_cobros(self):
         f_cobros = open('data/lista_cobros.pckl', 'wb')
         pickle.dump(self.lista_cobros, f_cobros)
         f_cobros.close()
         f_cobros = open('data/lista_cobros.pckl', 'rb')
         cobros = pickle.load(f_cobros)
         f_cobros.close()
-        return cobros
 
-    def cargar_plazas(self):
         f_plazas = open('data/lista_plazas.pckl', 'wb')
         pickle.dump(self.lista_plazas, f_plazas)
         f_plazas.close()
         f_plazas = open('data/lista_plazas.pckl', 'rb')
         plazas = pickle.load(f_plazas)
         f_plazas.close()
-        return plazas
-    #
-    # def cargar_plazas_reservadas_id(self, lista_reservadas):
-    #     plazas_reservadas = []
-    #     for r in lista_reservadas:
-    #         plazas_reservadas.append(r.id_plaza)
-    #     return plazas_reservadas
+
+        return clientes, cobros_abono, cobros, plazas, reservadas_id
 
     def cargar_datos(self):
         f_clientes = open('data/lista_clientes.pckl', 'rb')

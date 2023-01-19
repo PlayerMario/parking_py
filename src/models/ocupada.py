@@ -1,7 +1,6 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 from models.cliente_abono import ClienteAbono
 import random
-from models.cobros import Cobro
 
 
 class Ocupada:

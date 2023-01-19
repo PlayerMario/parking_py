@@ -2,8 +2,6 @@ from datetime import datetime
 from data.data import Data
 from models.abono import Abono
 from models.cliente import Cliente
-from models.cliente_abono import ClienteAbono
-from models.cobros_abono import CobroAbono
 from models.vehiculo import Vehiculo
 from services.admin_service import AdminService
 from services.clientes_service import ClienteService
@@ -18,28 +16,14 @@ pruebas = PruebasView()
 cliente_service = ClienteService()
 admin_service = AdminService()
 data = Data()
-# opZona = -1
-# opCliente = -1
-# opAdmin = -1
-# opAbono = -1
-# opCad = -1
-# opModif = -1
-# opDato = -1
-# opTipo = -1
-# tipo_a = -1
-# tipo_v = -1
 usuario = "admin"
 pswd = "1234"
 
-# CARGAR DATOS INICIALES:
-clientes, reservadas_id = data.cargar_clientes()
-cobros_abono = data.cargar_cobros_abono()
-cobros = data.cargar_cobros()
-plazas = data.cargar_plazas()
-# clientes, cobros_abono, cobros, plazas, reservadas_id = data.cargar_datos()
+# REINICIAR DATOS INICIALES:
+clientes, cobros_abono, cobros, plazas, reservadas_id = data.reiniciar_datos()
 
-# CARGAR TAMBIÉN LA LISTA DE RESERVADAS AL PRINCPIO, SI NO, CON LA PERSISTENCIA, CAMBIARÍA. METER SI NO EN PERSISTENCIA
-# reservadas_id = admin_service.cargar_plazas_reservadas_id(data.lista_reservadas)
+# CARGAR DATOS INICIALES:
+# clientes, cobros_abono, cobros, plazas, reservadas_id = data.cargar_datos()
 
 print("Bienvenido al Parking Triana.")
 
@@ -137,129 +121,133 @@ while opZona != 0:
                     while opAbono != 0:
                         try:
                             opAbono = int(input(menu_views.menu_abono()))
-                        except ValueError:
-                            print("\nError, introduzca un número.")
-
-                        if opAbono == 1:
-                            try:
-                                tipo_a = int(input(menu_views.menu_tipo_abono()))
-                                tipo_abono = admin_service.elegir_tipo_abono(tipo_a)
-                                if tipo_abono != "":
-                                    matricula = input("Introduzca su matrícula: ")
-                                    try:
-                                        tipo_v = int(input(menu_views.menu_tipo_vehiculo()))
-                                        tipo_vehiculo = admin_service.elegir_tipo_vehiculo(tipo_v)
-                                        if tipo_vehiculo != "":
-                                            v = Vehiculo(matricula, tipo_vehiculo)
-                                            plaza = admin_service.reservar_plaza(tipo_vehiculo, plazas, reservadas_id)
-                                            if plaza is not None:
-                                                abono = Abono(tipo_abono, plaza)
-                                                nombre = input("Indique su nombre: ")
-                                                apellidos = input("Indique sus apellidos: ")
-                                                dni = input("Indique su DNI: ")
-                                                num_tarjeta = input("Indique su número de cuenta: ")
-                                                email = input("Indique su email: ")
-                                                cliente = admin_service.nuevo_cliente_abono(v, nombre, apellidos, dni,
-                                                                                            num_tarjeta, email, abono,
-                                                                                            clientes, cobros_abono)
-                                                print(f"{cliente}\n-Plaza {plaza.id_plaza}")
+                            if opAbono == 1:
+                                try:
+                                    tipo_a = int(input(menu_views.menu_tipo_abono()))
+                                    tipo_abono = admin_service.elegir_tipo_abono(tipo_a)
+                                    if tipo_abono != "":
+                                        matricula = input("Introduzca su matrícula: ")
+                                        try:
+                                            tipo_v = int(input(menu_views.menu_tipo_vehiculo()))
+                                            tipo_vehiculo = admin_service.elegir_tipo_vehiculo(tipo_v)
+                                            if tipo_vehiculo != "":
+                                                v = Vehiculo(matricula, tipo_vehiculo)
+                                                plaza = admin_service.reservar_plaza(tipo_vehiculo, plazas,
+                                                                                     reservadas_id)
+                                                if plaza is not None:
+                                                    abono = Abono(tipo_abono, plaza)
+                                                    nombre = input("Indique su nombre: ")
+                                                    apellidos = input("Indique sus apellidos: ")
+                                                    dni = input("Indique su DNI: ")
+                                                    num_tarjeta = input("Indique su número de cuenta: ")
+                                                    email = input("Indique su email: ")
+                                                    cliente = admin_service.nuevo_cliente_abono(v, nombre, apellidos,
+                                                                                                dni,
+                                                                                                num_tarjeta, email,
+                                                                                                abono,
+                                                                                                clientes, cobros_abono)
+                                                    print(f"{cliente}\n-Plaza {plaza.id_plaza}")
+                                                else:
+                                                    print("No hay plazas disponibles para reservar.")
                                             else:
-                                                print("No hay plazas disponibles para reservar.")
-                                        else:
-                                            print("Tipo de vehículo incorrecto.")
-                                    except ValueError:
-                                        print("\nError, introduzca un número.")
-                                else:
-                                    print("Tipo de abono incorrecto.")
-                            except ValueError:
-                                print("\nError, introduzca un número.")
+                                                print("Tipo de vehículo incorrecto.")
+                                        except ValueError:
+                                            print("\nError, introduzca un número.")
+                                    else:
+                                        print("Tipo de abono incorrecto.")
+                                except ValueError:
+                                    print("\nError, introduzca un número.")
 
-                        elif opAbono == 2:
-                            opModif = -1
-                            dni = input("Indique su DNI: ")
-                            cliente_dni = admin_service.buscar_cliente_dni(dni, clientes)
-                            if cliente_dni is not None:
-                                cliente, indice_cliente = cliente_dni
-                                while opModif != 0:
-                                    try:
-                                        opModif = int(input(menu_views.menu_modificar_abono()))
-                                        if opModif == 1:
-                                            opDato = -1
-                                            while opDato != 0:
+                            elif opAbono == 2:
+                                opModif = -1
+                                dni = input("Indique su DNI: ")
+                                cliente_dni = admin_service.buscar_cliente_dni(dni, clientes)
+                                if cliente_dni is not None:
+                                    cliente, indice_cliente = cliente_dni
+                                    while opModif != 0:
+                                        try:
+                                            opModif = int(input(menu_views.menu_modificar_abono()))
+                                            if opModif == 1:
+                                                opDato = -1
+                                                while opDato != 0:
+                                                    try:
+                                                        opDato = int(input(menu_views.menu_opcion_dato()))
+                                                        if 0 < opDato < 5:
+                                                            cliente_mod = admin_service.modificar_cliente(cliente,
+                                                                                                          opDato,
+                                                                                                          clientes,
+                                                                                                          indice_cliente,
+                                                                                                          plazas)
+                                                            print(cliente_mod)
+                                                        elif opDato == 0:
+                                                            print("Saliendo...")
+                                                        else:
+                                                            print("Opción incorrecta.")
+                                                    except ValueError:
+                                                        print("\nError, introduzca un número.")
+                                            elif opModif == 2:
                                                 try:
-                                                    opDato = int(input(menu_views.menu_opcion_dato()))
-                                                    if 0 < opDato < 5:
-                                                        cliente_mod = admin_service.modificar_cliente(cliente, opDato,
-                                                                                                      clientes,
-                                                                                                      indice_cliente,
-                                                                                                      plazas)
-                                                        print(cliente_mod)
-                                                    elif opDato == 0:
-                                                        print("Saliendo...")
+                                                    tipo_a = int(input(menu_views.menu_tipo_abono()))
+                                                    tipo_abono = admin_service.elegir_tipo_abono(tipo_a)
+                                                    if tipo_abono != "":
+                                                        parking_views.mostrar_nuevo_abono(
+                                                            admin_service.renovar_abono(
+                                                                cliente, tipo_abono, clientes, cobros_abono))
+
                                                     else:
-                                                        print("Opción incorrecta.")
+                                                        print("Tipo de abono incorrecto.")
                                                 except ValueError:
                                                     print("\nError, introduzca un número.")
-                                        elif opModif == 2:
-                                            try:
-                                                tipo_a = int(input(menu_views.menu_tipo_abono()))
-                                                tipo_abono = admin_service.elegir_tipo_abono(tipo_a)
-                                                if tipo_abono != "":
-                                                    parking_views.mostrar_nuevo_abono(
-                                                        admin_service.renovar_abono(
-                                                            cliente, tipo_abono, clientes, cobros_abono))
 
-                                                else:
-                                                    print("Tipo de abono incorrecto.")
-                                            except ValueError:
-                                                print("\nError, introduzca un número.")
+                                            elif opModif == 0:
+                                                print("Saliendo...")
+                                            else:
+                                                print("Opción incorrecta.")
+                                        except ValueError:
+                                            print("\nError, introduzca un número.")
+                                else:
+                                    print("\nNo se ha encontrado el cliente.")
 
-                                        elif opModif == 0:
-                                            print("Saliendo...")
-                                        else:
-                                            print("Opción incorrecta.")
-                                    except ValueError:
-                                        print("\nError, introduzca un número.")
+                            elif opAbono == 3:
+                                dni = input("Indique su DNI: ")
+                                cliente_dni = admin_service.buscar_cliente_dni(dni, clientes)
+                                if cliente_dni is not None:
+                                    cliente = cliente_dni[0]
+                                    admin_service.baja_abonado(cliente, clientes, plazas, reservadas_id)
+                                    print("\nAbono eliminado correctamente.")
+                                else:
+                                    print("\nNo se ha encontrado el cliente.")
+
+                            elif opAbono == 0:
+                                print("Saliendo...")
                             else:
-                                print("\nNo se ha encontrado el cliente.")
-
-                        elif opAbono == 3:
-                            dni = input("Indique su DNI: ")
-                            cliente_dni = admin_service.buscar_cliente_dni(dni, clientes)
-                            if cliente_dni is not None:
-                                cliente = cliente_dni[0]
-                                baja = admin_service.baja_abonado(cliente, clientes, plazas, reservadas_id)
-                                print("Abono eliminado correctamente.")
-                            else:
-                                print("No se ha encontrado el cliente.")
-
-                        elif opAbono == 0:
-                            print("Saliendo...")
-                        else:
-                            print("Opción incorrecta.")
+                                print("Opción incorrecta.")
+                        except ValueError:
+                            print("\nError, introduzca un número.")
 
                 elif opAdmin == 5:
                     opCad = -1
                     while opCad != 0:
                         try:
                             opCad = int(input(menu_views.menu_caducidad()))
+                            if opCad == 1:
+                                mes = 0
+                                while mes < 1 or mes > 13:
+                                    try:
+                                        mes = int(input("Indique el mes: "))
+                                        parking_views.mostrar_abonados(
+                                            admin_service.buscar_clientes_cad(mes, clientes, opCad))
+                                    except ValueError:
+                                        print("\nError, introduzca un número.")
+
+                            elif opCad == 2:
+                                parking_views.mostrar_abonados(admin_service.buscar_clientes_cad(0, clientes, opCad))
+                            elif opCad == 0:
+                                print("Saliendo...")
+                            else:
+                                print("Opción incorrecta.")
                         except ValueError:
                             print("\nError, introduzca un número.")
-                        if opCad == 1:
-                            mes = 0
-                            while mes < 1 or mes > 13:
-                                try:
-                                    mes = int(input("Indique el mes: "))
-                                except ValueError:
-                                    print("\nError, introduzca un número.")
-                                parking_views.mostrar_abonados(admin_service.buscar_clientes_cad(mes, clientes, opCad))
-
-                        elif opCad == 2:
-                            parking_views.mostrar_abonados(admin_service.buscar_clientes_cad(0, clientes, opCad))
-                        elif opCad == 0:
-                            print("Saliendo...")
-                        else:
-                            print("Opción incorrecta.")
                 elif opAdmin == 0:
                     print("Saliendo...")
                 else:
@@ -271,12 +259,12 @@ while opZona != 0:
         while opView != 0:
             try:
                 opView = int(input(menu_views.menu_pruebas()))
+                pruebas.mostrar_info(opView, clientes, plazas, reservadas_id, cobros, cobros_abono)
             except ValueError:
                 print("Error, introduzca un número.")
-            pruebas.mostrar_info(opView, clientes, plazas, reservadas_id, cobros, cobros_abono)
     elif opZona == 0:
         print("Saliendo...")
     else:
         print("Opción incorrecta.")
 
-print("¡Muchas gracias, vuelva pronto!")
+print("\n¡Muchas gracias, vuelva pronto!")
