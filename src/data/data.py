@@ -33,8 +33,6 @@ class Data:
     v10 = Vehiculo(matricula="2014POK", tipo="Motocicleta")
     v11 = Vehiculo(matricula="3302DDC", tipo="Turismo")
 
-    # lista_vehiculos = [v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11]
-
     a1 = Abono(tipo="Mensual", plaza=lista_plazas[35])
     a2 = Abono(tipo="Semestral", plaza=lista_plazas[1])
     a3 = Abono(tipo="Trimestral", plaza=lista_plazas[34])
@@ -46,8 +44,6 @@ class Data:
     a9 = Abono(tipo="Mensual", plaza=lista_plazas[10])
     a9.fecha_alta = datetime.now()
     a9.fecha_cancelacion = a9.fecha_alta + timedelta(days=6)
-
-    # lista_abonos = [a1, a2, a3, a4, a5, a6, a7, a8]
 
     c1 = Cliente(vehiculo=v1)
     c2 = ClienteAbono(vehiculo=v2, nombre="Bartolomé", apellidos="Méndez Zuluaga", dni="12345678A",
@@ -93,11 +89,6 @@ class Data:
     lista_clientes = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11]
     lista_cobros_abonos = [coa2, coa3, coa5, coa6, coa7, coa8, coa9, coa10, coa11]
 
-    lista_reservadas = []
-    for cliente in lista_clientes:
-        if isinstance(cliente, ClienteAbono):
-            lista_reservadas.append(cliente.abono.plaza)
-
     o1 = Ocupada(cliente=c1)
     o2 = Ocupada(cliente=c2)
     o3 = Ocupada(cliente=c3)
@@ -105,9 +96,7 @@ class Data:
     o5 = Ocupada(cliente=c5)
     o6 = Ocupada(cliente=c6)
 
-    lista_ocupadas = [o1, o2, o3, o4, o5, o6]
-
-    for oc in lista_ocupadas:
+    for oc in [o1, o2, o3, o4, o5, o6]:
         salir = False
         cont = 0
         while not salir:
