@@ -22,7 +22,9 @@ class AdminService:
     def obtener_facturacion(self, fecha1, fecha2, lista_cobros):
         cobros = {}
         for cobro in lista_cobros:
+            # Comprobar si la fecha de salida del cobro se encuentra en el intervalo
             if fecha1 < cobro.fecha_salida < fecha2:
+                # Si cumple, rellena un diccionario {fecha:cobro}
                 cobros[cobro.fecha_salida] = cobro.cobro
         return cobros
 
@@ -50,6 +52,7 @@ class AdminService:
 
     def reservar_plaza(self, tipo, lista_plazas, reservadas_id):
         for plaza in lista_plazas:
+            # Si la plaza no está ocupada, ni reservada, y es del tipo de vehículo especificado, reserva la plaza
             if not isinstance(plaza.ocupada, Ocupada) and plaza.id_plaza not in reservadas_id \
                     and plaza.tipo_vehiculo == tipo:
                 reservadas_id.append(plaza.id_plaza)
@@ -57,6 +60,7 @@ class AdminService:
         return None
 
     def nuevo_cliente_abono(self, vehiculo, nombre, apellidos, dni, num_tarjeta, email, abono, clientes, cobros_abono):
+        # Crea un nuevo cliente abonado, junto a una instancia del cobro que genera, y actualiza las listas
         cliente = ClienteAbono(vehiculo, nombre, apellidos, dni, num_tarjeta, email, abono)
         cliente.actualizar_listado(clientes)
         cobro_abono = CobroAbono(cliente.vehiculo.matricula, cliente.abono.fecha_alta, cliente.abono.fecha_cancelacion,
@@ -66,12 +70,15 @@ class AdminService:
 
     def buscar_cliente_dni(self, dni, lista_clientes):
         for i in range(len(lista_clientes)):
+            # Si el cliente está abonado y su DNI coincide con el indicado, lo devuelve junto con su posición
             if isinstance(lista_clientes[i], ClienteAbono) and lista_clientes[i].dni == dni:
                 return lista_clientes[i], i
         return None
 
     def actualizar_plaza_ocupada(self, lista_plazas, cliente):
         for plaza in lista_plazas:
+            # Si la plaza está coupada, el cliente está abonado, y su DNI coincide con el especificado, actualiza
+            # los datos de la plaza para reservarla a un abonado, junto a la lista de las plazas
             if isinstance(plaza.ocupada, Ocupada) and isinstance(plaza.ocupada.cliente, ClienteAbono) and \
                     plaza.ocupada.cliente.dni == cliente.dni:
                 plaza.ocupada.cliente = cliente
@@ -86,6 +93,7 @@ class AdminService:
             lista_clientes[indice].num_tarjeta = input("Indique su número de cuenta: ")
         elif opcion == 4:
             lista_clientes[indice].email = input("Indique su email: ")
+        # Actualiza el cliente y el listado con los nuevos datos del mismo
         cliente.actualizar_listado_modif(lista_clientes)
         self.actualizar_plaza_ocupada(lista_plazas, cliente)
         return cliente
@@ -99,13 +107,14 @@ class AdminService:
         # Constatar nuevo abono en los cobros de abonados
         cobro_abono = CobroAbono(cliente.vehiculo.matricula, nuevo_abono.fecha_alta, nuevo_abono.fecha_cancelacion,
                                  nuevo_abono.precio, cliente.num_tarjeta)
-        # Guardar listas
+        # Guardar listas de clientes y cobros de abonados
         cliente.actualizar_listado(lista_clientes)
         cobro_abono.actualizar_listado(lista_cobros_abono)
         return cliente
 
     def buscar_plaza_id(self, lista_plazas, plaza):
         for i in range(len(lista_plazas)):
+            # Devuelva el índice de la plaza si coindicen los IDs de las mismas
             if lista_plazas[i].id_plaza == plaza.id_plaza:
                 return i
         return None
@@ -140,11 +149,14 @@ class AdminService:
     def buscar_clientes_cad(self, mes, listado_clientes, opcion):
         clientes_cad = []
         for cliente in listado_clientes:
+            # Si el cliente está abonado:
             if isinstance(cliente, ClienteAbono):
                 if opcion == 1:
+                    # Comprueba si el mes de caducidad de su abono coincide con el indicado
                     if cliente.abono.fecha_cancelacion.month == mes:
                         clientes_cad.append(cliente)
                 elif opcion == 2:
+                    # Comprueba si el abono caduca en los próximos 10 días contando desde hoy
                     if datetime.now() < cliente.abono.fecha_cancelacion < (datetime.now() + timedelta(days=10)):
                         clientes_cad.append(cliente)
         return clientes_cad

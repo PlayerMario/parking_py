@@ -32,8 +32,8 @@ class ValidarService:
 
     def validar_matricula(self, matricula):
         try:
-            if len(matricula) == 7 and isinstance(matricula[-3], str) and isinstance(int(matricula[:4]), int) \
-                    and self.comprobar_letras_matricula(matricula):
+            if len(matricula) == 7 and isinstance(int(matricula[:4]), int) and self.comprobar_letras_matricula(
+                    matricula):
                 return True
             else:
                 return False

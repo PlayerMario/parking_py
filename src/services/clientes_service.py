@@ -14,6 +14,7 @@ class ClienteService:
         num_moto = 0
         num_mov_red = 0
         for plaza in lista_plazas:
+            # Si la plaza no está ocupada ni reservada, comprueba el tipo y suma la cantidad disponible para mostrarla
             if not isinstance(plaza.ocupada, Ocupada) and plaza.id_plaza not in reservadas:
                 if plaza.tipo_vehiculo == "Turismo":
                     num_turismo += 1
@@ -24,6 +25,8 @@ class ClienteService:
         return num_turismo, num_moto, num_mov_red, parking_views.mostrar_disponibles(num_turismo, num_moto, num_mov_red)
 
     def devolver_tipo(self, opTipo, lista_plazas, reservadas):
+        # Comprueba que quedan plazas disponibles del tipo que se ha indicado para poder depositar el vehículo, si no
+        # devuelve un tipo vacío para mostrar que no hay libres del tipo
         if opTipo == 1 and self.mostrar_libres(lista_plazas, reservadas)[0] != 0:
             tipo_vehiculo = "Turismo"
         elif opTipo == 2 and self.mostrar_libres(lista_plazas, reservadas)[1] != 0:
@@ -38,6 +41,9 @@ class ClienteService:
         cont = 0
         while cont != len(lista_plazas):
             plaza = lista_plazas[cont]
+            # Si la plaza no está ocupada ni reservada, y su tipo coincide con el tipo de vehículo del cliente,
+            # actualiza el estado ocupado de la plaza por el cliente que se indica, y la lista de plazas, y retorna
+            # la plaza
             if not isinstance(plaza.ocupada, Ocupada) and plaza.id_plaza not in reservadas \
                     and plaza.tipo_vehiculo == cliente.vehiculo.tipo:
                 plaza.ocupada = Ocupada(cliente)
@@ -50,6 +56,8 @@ class ClienteService:
         cont = 0
         while cont != len(lista_plazas):
             plaza = lista_plazas[cont]
+            # Si la plaza está ocupada, y su ID coincide con el indicado, además de que coincida con el PIN y matricula
+            # del cliente, retorna la plaza
             if isinstance(plaza.ocupada, Ocupada) and plaza.id_plaza == id_plaza and plaza.ocupada.pin == pin and \
                     plaza.ocupada.cliente.vehiculo.matricula == matricula:
                 return plaza
