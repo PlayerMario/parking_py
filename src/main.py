@@ -22,10 +22,10 @@ usuario = "admin"
 pswd = "1234"
 
 # REINICIAR DATOS INICIALES:
-clientes, cobros_abono, cobros, plazas, reservadas_id = data.reiniciar_datos()
+# clientes, cobros_abono, cobros, plazas, reservadas_id = data.reiniciar_datos()
 
 # CARGAR DATOS INICIALES:
-# clientes, cobros_abono, cobros, plazas, reservadas_id = data.cargar_datos()
+clientes, cobros_abono, cobros, plazas, reservadas_id = data.cargar_datos()
 
 print("Bienvenido al Parking Triana.")
 
