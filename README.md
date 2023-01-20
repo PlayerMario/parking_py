@@ -8,8 +8,7 @@ Para el desarrollo de la aplicación, se han utilizado los siguientes elementos:
 
 ## Entorno de desarrollo y ejecución:
 Para el desarrollo del proyecto, se ha utilizado el entorno de desarrollo **PyCharm**. Para su ejecución, tendremos que elegir un intérprete, en este caso,
-durante el dessarrollo, se ha utilizado Python 3.10. Tras ello, se seleccionará en la barras superior, en la parte derecha, el archivo **main.py** como archivo
-de ejecución.
+durante el dessarrollo, se ha utilizado Python 3.10. Tras ello, se seleccionará en la barras superior, en la parte derecha, en **Curent File**, y luego **Edit Configuration**. Al aparecer la nueva ventana, pulsamos, en el menú superior, en el icono +, en el desplegable se selecciona **Python**, y en **Script path** se escribe la ruta del archivo **main.py**. Tras ello, si pulsamos en el botón de **Play**, se ejecutará el programa.
 A la hora de ejecutar el proyecto, en el archivo **main.py**, entre las líneas de código 24 y 28, podemos seleccionar reiniciar la base de datos para que se pongan
 los datos de prueba que hay en el archivo **data.py**, o utilizar los datos guardados en la base de datos por la persistencia de la misma.
 
