@@ -136,25 +136,24 @@ while opZona != 0:
                                                         tipo_vehiculo = admin_service.elegir_tipo_vehiculo(tipo_v)
                                                         if tipo_vehiculo != "":
                                                             v = Vehiculo(matricula, tipo_vehiculo)
-                                                            plaza = admin_service.reservar_plaza(
-                                                                tipo_vehiculo, plazas, reservadas_id)
-                                                            if plaza is not None:
-                                                                abono = Abono(tipo_abono, plaza)
-                                                                nombre = input("Indique su nombre: ")
-                                                                apellidos = input("Indique sus apellidos: ")
-                                                                dni = input("Indique su DNI (12345678A): ").upper()
-                                                                if validar_service.comprobar_dni_existe(dni, clientes):
+                                                            dni = input("Indique su DNI (12345678A): ").upper()
+                                                            if validar_service.comprobar_dni_existe(dni, clientes):
+                                                                plaza = admin_service.reservar_plaza(
+                                                                    tipo_vehiculo, plazas, reservadas_id)
+                                                                if plaza is not None:
+                                                                    abono = Abono(tipo_abono, plaza)
+                                                                    nombre = input("Indique su nombre: ")
+                                                                    apellidos = input("Indique sus apellidos: ")
                                                                     num_tarjeta = input("Indique su número de cuenta: ")
                                                                     email = input("Indique su email: ")
                                                                     cliente = admin_service.nuevo_cliente_abono(
                                                                         v, nombre, apellidos, dni, num_tarjeta, email,
-                                                                        abono,
-                                                                        clientes, cobros_abono)
+                                                                        abono, clientes, cobros_abono)
                                                                     print(f"{cliente}\n-Plaza {plaza.id_plaza}")
                                                                 else:
-                                                                    print("\nDNI existente o erróneo.")
+                                                                    print("No hay plazas disponibles para reservar.")
                                                             else:
-                                                                print("No hay plazas disponibles para reservar.")
+                                                                print("\nDNI existente o erróneo.")
                                                         else:
                                                             print("Tipo de vehículo incorrecto.")
                                                     except ValueError:

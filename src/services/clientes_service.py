@@ -65,13 +65,17 @@ class ClienteService:
         return None
 
     def salida_vehiculo(self, plaza, lista_plazas, lista_cobros):
+        # Si lo que se recibe es una instancia de plaza, y esta está ocupada:
         if isinstance(plaza, Plaza) and isinstance(plaza.ocupada, Ocupada):
+            # Setea la fecha de salida a la del momento en que se gestiona, y produce un nuevo cobro. Además, la plaza
+            # pasa a estar desocupada, y se actualiza el listado de las mismas
             ocupada = plaza.ocupada
             ocupada.fecha_salida = datetime.now()
             cobro = Cobro(ocupada.cliente.vehiculo.matricula, ocupada.fecha_deposito, ocupada.fecha_salida,
                           ocupada.coste_final)
             plaza.ocupada = None
             plaza.actualizar_listado(lista_plazas)
+            # Si la plaza está ocupada por un cliente ocasional, actualiza la lista de cobros con el nuevo
             if not isinstance(ocupada.cliente, ClienteAbono):
                 cobro.actualizar_listado(lista_cobros)
             return cobro
@@ -82,6 +86,7 @@ class ClienteService:
         cont = 0
         while cont != len(lista_clientes):
             cliente = lista_clientes[cont]
+            # Si el cliente está abonado, y coinciden la matricula y el DNI, devuelve el cliente
             if isinstance(cliente, ClienteAbono) and cliente.vehiculo.matricula == matricula and cliente.dni == dni:
                 return cliente
             cont += 1
@@ -91,7 +96,9 @@ class ClienteService:
         cont = 0
         while cont != len(lista_plazas):
             plaza = lista_plazas[cont]
+            # Si la plaza no está ocupada y el ID de esta coincide con el ID de la plaza asignada al abono del cliente:
             if not isinstance(plaza.ocupada, Ocupada) and plaza.id_plaza == cliente.abono.plaza.id_plaza:
+                # Ocupa la plaza y actualiza el listado
                 plaza.ocupada = Ocupada(cliente)
                 plaza.actualizar_listado(lista_plazas)
                 return plaza
